@@ -1,0 +1,140 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Search/Lucene
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+Analysis
+dir
+
+
+
+add
+
+Exception.php
+file
+
+
+
+add
+
+Interface.php
+file
+
+
+
+add
+
+MultiSearcher.php
+file
+
+
+
+add
+
+TermStreamsPriorityQueue.php
+file
+
+
+
+add
+
+Document.php
+file
+
+
+
+add
+
+Storage
+dir
+
+
+
+add
+
+Search
+dir
+
+
+
+add
+
+Index
+dir
+
+
+
+add
+
+Proxy.php
+file
+
+
+
+add
+
+Field.php
+file
+
+
+
+add
+
+FSMAction.php
+file
+
+
+
+add
+
+LockManager.php
+file
+
+
+
+add
+
+FSM.php
+file
+
+
+
+add
+
+PriorityQueue.php
+file
+
+
+
+add
+
+Document
+dir
+
+
+
+add
+

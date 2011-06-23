@@ -1,0 +1,112 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Search/Lucene/Index
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+SegmentWriter
+dir
+
+
+
+add
+
+DictionaryLoader.php
+file
+
+
+
+add
+
+Writer.php
+file
+
+
+
+add
+
+DocsFilter.php
+file
+
+
+
+add
+
+SegmentInfo.php
+file
+
+
+
+add
+
+FieldInfo.php
+file
+
+
+
+add
+
+SegmentWriter.php
+file
+
+
+
+add
+
+TermsStream
+dir
+
+
+
+add
+
+TermsPriorityQueue.php
+file
+
+
+
+add
+
+TermInfo.php
+file
+
+
+
+add
+
+SegmentMerger.php
+file
+
+
+
+add
+
+Term.php
+file
+
+
+
+add
+

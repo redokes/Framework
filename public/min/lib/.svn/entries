@@ -1,0 +1,77 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/public/min/lib
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+HTTP
+dir
+
+
+
+add
+
+Solar
+dir
+
+
+
+add
+
+Minify.php
+file
+
+
+
+add
+
+FirePHP.php
+file
+
+
+
+add
+
+JSMin.php
+file
+
+
+
+add
+
+JSMinPlus.php
+file
+
+
+
+add
+
+Minify
+dir
+
+
+
+add
+

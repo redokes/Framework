@@ -1,0 +1,154 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Service/WindowsAzure/Storage
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+DynamicTableEntity.php
+file
+
+
+
+add
+
+QueueMessage.php
+file
+
+
+
+add
+
+BatchStorageAbstract.php
+file
+
+
+
+add
+
+BlobInstance.php
+file
+
+
+
+add
+
+PageRegionInstance.php
+file
+
+
+
+add
+
+QueueInstance.php
+file
+
+
+
+add
+
+TableEntityQuery.php
+file
+
+
+
+add
+
+SignedIdentifier.php
+file
+
+
+
+add
+
+TableInstance.php
+file
+
+
+
+add
+
+Blob.php
+file
+
+
+
+add
+
+LeaseInstance.php
+file
+
+
+
+add
+
+Batch.php
+file
+
+
+
+add
+
+BlobContainer.php
+file
+
+
+
+add
+
+Queue.php
+file
+
+
+
+add
+
+TableEntity.php
+file
+
+
+
+add
+
+StorageEntityAbstract.php
+file
+
+
+
+add
+
+Table.php
+file
+
+
+
+add
+
+Blob
+dir
+
+
+
+add
+

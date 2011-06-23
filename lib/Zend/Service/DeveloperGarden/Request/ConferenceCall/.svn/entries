@@ -1,0 +1,168 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Service/DeveloperGarden/Request/ConferenceCall
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+CommitConferenceRequest.php
+file
+
+
+
+add
+
+RemoveConferenceTemplateParticipantRequest.php
+file
+
+
+
+add
+
+RemoveConferenceTemplateRequest.php
+file
+
+
+
+add
+
+UpdateParticipantRequest.php
+file
+
+
+
+add
+
+GetParticipantStatusRequest.php
+file
+
+
+
+add
+
+RemoveConferenceRequest.php
+file
+
+
+
+add
+
+CreateConferenceTemplateRequest.php
+file
+
+
+
+add
+
+NewParticipantRequest.php
+file
+
+
+
+add
+
+CreateConferenceRequest.php
+file
+
+
+
+add
+
+RemoveParticipantRequest.php
+file
+
+
+
+add
+
+GetConferenceTemplateListRequest.php
+file
+
+
+
+add
+
+GetConferenceTemplateParticipantRequest.php
+file
+
+
+
+add
+
+GetConferenceListRequest.php
+file
+
+
+
+add
+
+GetConferenceTemplateRequest.php
+file
+
+
+
+add
+
+UpdateConferenceTemplateParticipantRequest.php
+file
+
+
+
+add
+
+UpdateConferenceTemplateRequest.php
+file
+
+
+
+add
+
+GetRunningConferenceRequest.php
+file
+
+
+
+add
+
+UpdateConferenceRequest.php
+file
+
+
+
+add
+
+AddConferenceTemplateParticipantRequest.php
+file
+
+
+
+add
+
+GetConferenceStatusRequest.php
+file
+
+
+
+add
+

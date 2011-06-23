@@ -1,0 +1,63 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Tool/Project
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+Profile
+dir
+
+
+
+add
+
+Context
+dir
+
+
+
+add
+
+Exception.php
+file
+
+
+
+add
+
+Profile.php
+file
+
+
+
+add
+
+Provider
+dir
+
+
+
+add
+

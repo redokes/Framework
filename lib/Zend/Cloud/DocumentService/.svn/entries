@@ -1,0 +1,84 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Cloud/DocumentService
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+Adapter
+dir
+
+
+
+add
+
+DocumentSet.php
+file
+
+
+
+add
+
+Document.php
+file
+
+
+
+add
+
+Exception.php
+file
+
+
+
+add
+
+Adapter.php
+file
+
+
+
+add
+
+Query.php
+file
+
+
+
+add
+
+QueryAdapter.php
+file
+
+
+
+add
+
+Factory.php
+file
+
+
+
+add
+

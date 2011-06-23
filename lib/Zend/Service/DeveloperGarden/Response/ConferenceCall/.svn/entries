@@ -1,0 +1,259 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Service/DeveloperGarden/Response/ConferenceCall
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+GetRunningConferenceResponseType.php
+file
+
+
+
+add
+
+CCSResponseType.php
+file
+
+
+
+add
+
+GetConferenceStatusResponse.php
+file
+
+
+
+add
+
+AddConferenceTemplateParticipantResponseType.php
+file
+
+
+
+add
+
+RemoveConferenceTemplateParticipantResponse.php
+file
+
+
+
+add
+
+RemoveConferenceTemplateResponse.php
+file
+
+
+
+add
+
+UpdateParticipantResponse.php
+file
+
+
+
+add
+
+GetParticipantStatusResponse.php
+file
+
+
+
+add
+
+CreateConferenceTemplateResponse.php
+file
+
+
+
+add
+
+NewParticipantResponseType.php
+file
+
+
+
+add
+
+CreateConferenceResponseType.php
+file
+
+
+
+add
+
+GetConferenceTemplateListResponseType.php
+file
+
+
+
+add
+
+GetConferenceListResponse.php
+file
+
+
+
+add
+
+GetConferenceTemplateParticipantResponseType.php
+file
+
+
+
+add
+
+UpdateConferenceTemplateParticipantResponse.php
+file
+
+
+
+add
+
+GetConferenceTemplateResponseType.php
+file
+
+
+
+add
+
+GetRunningConferenceResponse.php
+file
+
+
+
+add
+
+ConferenceCallAbstract.php
+file
+
+
+
+add
+
+UpdateConferenceResponse.php
+file
+
+
+
+add
+
+AddConferenceTemplateParticipantResponse.php
+file
+
+
+
+add
+
+GetConferenceStatusResponseType.php
+file
+
+
+
+add
+
+CommitConferenceResponse.php
+file
+
+
+
+add
+
+GetParticipantStatusResponseType.php
+file
+
+
+
+add
+
+RemoveConferenceResponse.php
+file
+
+
+
+add
+
+NewParticipantResponse.php
+file
+
+
+
+add
+
+CreateConferenceTemplateResponseType.php
+file
+
+
+
+add
+
+CreateConferenceResponse.php
+file
+
+
+
+add
+
+RemoveParticipantResponse.php
+file
+
+
+
+add
+
+GetConferenceTemplateListResponse.php
+file
+
+
+
+add
+
+GetConferenceTemplateParticipantResponse.php
+file
+
+
+
+add
+
+GetConferenceTemplateResponse.php
+file
+
+
+
+add
+
+GetConferenceListResponseType.php
+file
+
+
+
+add
+
+UpdateConferenceTemplateResponse.php
+file
+
+
+
+add
+

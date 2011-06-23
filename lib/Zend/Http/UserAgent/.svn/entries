@@ -1,0 +1,154 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Http/UserAgent
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+Exception.php
+file
+
+
+
+add
+
+Device.php
+file
+
+
+
+add
+
+Spam.php
+file
+
+
+
+add
+
+Console.php
+file
+
+
+
+add
+
+Feed.php
+file
+
+
+
+add
+
+Checker.php
+file
+
+
+
+add
+
+Storage.php
+file
+
+
+
+add
+
+Mobile.php
+file
+
+
+
+add
+
+Probe.php
+file
+
+
+
+add
+
+Desktop.php
+file
+
+
+
+add
+
+Storage
+dir
+
+
+
+add
+
+Offline.php
+file
+
+
+
+add
+
+AbstractDevice.php
+file
+
+
+
+add
+
+Text.php
+file
+
+
+
+add
+
+Bot.php
+file
+
+
+
+add
+
+Validator.php
+file
+
+
+
+add
+
+Email.php
+file
+
+
+
+add
+
+Features
+dir
+
+
+
+add
+

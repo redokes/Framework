@@ -1,0 +1,77 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/OpenId
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+Provider.php
+file
+
+
+
+add
+
+Consumer.php
+file
+
+
+
+add
+
+Extension.php
+file
+
+
+
+add
+
+Exception.php
+file
+
+
+
+add
+
+Provider
+dir
+
+
+
+add
+
+Consumer
+dir
+
+
+
+add
+
+Extension
+dir
+
+
+
+add
+

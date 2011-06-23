@@ -1,0 +1,91 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Tool/Framework/Provider
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+DocblockManifestable.php
+file
+
+
+
+add
+
+Interactable.php
+file
+
+
+
+add
+
+Exception.php
+file
+
+
+
+add
+
+Repository.php
+file
+
+
+
+add
+
+Initializable.php
+file
+
+
+
+add
+
+Interface.php
+file
+
+
+
+add
+
+Signature.php
+file
+
+
+
+add
+
+Abstract.php
+file
+
+
+
+add
+
+Pretendable.php
+file
+
+
+
+add
+

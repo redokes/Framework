@@ -1,0 +1,91 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Gdata/Books/Extension
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+InfoLink.php
+file
+
+
+
+add
+
+BooksCategory.php
+file
+
+
+
+add
+
+BooksLink.php
+file
+
+
+
+add
+
+Embeddability.php
+file
+
+
+
+add
+
+PreviewLink.php
+file
+
+
+
+add
+
+Review.php
+file
+
+
+
+add
+
+ThumbnailLink.php
+file
+
+
+
+add
+
+AnnotationLink.php
+file
+
+
+
+add
+
+Viewability.php
+file
+
+
+
+add
+

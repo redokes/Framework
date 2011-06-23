@@ -1,0 +1,63 @@
+10
+
+dir
+0
+http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Ldap/Node/Schema
+http://svn.wesokes.com/wes
+add
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+318181bc-df43-9140-a957-a7fd330d5ca4
+
+Item.php
+file
+
+
+
+add
+
+AttributeType
+dir
+
+
+
+add
+
+ActiveDirectory.php
+file
+
+
+
+add
+
+OpenLdap.php
+file
+
+
+
+add
+
+ObjectClass
+dir
+
+
+
+add
+
