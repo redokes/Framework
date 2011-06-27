@@ -6,7 +6,6 @@ Ext.define('Redokes.sprite.Animation', {
 	fpf:1,
 	
 	constructor: function(params) {
-		d('Animation constructor');
 		Ext.apply(this, params);
 	}
 	

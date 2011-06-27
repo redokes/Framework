@@ -44,7 +44,6 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	checkKeys: function() {
-		this.isMoving = false;
 		if (this.keyDown && !this.isMoving) {
 			this.movementSpeed = this.speed;
 			switch (this.keyDown) {
@@ -114,9 +113,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	canMoveRight: function() {
-		return true;
 		if (this.tileX < this.game.map.currentMap.tiles[this.layer][this.tileY].length-1) {
-			var tile = this.game.map.currentMap.tiles[this.layer][this.tileY][this.tileX+1];
+			var tile = this.game.map.currentMap.tileData[this.layer][this.tileY][this.tileX+1];
 			if (!tile.isWall) {
 				return true;
 			}
@@ -125,7 +123,6 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 	
 	canMoveLeft: function() {
-		return true;
 		if (this.tileX) {
 			var tile = this.game.map.currentMap.tiles[this.layer][this.tileY][this.tileX-1];
 			if (!tile.isWall) {
@@ -136,7 +133,6 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	canMoveUp: function() {
-		return true;
 		if (this.tileY) {
 			var tile = this.game.map.currentMap.tiles[this.layer][this.tileY-1][this.tileX];
 			if (!tile.isWall) {
@@ -147,7 +143,6 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	canMoveDown: function() {
-		return true;
 		if (this.tileY < this.game.map.currentMap.tiles[this.layer].length-1) {
 			var tile = this.game.map.currentMap.tiles[this.layer][this.tileY+1][this.tileX];
 			if (!tile.isWall) {
@@ -161,7 +156,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		this.x += this.dx;
 		this.y += this.dy;
 		if (this.dx > 0 && this.x >= this.destinationX) {
-//			this.activateTile();
+			this.activateTile();
 			this.isMoving = false;
 
 			// check if we need to stop or if we can keep going
@@ -172,7 +167,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			}
 		}
 		else if (this.dx < 0 && this.x <= this.destinationX) {
-//			this.activateTile();
+			this.activateTile();
 			this.isMoving = false;
 			
 			// check if we need to stop or if we can keep going
@@ -183,7 +178,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			}
 		}
 		else if (this.dy > 0 && this.y >= this.destinationY) {
-//			this.activateTile();
+			this.activateTile();
 			this.isMoving = false;
 
 			// check if we need to stop or if we can keep going
@@ -194,7 +189,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			}
 		}
 		else if (this.dy < 0 && this.y <= this.destinationY) {
-//			this.activateTile();
+			this.activateTile();
 			this.isMoving = false;
 
 			// check if we need to stop or if we can keep going
@@ -210,22 +205,41 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		var coords = this.getTileCoords();
 		this.tileX = coords[0];
 		this.tileY = coords[1];
-		var tile = this.game.map.currentMap.tiles[this.layer][this.tileY][this.tileX];
-
-		if (tile.changeLayer != null) {
-			this.layer = tile.changeLayer;
-		}
-		if (tile.teleport) {
-			this.keyDown = false;
-			this.isMoving = false;
-			this.dx = 0;
-			this.dy = 0;
-			this.playAnimation('firstFrame');
-			this.setToTile(tileProperties.teleport[0], tileProperties.teleport[1], this.game.tileSize);
+		var tile = this.game.map.currentMap.tileData[this.layer][this.tileY][this.tileX];
+		
+		if (tile.actions) {
+			var numActions = tile.actions.length;
+			for (var i = 0; i < numActions; i++) {
+				this[tile.actions[i].action](tile.actions[i].params);
+			}
 		}
 	},
 
 	getTileCoords: function() {
 		return [Math.round(this.x / this.game.tileSize), Math.round(this.y / this.game.tileSize), this.layer];
+	},
+	
+	changeLayer: function(params) {
+		this.layer = params.layer;
+	},
+	
+	teleport: function(params) {
+		d('Teleport to ' + params.x + ', ' + params.y);
+		if (!params.layer) {
+			params.layer = this.layer;
+		}
+		if (this.dx < 0) {
+			this.playAnimation('faceLeft');
+		}
+		else if (this.dx > 0) {
+			this.playAnimation('faceRight');
+		}
+		else if (this.dy < 0) {
+			this.playAnimation('faceUp');
+		}
+		else if (this.dy > 0) {
+			this.playAnimation('faceDown');
+		}
+		this.setToTile(params.x, params.y, params.layer, this.game.tileSize);
 	}
 });

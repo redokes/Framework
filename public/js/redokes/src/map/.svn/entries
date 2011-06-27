@@ -2,7 +2,7 @@
 
 dir
 0
-http://svn.wesokes.com/wes/web-projects/wes-framework/public/js/redokes/src
+http://svn.wesokes.com/wes/web-projects/wes-framework/public/js/redokes/src/map
 http://svn.wesokes.com/wes
 add
 
@@ -26,21 +26,7 @@ svn:special svn:externals svn:needs-lock
 
 318181bc-df43-9140-a957-a7fd330d5ca4
 
-game
-dir
-
-
-
-add
-
-map
-dir
-
-
-
-add
-
-sprite
+data
 dir
 
 

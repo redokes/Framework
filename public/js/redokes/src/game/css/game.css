@@ -1,0 +1,25 @@
+.gameWrap {
+	position:relative;
+}
+
+.fpsDisplay {
+	position:absolute;
+	top:0;
+	right:0;
+	font-weight:bold;
+	font-size:14px;
+}
+
+.hidden {
+	display:none;
+}
+
+.tileHighlight {
+	position:absolute;
+	border:2px solid wheat;
+	margin:-2px;
+}
+
+.tileViewer {
+	overflow:auto;
+}

@@ -64,15 +64,15 @@ Ext.define('Redokes.sprite.Sprite', {
 	
 	addAnimation: function(animation) {
 		if (animation.title) {
-			d('Sprite add animation ' + animation.title);
+//			d('Sprite add animation ' + animation.title);
 			this.animations[animation.title] = animation;
 		}
 	},
 	
 	playAnimation: function(newAnimationTitle, restartAnimation) {
-		d('Sprite play animation ' + newAnimationTitle);
 		restartAnimation = restartAnimation || false;
 		if (this.currentAnimation.title != newAnimationTitle) {
+//			d('Sprite play animation ' + newAnimationTitle);
 			this.currentFrame = 0;
 			this.currentAnimation = this.animations[newAnimationTitle];
 		}
@@ -86,9 +86,17 @@ Ext.define('Redokes.sprite.Sprite', {
 		return this.currentAnimation.sequence[(Math.round(this.game.frameCount / this.currentAnimation.fpf) % this.currentAnimation.sequence.length)];
 	},
 
-	setToTile: function(x, y, tileSize) {
+	setToTile: function(x, y, layer, tileSize) {
+		this.layer = layer;
+		this.tileX = x;
+		this.tileY = y;
 		this.x = x * tileSize;
 		this.y = y * tileSize;
+		
+		this.dx = 0;
+		this.dy = 0;
+		this.destinationX = x;
+		this.destinationY = y;
 	},
 
 	setAnimationSpeed: function(speed) {

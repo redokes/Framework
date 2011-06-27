@@ -1,12 +1,14 @@
 Ext.define('Redokes.game.Game', {
 	extend:Ext.util.Observable,
 	requires:[
+		'Redokes.map.Editor',
 		'Redokes.sprite.Sprite'
 	],
 	
-//	map:false,
-//	player:false,
-//	players:false,
+	map:false,
+	player:false,
+	players:false,
+	playerCount:0,
 	width:0,
 	height:0,
 	numTilesWidth:15,
@@ -15,14 +17,22 @@ Ext.define('Redokes.game.Game', {
 	fps:30,
 	frameCount:0,
 	timer:false,
-	
-	players:[],
-	playerCount:0,
 
 	constructor: function() {
+		this.initEditor();
 		this.initPageMarkup();
 		this.initFPS();
 		this.init();
+	},
+	
+	initEditor: function() {
+		this.editorWrap = Ext.get(document.createElement('div'));
+		this.editorWrap.addCls('editorWrap');
+		Ext.getBody().appendChild(this.editorWrap);
+		this.editor = Ext.create('Redokes.map.Editor', {
+			renderTo:this.editorWrap,
+			height:500
+		});
 	},
 
 	initPageMarkup: function() {
@@ -44,7 +54,7 @@ Ext.define('Redokes.game.Game', {
 
 //		this.audio = Ext.get(document.createElement('audio'));
 //		Ext.getBody().appendChild(this.audio);
-//		this.audio.dom.src = '/js/wesokes/resources/music/town1.mp3';
+//		this.audio.dom.src = '/modules/wes/town1.mp3';
 //		this.audio.dom.play();
 	},
 
@@ -62,50 +72,45 @@ Ext.define('Redokes.game.Game', {
 	},
 
 	init: function() {
-		this.initPlayer();
-		this.initGameLoop();
-//		this.initMap();
+		this.initMap();
 	},
 	
 	initGameLoop: function() {
-		//setTimeout(this.gameLoop.createDelegate(this), 500);
 		this.gameInterval = setInterval(Ext.Function.bind(this.gameLoop, this), 1000/this.fps);
 	},
 
 	gameLoop: function() {
 		this.context.clearRect(0, 0, this.width, this.height);
 		this.player.checkKeys();
-		this.drawPlayers();
-//		this.player.movePlayer();
-//		this.map.draw();
+		this.player.movePlayer();
+		this.map.draw();
 		this.frameCount++;
 	},
 	
 	initMap: function() {
-		this.map = new Wes.map.Map(this);
+		this.map = Ext.create('Redokes.map.Map', this);
 		this.map.on('mapload', this.initPlayer, this);
-		this.map.loadMap('Town1');
+		this.map.loadMap('Town2');
+		window.wesMap = this.map;
 	},
 	
-	drawPlayers: function() {
-		for (var i = 0; i < this.playerCount; i++) {
-			this.players[i].draw();
-		}
-	},
-
 	initPlayer: function() {
-		this.players = [];
+		if (!this.player) {
+			this.players = [];
+			this.player = Ext.create('Redokes.sprite.PlayerUser', {
+				game:this,
+				img:'/modules/wes/img/sprite/player/mog.png',
+				width:32,
+				height:44,
+				context:this.context
+			});
+			this.addPlayer(this.player);
+			this.player.initControls();
+			this.map.follow(this.player);
+			this.initGameLoop();
+		}
+		this.player.setToTile(this.map.currentMap.spawnX, this.map.currentMap.spawnY, this.map.currentMap.spawnLayer, this.tileSize);
 		
-		this.player = Ext.create('Redokes.sprite.PlayerUser', {
-			img:'/modules/wes/img/sprite/player/mog.png',
-			width:32,
-			height:44,
-			context:this.context,
-			game:this
-		});
-		
-		this.addPlayer(this.player);
-		this.player.initControls();
 	},
 
 	addPlayer: function(player) {
