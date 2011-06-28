@@ -17,6 +17,7 @@ Ext.define('Redokes.game.Game', {
 	fps:30,
 	frameCount:0,
 	timer:false,
+	socketManager:false,
 
 	constructor: function() {
 //		this.initEditor();
@@ -131,7 +132,7 @@ Ext.define('Redokes.game.Game', {
 			this.initGameLoop();
 		}
 		this.player.setToTile(this.map.currentMap.spawnX, this.map.currentMap.spawnY, this.map.currentMap.spawnLayer, this.tileSize);
-		this.initSocket();
+		this.initSocketManager();
 	},
 
 	addPlayer: function(player) {
@@ -139,8 +140,12 @@ Ext.define('Redokes.game.Game', {
 		this.playerCount = this.players.length;
 	},
 	
-	initSocket: function() {
-		
+	initSocketManager: function() {
+		d('Init Socket Manager');
+		this.socketManager = Ext.create('Redokes.game.SocketManager', {
+			url:'redokes.com'
+		})
+		window.sm = this.socketManager;
 	}
 	
 });
