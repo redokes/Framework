@@ -79,7 +79,7 @@ Ext.define('Redokes.sprite.Sprite', {
 	},
 	
 	draw: function() {
-		this.context.drawImage(this.img.dom, this.getFrame() * this.width, 0, this.width, this.height, this.x, this.y - 28, this.width, this.height);
+		this.context.drawImage(this.img.dom, this.getFrame() * this.width, 0, this.width, this.height, this.x, this.y - 22, this.width, this.height);
 	},
 	
 	getFrame: function() {

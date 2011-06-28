@@ -6,28 +6,25 @@ class Wes_ProcessController extends Redokes_Controller_Ajax {
 		$this->setParam('testing', 'my value');
 	}
 	
-	public function loadMapAction() {
-		$mapId = $this->frontController->getParam('mapId', 0);
-		if ($mapId) {
-			// check map file
-			
-		}
-	}
-	
 	public function saveMapAction() {
 		$this->setParam('post', $_POST);
 		$mapData = $this->frontController->getParam('mapData', false);
 		if ($mapData) {
 			$mapData = json_decode($mapData, true);
 			$mapData['extend'] = 'Redokes.map.MapData';
+			foreach($mapData as $key => &$value) {
+				if (is_numeric($value)) {
+					$value = intval($value);
+				}
+			}
 			
 			$mapDir = PUBLIC_PATH . 'js/redokes/src/map/data/';
-			$mapPath = $mapDir . $mapData['file'] . '.js';
+			$mapPath = $mapDir . $mapData['fileName'] . '.js';
 			
 			$mapDataTemplate = new Redokes_View_Template();
-			$mapDataTemplate->html = "Ext.define('Redokes.map.data.{file}',{data})";
+			$mapDataTemplate->html = "Ext.define('Redokes.map.data.{fileName}',{data})";
 			$mapDataTemplate->setValues(array(
-				'file' => $mapData['file'],
+				'fileName' => $mapData['fileName'],
 				'data' => json_encode($mapData)
 			));
 			
@@ -36,5 +33,18 @@ class Wes_ProcessController extends Redokes_Controller_Ajax {
 			chmod($mapPath, 0777);
 		}
 	}
-
+	
+	public function loadMapAction() {
+		$this->setParam('post', $_POST);
+		$fileName = $this->frontController->getParam('fileName', false);
+		$mapDir = PUBLIC_PATH . 'js/redokes/src/map/data/';
+		$mapPath = $mapDir . $fileName . '.js';
+		if (isset($mapPath)) {
+			$contents = file_get_contents($mapPath);
+			$this->setParam('contents', $contents);
+			$this->setParam('cls', 'Redokes.map.data.' . $fileName);
+			$this->setParam('fileName', $fileName);
+		}
+	}
+	
 }

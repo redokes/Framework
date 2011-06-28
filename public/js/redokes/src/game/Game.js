@@ -52,10 +52,8 @@ Ext.define('Redokes.game.Game', {
 		this.context = this.canvas.dom.getContext('2d');
 		this.gameWrapDiv.appendChild(this.canvas);
 
-//		this.audio = Ext.get(document.createElement('audio'));
-//		Ext.getBody().appendChild(this.audio);
-//		this.audio.dom.src = '/modules/wes/town1.mp3';
-//		this.audio.dom.play();
+		this.music = Ext.get(document.createElement('audio'));
+		Ext.getBody().appendChild(this.music);
 	},
 
 	initFPS: function() {
@@ -89,9 +87,21 @@ Ext.define('Redokes.game.Game', {
 	
 	initMap: function() {
 		this.map = Ext.create('Redokes.map.Map', this);
+		this.map.on('mapload', this.initMusic, this);
 		this.map.on('mapload', this.initPlayer, this);
-		this.map.loadMap('Town2');
-		window.wesMap = this.map;
+		this.map.loadMap('Default');
+	},
+	
+	initMusic: function() {
+		if (this.map.currentMap.music) {
+			this.music.dom.src = this.map.currentMap.music;
+			this.music.dom.play();
+			this.setMusicVolume(.1);
+		}
+	},
+	
+	setMusicVolume: function(volume) {
+		this.music.dom.volume = volume;
 	},
 	
 	initPlayer: function() {

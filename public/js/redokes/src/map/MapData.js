@@ -14,6 +14,7 @@ Ext.define('Redokes.map.MapData', {
 	tileData:[],
 	tiles:[],
 	tileSize:0,
+	music:'/modules/wes/town1.mp3',
 
 	constructor: function() {
 		d('MapData constructor');

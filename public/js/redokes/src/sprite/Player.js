@@ -27,22 +27,22 @@ Ext.define('Redokes.sprite.Player', {
 		this.addAnimation(Ext.create('Redokes.sprite.Animation', {
 			title:'walkDown',
 			sequence:[1,0,2,0],
-			fpf:5
+			fpf:2.5
 		}));
 		this.addAnimation(Ext.create('Redokes.sprite.Animation', {
 			title:'walkRight',
 			sequence:[4,3,5,3],
-			fpf:5
+			fpf:2.5
 		}));
 		this.addAnimation(Ext.create('Redokes.sprite.Animation', {
 			title:'walkLeft',
 			sequence:[7,6,8,6],
-			fpf:5
+			fpf:2.5
 		}));
 		this.addAnimation(Ext.create('Redokes.sprite.Animation', {
 			title:'walkUp',
 			sequence:[10,9,11,9],
-			fpf:5
+			fpf:2.5
 		}));
 	}
 

@@ -4,7 +4,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	keyDown:false,
 	dx:0,
 	dy:0,
-	speed:4,
+	speed:8,
 	isMoving:false,
 	lastActiveTile:false,
 
@@ -113,7 +113,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	canMoveRight: function() {
-		if (this.tileX < this.game.map.currentMap.tiles[this.layer][this.tileY].length-1) {
+		if (this.tileX < this.game.map.currentMap.tileData[this.layer][this.tileY].length-1) {
 			var tile = this.game.map.currentMap.tileData[this.layer][this.tileY][this.tileX+1];
 			if (!tile.isWall) {
 				return true;
@@ -124,7 +124,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	
 	canMoveLeft: function() {
 		if (this.tileX) {
-			var tile = this.game.map.currentMap.tiles[this.layer][this.tileY][this.tileX-1];
+			var tile = this.game.map.currentMap.tileData[this.layer][this.tileY][this.tileX-1];
 			if (!tile.isWall) {
 				return true;
 			}
@@ -134,7 +134,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 
 	canMoveUp: function() {
 		if (this.tileY) {
-			var tile = this.game.map.currentMap.tiles[this.layer][this.tileY-1][this.tileX];
+			var tile = this.game.map.currentMap.tileData[this.layer][this.tileY-1][this.tileX];
 			if (!tile.isWall) {
 				return true;
 			}
@@ -143,8 +143,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	canMoveDown: function() {
-		if (this.tileY < this.game.map.currentMap.tiles[this.layer].length-1) {
-			var tile = this.game.map.currentMap.tiles[this.layer][this.tileY+1][this.tileX];
+		if (this.tileY < this.game.map.currentMap.tileData[this.layer].length-1) {
+			var tile = this.game.map.currentMap.tileData[this.layer][this.tileY+1][this.tileX];
 			if (!tile.isWall) {
 				return true;
 			}

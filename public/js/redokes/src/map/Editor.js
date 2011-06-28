@@ -8,7 +8,7 @@ Ext.define('Redokes.map.Editor', {
 	},
 	mapSettings:{
 		title:'Map',
-		file:'Default',
+		fileName:'Default',
 		numLayers:2,
 		width:10,
 		height:10,
@@ -23,81 +23,129 @@ Ext.define('Redokes.map.Editor', {
 	map:false,
 	selectedTiles:[],
 	currentLayer:0,
-	visibleItems:{},
 
 	initComponent: function() {
 		this.items = [];
-		this.loadMap();
 		this.initSettingsTab();
 		this.initPreviewTab();
 		this.initCodeTab();
+		this.loadMap();
 
 		this.callParent(arguments);
 	},
 
 	loadMap: function() {
-		this.map = new Image();
-		this.map.src = this.mapSettings.tileSheet;
+		Ext.Ajax.request({
+			scope:this,
+			method:'post',
+			url:'/wes/process/load-map',
+			params:{
+				fileName:'Default'
+			},
+			success: function(r) {
+				var response = Ext.decode(r.responseText);
+				if (response.contents) {
+					eval(response.contents);
+					var c = Ext.create(response.cls);
+					c.fileName = response.fileName;
+					var params = {};
+					this.mapSettings.fileName = response.fileName;
+					this.mapSettings.tileData = c.tileData;
+					for (var i in this.mapSettings) {
+						params[i] = c[i];
+					}
+					this.settingsForm.getForm().setValues(params);
+					Ext.apply(this.mapSettings, params);
+					
+					this.map = new Image();
+					this.map.src = this.mapSettings.tileSheet;
+				}
+			}
+		});
 	},
 
 	initSettingsTab: function() {
-		this.settingsForm = new Ext.form.Panel({
-			title:'Settings Tab'
-		});
-		this.settingsForm.add({
+		this.titleField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Title',
 			name:'title',
-			xtype:'textfield',
 			value:this.mapSettings.title
 		});
-		this.settingsForm.add({
+		
+		this.fileField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'File',
-			name:'file',
-			xtype:'textfield',
-			value:this.mapSettings.file
+			name:'fileName',
+			value:this.mapSettings.fileName
 		});
-		this.settingsForm.add({
+		
+		this.spawnXField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Spawn X',
 			name:'spawnX',
-			xtype:'textfield',
 			value:this.mapSettings.spawnX
 		});
-		this.settingsForm.add({
+		
+		this.spawnYField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Spawn Y',
 			name:'spawnY',
-			xtype:'textfield',
 			value:this.mapSettings.spawnY
 		});
-		this.settingsForm.add({
+		
+		this.spawnLayerField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Spawn Layer',
 			name:'spawnLayer',
-			xtype:'textfield',
 			value:this.mapSettings.spawnLayer
 		});
-		this.settingsForm.add({
+		
+		this.numLayersField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'# Layers',
 			name:'numLayers',
-			xtype:'textfield',
 			value:this.mapSettings.numLayers
 		});
-		this.settingsForm.add({
+		
+		this.widthField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Width',
 			name:'width',
-			xtype:'textfield',
 			value:this.mapSettings.width
 		});
-		this.settingsForm.add({
+		
+		this.heightField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Height',
 			name:'height',
-			xtype:'textfield',
 			value:this.mapSettings.height
 		});
-		this.settingsForm.add({
+		
+		this.tileSizeField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Tile Size',
 			name:'tileSize',
-			xtype:'textfield',
 			value:this.mapSettings.tileSize
 		});
+		
+		this.musicField = Ext.create('Ext.form.field.Text', {
+			fieldLabel:'Music',
+			name:'music',
+			value:this.mapSettings.music
+		});
+		
+		
+		this.settingsForm = Ext.create('Ext.form.Panel', {
+			title:'Settings Tab',
+			tbar:[{
+				scope:this,
+				text:'Load Map',
+				handler:this.loadMap
+			}],
+			items:[
+				this.titleField,
+				this.fileField,
+				this.spawnXField,
+				this.spawnYField,
+				this.spawnLayerField,
+				this.numLayersField,
+				this.widthField,
+				this.heightField,
+				this.tileSizeField
+			]
+		});
+		
 		this.items.push(this.settingsForm);
 	},
 
@@ -106,18 +154,6 @@ Ext.define('Redokes.map.Editor', {
 			autoScroll:true,
 			region:'center',
 			tbar:[{
-				text:'Down Layer',
-				handler:function() {
-					this.setViewLayer(this.currentLayer-1);
-				},
-				scope:this
-			},{
-				text:'Up Layer',
-				handler:function() {
-					this.setViewLayer(this.currentLayer+1);
-				},
-				scope:this
-			},{
 				text:'Copy',
 				handler:this.copySelected,
 				scope:this
@@ -138,14 +174,6 @@ Ext.define('Redokes.map.Editor', {
 				},
 				scope:this
 			},{
-				text:'Set as Wall',
-				handler:this.setAsWall,
-				scope:this
-			},{
-				text:'Unset Wall',
-				handler:this.unsetWall,
-				scope:this
-			},{
 				text:'TileActionLevel0',
 				handler:function() {
 					this.setTileProperties({
@@ -160,10 +188,6 @@ Ext.define('Redokes.map.Editor', {
 						changeLayer:1
 					});
 				},
-				scope:this
-			},{
-				text:'Show Walls',
-				handler:this.toggleWalls,
 				scope:this
 			}]
 		});
@@ -181,88 +205,113 @@ Ext.define('Redokes.map.Editor', {
 			//this.tileViewer.update('really long text really long text really long text really long text really long text really long text really long text really long text really long text ');
 		}, this);
 		
-//		
-//		this.layerTreeStore = Ext.create('Ext.data.TreeStore', {
-//			
-//		});
-//		
-//		this.layerTree = Ext.create('Ext.tree.Panel', {
-//			region: 'west',
-//			collapsible: true,
-//			title: 'Layer Visibility',
-//			width: 200,
-//			autoScroll: true,
-//			split: true,
-//			loader: new Ext.tree.TreeLoader(),
-//			root: new Ext.tree.AsyncTreeNode({
-//				expanded: true,
-//				children: [{
-//					text: 'Layer 1',
-//					checked:true,
-//					expanded:true,
-//					id:'layer0',
-//					layer:0,
-//					children:[{
-//						text: 'Tiles',
-//						id:'layer0tiles',
-//						layer:0,
-//						leaf: true,
-//						checked:true
-//					},{
-//						text: 'Walls',
-//						id:'layer0walls',
-//						layer:0,
-//						leaf: true,
-//						checked:true
-//					}]
-//				}, {
-//					text: 'Layer 2',
-//					checked:true,
-//					expanded:true,
-//					id:'layer1',
-//					layer:1,
-//					children:[{
-//						text: 'Tiles',
-//						id:'layer1tiles',
-//						layer:1,
-//						leaf: true,
-//						checked:true
-//					},{
-//						text: 'Walls',
-//						id:'layer1walls',
-//						layer:1,
-//						leaf: true,
-//						checked:true
-//					}]
-//				}]
-//			}),
-//			rootVisible: false
-//		});
-		this.visibleItems['layer0'] = true;
-		this.visibleItems['layer0tiles'] = true;
-		this.visibleItems['layer0walls'] = true;
-		this.visibleItems['layer1'] = true;
-		this.visibleItems['layer1tiles'] = true;
-		this.visibleItems['layer1walls'] = true;
+		this.layerTree = Ext.create('Ext.tree.Panel', {
+			title:'Layer Visibility',
+			rootVisible:false,
+			root:{
+				expanded: true,
+				children: [{
+					text: 'Layer 1',
+					checked:true,
+					expanded:true,
+					id:'layer-0',
+					children:[{
+						text: 'Tiles',
+						id:'tiles-0',
+						leaf: true,
+						checked:true
+					},{
+						text: 'Walls',
+						id:'walls-0',
+						leaf: true,
+						checked:true
+					}]
+				}, {
+					text: 'Layer 2',
+					checked:true,
+					expanded:true,
+					id:'layer-1',
+					children:[{
+						text: 'Tiles',
+						id:'tiles-1',
+						leaf: true,
+						checked:true
+					},{
+						text: 'Walls',
+						id:'walls-1',
+						leaf: true,
+						checked:true
+					}]
+				}]
+			}
+		});
 		
-//		this.layerTree.on('click', function(n) {
-//			//console.log('Navigation Tree Click', 'You clicked: "' + n.attributes.text + '"');
-//			this.currentLayer = n.attributes.layer;
-//			this.drawPreview();
-//		}, this)
-//		this.layerTree.on('checkchange', function(n, checked) {
-//			//this.currentLayer = n.attributes.layer;
-//			this.visibleItems[n.attributes.id] = checked;
-//			this.drawPreview();
-//		}, this);
+		this.layerTreeStore = this.layerTree.getStore();
+		this.layerTree.on('itemclick', function(view, record, item, index, e, options) {
+			var clickedLayer = record.data.id.split('-')[1];
+			this.currentLayer = clickedLayer;
+			this.drawPreview();
+		}, this)
+		this.layerTree.on('checkchange', function(node, checked) {
+			this.drawPreview();
+		}, this);
+		
+		this.tileFormX = Ext.create('Ext.form.field.Text', {
+			fieldLabel:'X',
+			name:'x',
+			readOnly:true
+		});
+		this.tileFormY = Ext.create('Ext.form.field.Text', {
+			fieldLabel:'Y',
+			name:'y',
+			readOnly:true
+		});
+		this.tileFormLayer = Ext.create('Ext.form.field.Text', {
+			fieldLabel:'Layer',
+			name:'layer',
+			readOnly:true
+		});
+		this.tileFormIsWall = Ext.create('Ext.form.field.Checkbox', {
+			fieldLabel:'Is Wall',
+			name:'isWall'
+		});
+		this.tileFormTeleport = Ext.create('Ext.form.field.Text', {
+			fieldLabel:'Teleport',
+			name:'teleport'
+		});
+		this.tileFormIsWall.on('change', function(checkbox, checked) {
+			this.setAsWall(checked);
+		}, this);
+		this.tileFormTeleport.on('change', function(textfield, value) {
+			var parts = value.split(',');
+			if (parts.length == 3) {
+				this.setAsTeleport({
+					x:parseInt(parts[0]),
+					y:parseInt(parts[1]),
+					layer:parseInt(parts[2])
+				});
+			}
+		}, this);
+		
+		this.tilePropertiesForm = Ext.create('Ext.form.Panel', {
+			title:'Tile Properties',
+			items:[
+				this.tileFormX,
+				this.tileFormY,
+				this.tileFormLayer,
+				this.tileFormIsWall,
+				this.tileFormTeleport,
+			]
+		});
 		
 		this.westPanel = new Ext.panel.Panel({
 			region:'west',
-//			items:[this.layerTree],
-			items:[{
-				title:'fake west'
-			}],
-			width:200
+			items:[
+				this.layerTree,
+				this.tilePropertiesForm
+			],
+			width:200,
+			collapsible:true
 		});
 
 		this.previewTab = new Ext.panel.Panel({
@@ -284,7 +333,6 @@ Ext.define('Redokes.map.Editor', {
 			this.previewContext = this.previewCanvas.dom.getContext('2d');
 			this.previewWrap.on('click', this.onPreviewClick, this);
 			this.previewTab.on('show', this.showPreview, this);
-			this.showPreview();
 		}, this);
 
 		this.items.push(this.previewTab);
@@ -315,6 +363,7 @@ Ext.define('Redokes.map.Editor', {
 	},
 
 	showPreview: function() {
+		d('Show Preview');
 		var formValues = this.settingsForm.getForm().getValues();
 		Ext.apply(this.mapSettings, formValues);
 
@@ -332,14 +381,14 @@ Ext.define('Redokes.map.Editor', {
 		});
 
 		// init tile array
-		var oldData = this.mapSettings;
-		this.mapSettings.tileData = [];
 		for (var layerIndex = 0; layerIndex < this.mapSettings.numLayers; layerIndex++) {
-			this.mapSettings.tileData[layerIndex] = oldData.tileData[layerIndex] || [];
+			this.mapSettings.tileData[layerIndex] = this.mapSettings.tileData[layerIndex] || [];
+			
 			for (var rowIndex = 0; rowIndex < this.mapSettings.height; rowIndex++) {
-				this.mapSettings.tileData[layerIndex][rowIndex] = oldData.tileData[layerIndex][rowIndex] || [];
+				this.mapSettings.tileData[layerIndex][rowIndex] = this.mapSettings.tileData[layerIndex][rowIndex] || [];
+				
 				for (var columnIndex = 0; columnIndex < this.mapSettings.width; columnIndex++) {
-					this.mapSettings.tileData[layerIndex][rowIndex][columnIndex] = oldData.tileData[layerIndex][rowIndex][columnIndex] || this.getBlankTile();
+					this.mapSettings.tileData[layerIndex][rowIndex][columnIndex] = this.mapSettings.tileData[layerIndex][rowIndex][columnIndex] || this.getBlankTile();
 				}
 			}
 		}
@@ -352,17 +401,20 @@ Ext.define('Redokes.map.Editor', {
 	},
 
 	drawPreview: function() {
+		d('Draw Preview');
 		this.previewContext.clearRect(0, 0, this.previewCanvas.dom.width, this.previewCanvas.dom.height);
-
+		
 		// loop through each layer
 		for (var layerIndex = 0; layerIndex < this.mapSettings.numLayers && layerIndex <= this.currentLayer; layerIndex++) {
 
 			// check if this layer is visible
-			if (this.visibleItems['layer' + layerIndex]) {
+			if (this.layerTreeStore.getNodeById('layer-' + layerIndex).data.checked) {
 				
 				// check if we need to draw the tiles
-				if (this.visibleItems['layer' + layerIndex + 'tiles']) {
+				if (this.layerTreeStore.getNodeById('tiles-' + layerIndex).data.checked) {
+					
 					for (var rowIndex = 0; rowIndex < this.mapSettings.height; rowIndex++) {
+						
 						for (var columnIndex = 0; columnIndex < this.mapSettings.width; columnIndex++) {
 							// draw the tile
 							var tile = this.mapSettings.tileData[layerIndex][rowIndex][columnIndex];
@@ -375,7 +427,7 @@ Ext.define('Redokes.map.Editor', {
 				}
 
 				// check if we need to draw the walls
-				if (this.visibleItems['layer' + layerIndex + 'walls']) {
+				if (this.layerTreeStore.getNodeById('walls-' + layerIndex).data.checked) {
 					for (var rowIndex = 0; rowIndex < this.mapSettings.height; rowIndex++) {
 						for (var columnIndex = 0; columnIndex < this.mapSettings.width; columnIndex++) {
 							var tile = this.mapSettings.tileData[layerIndex][rowIndex][columnIndex];
@@ -443,6 +495,34 @@ Ext.define('Redokes.map.Editor', {
 	selectTile: function(xy) {
 		this.selectedTiles.push(xy);
 		this.highlightTile(xy);
+		this.updateTilePropertiesForm();
+	},
+	
+	updateTilePropertiesForm: function() {
+		if (this.selectedTiles.length == 1) {
+			var tile = this.selectedTiles[0];
+			var tileData = this.mapSettings.tileData[tile[2]][tile[1]][tile[0]];
+			var params = {
+				x:tile[0],
+				y:tile[1],
+				layer:tile[2]
+			};
+			Ext.apply(params, tileData);
+			this.tileFormIsWall.suspendEvents();
+			
+			// loop through actions
+			var actions = tileData.actions || [];
+			params.teleport = '';
+			for (var i = 0; i < actions.length; i++) {
+				if (actions[i].action == 'teleport') {
+					params.teleport = actions[i].params.x + ',' + actions[i].params.y + ',' + actions[i].params.layer
+				}
+			}
+			
+			this.tilePropertiesForm.getForm().setValues(params);
+			
+			this.tileFormIsWall.resumeEvents();
+		}
 	},
 
 	highlightTile: function(xy) {
@@ -462,6 +542,7 @@ Ext.define('Redokes.map.Editor', {
 	},
 
 	tileViewerClick: function(e) {
+		d('Tile Viewer Click');
 		var tileViewerXY = this.tileViewerWrap.getXY();
 		var clickXY = [e.browserEvent.x, e.browserEvent.y];
 		var clickedX = clickXY[0] - tileViewerXY[0];
@@ -484,6 +565,7 @@ Ext.define('Redokes.map.Editor', {
 	},
 
 	setViewLayer: function(newLayer) {
+		d('Set View Layer ' + newLayer);
 		if (newLayer >= 0 && newLayer < this.mapSettings.numLayers) {
 			this.currentLayer = newLayer;
 			this.drawPreview();
@@ -499,6 +581,7 @@ Ext.define('Redokes.map.Editor', {
 	},
 
 	moveSelectedTo: function(newLayer) {
+		d('Move Selected To ' + newLayer);
 		if (newLayer >= 0 && newLayer < this.mapSettings.numLayers) {
 			var numSelected = this.selectedTiles.length;
 			for (var i = 0; i < numSelected; i++) {
@@ -512,20 +595,25 @@ Ext.define('Redokes.map.Editor', {
 		}
 	},
 
-	setAsWall: function() {
+	setAsWall: function(isWall) {
 		var numSelected = this.selectedTiles.length;
 		for (var i = 0; i < numSelected; i++) {
 			var tile = this.selectedTiles[i];
-			this.mapSettings.tileData[tile[2]][tile[1]][tile[0]].isWall = true;
+			this.mapSettings.tileData[tile[2]][tile[1]][tile[0]].isWall = isWall;
 		}
+		this.drawPreview();
 	},
 
-	unsetWall: function() {
+	setAsTeleport: function(params) {
 		var numSelected = this.selectedTiles.length;
 		for (var i = 0; i < numSelected; i++) {
 			var tile = this.selectedTiles[i];
-			this.mapSettings.tileData[tile[2]][tile[1]][tile[0]].isWall = false;
+			this.mapSettings.tileData[tile[2]][tile[1]][tile[0]].actions = [{
+				action:'teleport',
+				params:params
+			}];
 		}
+		this.drawPreview();
 	},
 
 	setTileProperties: function(properties) {
@@ -537,6 +625,7 @@ Ext.define('Redokes.map.Editor', {
 	},
 
 	toggleWalls: function() {
+		d('Toggle Walls');
 		this.drawPreview();
 	},
 	
@@ -550,8 +639,9 @@ Ext.define('Redokes.map.Editor', {
 			},
 			success: function(r) {
 				var response = Ext.decode(r.responseText);
-				console.log(response);
+				d(response);
 			}
 		});
 	}
+	
 });
