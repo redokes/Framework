@@ -19,10 +19,11 @@ Ext.define('Redokes.game.Game', {
 	timer:false,
 
 	constructor: function() {
-		this.initEditor();
+//		this.initEditor();
 		this.initPageMarkup();
 		this.initFPS();
 		this.init();
+		window.game = this;
 	},
 	
 	initEditor: function() {
@@ -31,7 +32,7 @@ Ext.define('Redokes.game.Game', {
 		Ext.getBody().appendChild(this.editorWrap);
 		this.editor = Ext.create('Redokes.map.Editor', {
 			renderTo:this.editorWrap,
-			height:500
+			height:800
 		});
 	},
 
@@ -96,12 +97,22 @@ Ext.define('Redokes.game.Game', {
 		if (this.map.currentMap.music) {
 			this.music.dom.src = this.map.currentMap.music;
 			this.music.dom.play();
-			this.setMusicVolume(.1);
+			this.setMusicVolume(.5);
+			this.muteMusic();
 		}
 	},
 	
 	setMusicVolume: function(volume) {
 		this.music.dom.volume = volume;
+	},
+	
+	muteMusic: function() {
+		this.lastMusicVolume = this.music.dom.volume;
+		this.setMusicVolume(0);
+	},
+	
+	unmuteMusic: function() {
+		this.setMusicVolume(this.lastMusicVolume);
 	},
 	
 	initPlayer: function() {
@@ -120,12 +131,16 @@ Ext.define('Redokes.game.Game', {
 			this.initGameLoop();
 		}
 		this.player.setToTile(this.map.currentMap.spawnX, this.map.currentMap.spawnY, this.map.currentMap.spawnLayer, this.tileSize);
-		
+		this.initSocket();
 	},
 
 	addPlayer: function(player) {
 		this.players.push(player);
 		this.playerCount = this.players.length;
+	},
+	
+	initSocket: function() {
+		
 	}
 	
 });

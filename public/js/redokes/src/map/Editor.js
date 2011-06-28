@@ -26,9 +26,8 @@ Ext.define('Redokes.map.Editor', {
 
 	initComponent: function() {
 		this.items = [];
-		this.initSettingsTab();
+		this.initSettingsForm();
 		this.initPreviewTab();
-		this.initCodeTab();
 		this.loadMap();
 
 		this.callParent(arguments);
@@ -58,13 +57,16 @@ Ext.define('Redokes.map.Editor', {
 					Ext.apply(this.mapSettings, params);
 					
 					this.map = new Image();
+					this.map.onload = Ext.Function.bind(function() {
+						this.showPreview();
+					}, this);
 					this.map.src = this.mapSettings.tileSheet;
 				}
 			}
 		});
 	},
 
-	initSettingsTab: function() {
+	initSettingsForm: function() {
 		this.titleField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Title',
 			name:'title',
@@ -127,12 +129,8 @@ Ext.define('Redokes.map.Editor', {
 		
 		
 		this.settingsForm = Ext.create('Ext.form.Panel', {
-			title:'Settings Tab',
-			tbar:[{
-				scope:this,
-				text:'Load Map',
-				handler:this.loadMap
-			}],
+			title:'Map Settings',
+			collapsible:true,
 			items:[
 				this.titleField,
 				this.fileField,
@@ -145,8 +143,6 @@ Ext.define('Redokes.map.Editor', {
 				this.tileSizeField
 			]
 		});
-		
-		this.items.push(this.settingsForm);
 	},
 
 	initPreviewTab: function() {
@@ -207,6 +203,7 @@ Ext.define('Redokes.map.Editor', {
 		
 		this.layerTree = Ext.create('Ext.tree.Panel', {
 			title:'Layer Visibility',
+			collapsible:true,
 			rootVisible:false,
 			root:{
 				expanded: true,
@@ -295,6 +292,7 @@ Ext.define('Redokes.map.Editor', {
 		
 		this.tilePropertiesForm = Ext.create('Ext.form.Panel', {
 			title:'Tile Properties',
+			collapsible:true,
 			items:[
 				this.tileFormX,
 				this.tileFormY,
@@ -307,6 +305,7 @@ Ext.define('Redokes.map.Editor', {
 		this.westPanel = new Ext.panel.Panel({
 			region:'west',
 			items:[
+				this.settingsForm,
 				this.layerTree,
 				this.tilePropertiesForm
 			],
@@ -315,13 +314,17 @@ Ext.define('Redokes.map.Editor', {
 		});
 
 		this.previewTab = new Ext.panel.Panel({
-			title:'Preview Tab',
+			title:'Editor',
 			layout:'border',
 			items:[this.previewPanel, this.tileViewer, this.westPanel],
 			tbar:[{
 				text:'Save',
 				scope:this,
 				handler:this.saveMap
+			},{
+				scope:this,
+				text:'Load Map',
+				handler:this.loadMap
 			}]
 		});
 		
@@ -336,30 +339,6 @@ Ext.define('Redokes.map.Editor', {
 		}, this);
 
 		this.items.push(this.previewTab);
-	},
-
-	initCodeTab: function() {
-		this.codeBox = new Ext.form.field.TextArea({
-			flex:1
-		});
-		this.codeTab = new Ext.panel.Panel({
-			title:'Code Tab',
-			items:[this.codeBox],
-			layout:'hbox',
-			tbar:[{
-				text:'Set Map',
-				handler:this.setMap,
-				scope:this
-			}]
-		});
-		this.codeTab.on('show', this.buildCode, this);
-		this.items.push(this.codeTab);
-	},
-
-	setMap: function() {
-		this.mapSettings = Ext.decode(this.codeBox.getValue());
-		this.settingsForm.getForm().setValues(this.mapSettings);
-		this.setActiveTab(1);
 	},
 
 	showPreview: function() {
@@ -558,10 +537,6 @@ Ext.define('Redokes.map.Editor', {
 		}
 		
 		this.drawPreview();
-	},
-
-	buildCode: function() {
-		this.codeBox.setValue(Ext.encode(this.mapSettings));
 	},
 
 	setViewLayer: function(newLayer) {
