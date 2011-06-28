@@ -134,17 +134,34 @@ Ext.define('Redokes.game.Game', {
 		this.player.setToTile(this.map.currentMap.spawnX, this.map.currentMap.spawnY, this.map.currentMap.spawnLayer, this.tileSize);
 		this.initSocketManager();
 	},
+	
+	initRemotePlayer: function() {
+		d('Init remote player');
+		var remotePlayer = Ext.create('Redokes.sprite.PlayerUser', {
+			img:'/modules/wes/img/sprite/player/mog.png',
+			width:32,
+			height:44,
+			x:0,
+			y:0,
+			game:this,
+			context:this.context
+		});
+		this.addPlayer(remotePlayer);
+	},
 
 	addPlayer: function(player) {
+		d('Add player');
 		this.players.push(player);
 		this.playerCount = this.players.length;
+		d('Total players = ' + this.playerCount);
 	},
 	
 	initSocketManager: function() {
 		d('Init Socket Manager');
 		this.socketManager = Ext.create('Redokes.game.SocketManager', {
+			game:this,
 			url:'redokes.com'
-		})
+		});
 		window.sm = this.socketManager;
 	}
 	

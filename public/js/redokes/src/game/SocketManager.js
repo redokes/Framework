@@ -4,7 +4,8 @@ Ext.define('Redokes.game.SocketManager', {
 		url: '',
 		port:8080,
 		timeout: 3000,
-		data: {}
+		data: {},
+		game:false
 	},
 	
 	constructor: function(config) {
@@ -34,15 +35,19 @@ Ext.define('Redokes.game.SocketManager', {
 			module:'client',
 			actions:{
 				connect: Ext.bind(function(request) {
-					
+					d('Client connect');
+					this.game.initRemotePlayer();
+					d(request);
 				}, this),
 
 				disconnect: Ext.bind(function(request) {
-					
+					d('Client disconnect');
+					d(request);
 				}, this),
 
 				update: Ext.bind(function(request) {
-					
+					d('Client update');
+					d(request);
 				}, this)
 			}
 		});
@@ -54,6 +59,8 @@ Ext.define('Redokes.game.SocketManager', {
 			module:'server',
 			actions:{
 				init: Ext.bind(function(request) {
+					d('Server init');
+					d(request);
 				}, this)
 			}
 		});

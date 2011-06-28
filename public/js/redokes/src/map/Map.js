@@ -129,18 +129,19 @@ Ext.define('Redokes.map.Map', {
 //				this.context.drawImage(player.img, player.getFrame() * player.width, 0, player.width, player.height, player.x, player.y - 28, player.width, player.height);
 				this.context.restore();
 			}
-
+			
 			// draw the players on this layer
-//			for (var i = 0; i < numPlayers; i++) {
-//				// draw player sprite
-//				var player = this.game.players[i];
-//				if (player.layer == layerIndex) {
+			for (var i = 1; i < this.game.playerCount; i++) {
+				// draw player sprite
+				var player = this.game.players[i];
+				if (player.layer == layerIndex) {
+					player.draw();
 //					this.context.save();
 //					this.context.translate(0, -12);
 //					this.context.drawImage(player.img, player.getFrame() * player.width, 0, player.width, player.height, player.x, player.y, player.width, player.height);
 //					this.context.restore();
-//				}
-//			}
+				}
+			}
 		}
 	}
 });
