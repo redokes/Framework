@@ -4,7 +4,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	keyDown:false,
 	dx:0,
 	dy:0,
-	speed:8,
+	speed:4,
 	isMoving:false,
 	lastActiveTile:false,
 
@@ -53,12 +53,13 @@ Ext.define('Redokes.sprite.PlayerUser', {
 						this.isMoving = true;
 						this.dy = 0 - this.movementSpeed;
 						this.dx = 0;
-						this.startX = this.x;
 						this.destinationY = this.tileY * this.game.tileSize - this.game.tileSize;
 						this.playAnimation('walkUp');
+						this.socketMovePlayer('walkUp');
 					}
 					else {
 						this.playAnimation('faceUp');
+						this.socketMovePlayer('faceUp');
 					}
 				break;
 				case 67:
@@ -67,12 +68,13 @@ Ext.define('Redokes.sprite.PlayerUser', {
 						this.isMoving = true;
 						this.dx = this.movementSpeed;
 						this.dy = 0;
-						this.startX = this.x;
 						this.destinationX = this.tileX * this.game.tileSize + this.game.tileSize;
 						this.playAnimation('walkRight');
+						this.socketMovePlayer('walkRight');
 					}
 					else {
 						this.playAnimation('faceRight');
+						this.socketMovePlayer('faceRight');
 					}
 				break;
 				case 82:
@@ -81,12 +83,13 @@ Ext.define('Redokes.sprite.PlayerUser', {
 						this.isMoving = true;
 						this.dy = this.movementSpeed;
 						this.dx = 0;
-						this.startY = this.y;
 						this.destinationY = this.tileY * this.game.tileSize + this.game.tileSize;
 						this.playAnimation('walkDown');
+						this.socketMovePlayer('walkDown');
 					}
 					else {
 						this.playAnimation('faceDown');
+						this.socketMovePlayer('faceDown');
 					}
 				break;
 				case 64:
@@ -95,12 +98,13 @@ Ext.define('Redokes.sprite.PlayerUser', {
 						this.isMoving = true;
 						this.dx = 0 - this.movementSpeed;
 						this.dy = 0;
-						this.startY = this.y;
 						this.destinationX = this.tileX * this.game.tileSize - this.game.tileSize;
 						this.playAnimation('walkLeft');
+						this.socketMovePlayer('walkLeft');
 					}
 					else {
 						this.playAnimation('faceLeft');
+						this.socketMovePlayer('faceLeft');
 					}
 				break;
 				default:
@@ -151,6 +155,29 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		}
 		return false;
 	},
+	
+	updateRemotePlayer: function(data) {
+		this.x = data.startX;
+		this.y = data.startY;
+		this.dx = data.dx;
+		this.dy = data.dy;
+		this.playAnimation(data.animation);
+	},
+	
+	moveRemotePlayer: function() {
+		this.x += this.dx;
+		this.y += this.dy;
+	},
+	
+	socketMovePlayer: function(animation) {
+		this.game.socketManager.client.send('player', 'move', {
+			animation:animation,
+			startX:this.x,
+			startY:this.y,
+			dx:this.dx,
+			dy:this.dy
+		});
+	},
 
 	movePlayer: function() {
 		this.x += this.dx;
@@ -164,6 +191,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 				this.x = this.destinationX;
 				this.dx = 0;
 				this.playAnimation('faceRight');
+				this.socketMovePlayer('faceRight');
 			}
 		}
 		else if (this.dx < 0 && this.x <= this.destinationX) {
@@ -175,6 +203,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 				this.x = this.destinationX;
 				this.dx = 0;
 				this.playAnimation('faceLeft');
+				this.socketMovePlayer('faceLeft');
 			}
 		}
 		else if (this.dy > 0 && this.y >= this.destinationY) {
@@ -186,6 +215,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 				this.y = this.destinationY;
 				this.dy = 0;
 				this.playAnimation('faceDown');
+				this.socketMovePlayer('faceDown');
 			}
 		}
 		else if (this.dy < 0 && this.y <= this.destinationY) {
@@ -197,6 +227,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 				this.y = this.destinationY;
 				this.dy = 0;
 				this.playAnimation('faceUp');
+				this.socketMovePlayer('faceUp');
 			}
 		}
 	},
@@ -206,7 +237,6 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		this.tileX = coords[0];
 		this.tileY = coords[1];
 		var tile = this.game.map.currentMap.tileData[this.layer][this.tileY][this.tileX];
-		
 		if (tile.actions) {
 			var numActions = tile.actions.length;
 			for (var i = 0; i < numActions; i++) {
@@ -241,5 +271,6 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			this.playAnimation('faceDown');
 		}
 		this.setToTile(params.x, params.y, params.layer, this.game.tileSize);
+		this.socketMovePlayer(this.currentAnimation.title);
 	}
 });

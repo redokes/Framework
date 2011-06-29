@@ -69,7 +69,6 @@ Ext.define('Redokes.map.Map', {
 		var drawTranslateY = this.translateY;
 
 		var numLayers = this.currentMap.numLayers;
-		var numPlayers = this.game.players.length;
 
 		// find out where to start the x,y loop
 		var startX = Math.floor((drawTranslateX * -1) / this.tileSize);
@@ -84,6 +83,25 @@ Ext.define('Redokes.map.Map', {
 		if (stopX > this.currentMap.width) {
 			stopX = this.currentMap.width;
 		}
+		
+		var player = this.following;
+		
+		// center player by shifting context
+		this.translateX = this.halfMapWidth - player.x - this.halfPlayerWidth;
+		this.translateY = this.halfMapHeight - player.y - this.halfPlayerHeight;
+		if (this.translateX > 0) {
+			this.translateX = 0;
+		}
+		else if (this.translateX < this.maxTranslateX) {
+			this.translateX = this.maxTranslateX;
+		}
+		if (this.translateY > 0) {
+			this.translateY = 0;
+		}
+		else if (this.translateY < this.maxTranslateY) {
+			this.translateY = this.maxTranslateY;
+		}
+		
 		for (var layerIndex = 0; layerIndex < numLayers; layerIndex++) {
 			// translate canvas based on player position
 			this.context.save();
@@ -103,45 +121,26 @@ Ext.define('Redokes.map.Map', {
 				}
 			}
 			this.context.restore();
-
-			// draw player
-			var player = this.following;
-			if (player.layer == layerIndex) {
-				// center player by shifting context
-				this.context.save();
-				this.translateX = this.halfMapWidth - player.x - this.halfPlayerWidth;
-				this.translateY = this.halfMapHeight - player.y - this.halfPlayerHeight;
-				if (this.translateX > 0) {
-					this.translateX = 0;
-				}
-				else if (this.translateX < this.maxTranslateX) {
-					this.translateX = this.maxTranslateX;
-				}
-				if (this.translateY > 0) {
-					this.translateY = 0;
-				}
-				else if (this.translateY < this.maxTranslateY) {
-					this.translateY = this.maxTranslateY;
-				}
-
-				this.context.translate(this.translateX, this.translateY);
-				player.draw();
-//				this.context.drawImage(player.img, player.getFrame() * player.width, 0, player.width, player.height, player.x, player.y - 28, player.width, player.height);
-				this.context.restore();
-			}
 			
 			// draw the players on this layer
-			for (var i = 1; i < this.game.playerCount; i++) {
+			this.context.save();
+			this.context.translate(this.translateX, this.translateY);
+			for (var i in this.game.players) {
 				// draw player sprite
-				var player = this.game.players[i];
-				if (player.layer == layerIndex) {
-					player.draw();
-//					this.context.save();
-//					this.context.translate(0, -12);
-//					this.context.drawImage(player.img, player.getFrame() * player.width, 0, player.width, player.height, player.x, player.y, player.width, player.height);
-//					this.context.restore();
+				var remotePlayer = this.game.players[i];
+				if (remotePlayer.layer == layerIndex) {
+					remotePlayer.moveRemotePlayer();
+					remotePlayer.draw();
 				}
 			}
+			
+			// draw player
+			if (player.layer == layerIndex) {
+				player.draw();
+			}
+			this.context.restore();
+			
+			
 		}
 	}
 });

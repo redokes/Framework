@@ -35,19 +35,15 @@ Ext.define('Redokes.game.SocketManager', {
 			module:'client',
 			actions:{
 				connect: Ext.bind(function(request) {
-					d('Client connect');
-					this.game.initRemotePlayer();
-					d(request);
+					this.game.initRemotePlayer(request);
 				}, this),
 
 				disconnect: Ext.bind(function(request) {
-					d('Client disconnect');
-					d(request);
+					this.game.removeRemotePlayer(request);
 				}, this),
 
 				update: Ext.bind(function(request) {
-					d('Client update');
-					d(request);
+					this.game.updateRemotePlayer(request);
 				}, this)
 			}
 		});
@@ -59,8 +55,7 @@ Ext.define('Redokes.game.SocketManager', {
 			module:'server',
 			actions:{
 				init: Ext.bind(function(request) {
-					d('Server init');
-					d(request);
+					this.game.initRemotePlayers(request);
 				}, this)
 			}
 		});
@@ -71,9 +66,8 @@ Ext.define('Redokes.game.SocketManager', {
     	this.playerHandler = Ext.create('Redokes.socket.MessageHandler', {
 			module:'player',
 			actions:{
-				test: Ext.bind(function(request) {
-					console.log('Socket action test');
-					console.log(request);
+				move: Ext.bind(function(request) {
+					this.game.players[request.session].updateRemotePlayer(request.data);
 				}, this)
 			}
 		});

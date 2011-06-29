@@ -39,19 +39,21 @@ Ext.define('Redokes.map.Editor', {
 			method:'post',
 			url:'/wes/process/load-map',
 			params:{
-				fileName:'Default'
+				fileName:this.fileField.getValue()
 			},
 			success: function(r) {
 				var response = Ext.decode(r.responseText);
 				if (response.contents) {
 					eval(response.contents);
-					var c = Ext.create(response.cls);
-					c.fileName = response.fileName;
+					
+					// make a map data instance to read the data from it
+					var mapData = Ext.create(response.cls);
+					mapData.fileName = response.fileName;
 					var params = {};
 					this.mapSettings.fileName = response.fileName;
-					this.mapSettings.tileData = c.tileData;
+					this.mapSettings.tileData = mapData.tileData;
 					for (var i in this.mapSettings) {
-						params[i] = c[i];
+						params[i] = mapData[i];
 					}
 					this.settingsForm.getForm().setValues(params);
 					Ext.apply(this.mapSettings, params);
@@ -184,6 +186,10 @@ Ext.define('Redokes.map.Editor', {
 						changeLayer:1
 					});
 				},
+				scope:this
+			},{
+				text:'Clear Tiles',
+				handler:this.clearSelectedTiles,
 				scope:this
 			}]
 		});
@@ -318,13 +324,17 @@ Ext.define('Redokes.map.Editor', {
 			layout:'border',
 			items:[this.previewPanel, this.tileViewer, this.westPanel],
 			tbar:[{
-				text:'Save',
+				text:'Save Map',
 				scope:this,
 				handler:this.saveMap
 			},{
 				scope:this,
 				text:'Load Map',
 				handler:this.loadMap
+			},{
+				scope:this,
+				text:'Update',
+				handler:this.updateMapSettings
 			}]
 		});
 		
@@ -598,6 +608,15 @@ Ext.define('Redokes.map.Editor', {
 			Ext.apply(this.mapSettings.tileData[tile[2]][tile[1]][tile[0]], properties);
 		}
 	},
+	
+	clearSelectedTiles: function() {
+		var numSelected = this.selectedTiles.length;
+		for (var i = 0; i < numSelected; i++) {
+			var tile = this.selectedTiles[i];
+			this.mapSettings.tileData[tile[2]][tile[1]][tile[0]].tileIndex = false;
+		}
+		this.drawPreview();
+	},
 
 	toggleWalls: function() {
 		d('Toggle Walls');
@@ -605,18 +624,44 @@ Ext.define('Redokes.map.Editor', {
 	},
 	
 	saveMap: function() {
+		this.removeExtraTileData();
+		
+		var params = this.mapSettings;
+		Ext.apply(params, this.settingsForm.getForm().getValues());
 		Ext.Ajax.request({
 			scope:this,
 			method:'post',
 			url:'/wes/process/save-map',
 			params:{
-				mapData:Ext.encode(this.mapSettings)
+				mapData:Ext.encode(params)
 			},
 			success: function(r) {
 				var response = Ext.decode(r.responseText);
 				d(response);
 			}
 		});
+	},
+	
+	updateMapSettings: function() {
+		Ext.apply(this.mapSettings, this.settingsForm.getForm().getValues());
+		this.showPreview();
+	},
+	
+	removeExtraTileData: function() {
+		// loop through and actually remove the extra tile data
+		d(this.mapSettings.width);
+		d(this.mapSettings.tileData[0][0].length);
+		for (var layerIndex = 0; layerIndex < this.mapSettings.tileData.length; layerIndex++) {
+			// trim the layer's rows
+			this.mapSettings.tileData[layerIndex].splice(this.mapSettings.height, this.mapSettings.height);
+			
+			for (var rowIndex = 0; rowIndex < this.mapSettings.tileData[layerIndex].length; rowIndex++) {
+				// trim the row's columns
+				this.mapSettings.tileData[layerIndex][rowIndex].splice(this.mapSettings.width, this.mapSettings.width);
+			}
+		}
+		d(this.mapSettings.width);
+		d(this.mapSettings.tileData[0][0].length);
 	}
 	
 });

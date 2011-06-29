@@ -51,13 +51,13 @@ Ext.define('Redokes.map.MapData', {
 		layer = layer || 0;
 		
 		if (x < 0) {
-			this.spawnX = this.tiles[0][0].length + x;
+			this.spawnX = this.tileData[0][0].length + x;
 		}
 		else {
 			this.spawnX = x;
 		}
 		if (y < 0) {
-			this.spawnY = this.tiles[0].length + y;
+			this.spawnY = this.tileData[0].length + y;
 		}
 		else {
 			this.spawnY = y;

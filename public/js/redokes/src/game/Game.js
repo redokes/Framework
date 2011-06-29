@@ -20,7 +20,9 @@ Ext.define('Redokes.game.Game', {
 	socketManager:false,
 
 	constructor: function() {
-//		this.initEditor();
+		if (location.href.match(/edit/)) {
+			this.initEditor();
+		}
 		this.initPageMarkup();
 		this.initFPS();
 		this.init();
@@ -91,7 +93,7 @@ Ext.define('Redokes.game.Game', {
 		this.map = Ext.create('Redokes.map.Map', this);
 		this.map.on('mapload', this.initMusic, this);
 		this.map.on('mapload', this.initPlayer, this);
-		this.map.loadMap('Default');
+		this.map.loadMap('Wes');
 	},
 	
 	initMusic: function() {
@@ -118,7 +120,7 @@ Ext.define('Redokes.game.Game', {
 	
 	initPlayer: function() {
 		if (!this.player) {
-			this.players = [];
+			this.players = {};
 			this.player = Ext.create('Redokes.sprite.PlayerUser', {
 				game:this,
 				img:'/modules/wes/img/sprite/player/mog.png',
@@ -126,7 +128,6 @@ Ext.define('Redokes.game.Game', {
 				height:44,
 				context:this.context
 			});
-			this.addPlayer(this.player);
 			this.player.initControls();
 			this.map.follow(this.player);
 			this.initGameLoop();
@@ -135,9 +136,22 @@ Ext.define('Redokes.game.Game', {
 		this.initSocketManager();
 	},
 	
-	initRemotePlayer: function() {
-		d('Init remote player');
-		var remotePlayer = Ext.create('Redokes.sprite.PlayerUser', {
+	initRemotePlayer: function(request) {
+		d('Init remote player ' + request.session);
+		this.addRemotePlayer(request.session);
+	},
+	
+	initRemotePlayers: function(request) {
+		d('Init remote players');
+		var clients = request.data.clients;
+		for (var sessionId in clients) {
+			this.addRemotePlayer(sessionId);
+		}
+	},
+	
+	addRemotePlayer: function(sessionId) {
+		d('Add remote player ' + sessionId);
+		this.players[sessionId] = Ext.create('Redokes.sprite.PlayerUser', {
 			img:'/modules/wes/img/sprite/player/mog.png',
 			width:32,
 			height:44,
@@ -146,16 +160,18 @@ Ext.define('Redokes.game.Game', {
 			game:this,
 			context:this.context
 		});
-		this.addPlayer(remotePlayer);
-	},
-
-	addPlayer: function(player) {
-		d('Add player');
-		this.players.push(player);
-		this.playerCount = this.players.length;
-		d('Total players = ' + this.playerCount);
 	},
 	
+	removeRemotePlayer: function(request) {
+		d('Remove remote player ' + request.session);
+		delete this.players[request.session];
+	},
+	
+	updateRemotePlayer: function(request) {
+		d('Update remote player ' + request.session);
+		
+	},
+
 	initSocketManager: function() {
 		d('Init Socket Manager');
 		this.socketManager = Ext.create('Redokes.game.SocketManager', {
@@ -163,6 +179,12 @@ Ext.define('Redokes.game.Game', {
 			url:'redokes.com'
 		});
 		window.sm = this.socketManager;
+	},
+	
+	moveToTile: function(request) {
+		var data = request.data;
+		this.players[request.session].x = data.x;
+		this.players[request.session].y = data.y;
 	}
 	
 });
