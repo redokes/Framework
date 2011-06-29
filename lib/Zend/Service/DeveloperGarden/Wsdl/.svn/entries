@@ -1,119 +1,0 @@
-10
-
-dir
-0
-http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Service/DeveloperGarden/Wsdl
-http://svn.wesokes.com/wes
-add
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-318181bc-df43-9140-a957-a7fd330d5ca4
-
-ODGBaseUserService.xsd
-file
-
-
-
-add
-
-VoiceButlerService.xsd
-file
-
-
-
-add
-
-ccsPort.wsdl
-file
-
-
-
-add
-
-SmsValidationUserService.wsdl
-file
-
-
-
-add
-
-localsearch.wsdl
-file
-
-
-
-add
-
-IPLocation.wsdl
-file
-
-
-
-add
-
-TokenService.wsdl
-file
-
-
-
-add
-
-ccsPort.xsd
-file
-
-
-
-add
-
-SmsService.wsdl
-file
-
-
-
-add
-
-ODGBaseUserService.wsdl
-file
-
-
-
-add
-
-VoiceButlerService.wsdl
-file
-
-
-
-add
-
-localsearch.xsd
-file
-
-
-
-add
-
-IPLocation.xsd
-file
-
-
-
-add
-

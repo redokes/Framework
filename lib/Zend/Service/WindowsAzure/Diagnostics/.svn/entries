@@ -1,119 +1,0 @@
-10
-
-dir
-0
-http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Service/WindowsAzure/Diagnostics
-http://svn.wesokes.com/wes
-add
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-318181bc-df43-9140-a957-a7fd330d5ca4
-
-LogLevel.php
-file
-
-
-
-add
-
-Manager.php
-file
-
-
-
-add
-
-ConfigurationInstance.php
-file
-
-
-
-add
-
-ConfigurationLogs.php
-file
-
-
-
-add
-
-ConfigurationPerformanceCounters.php
-file
-
-
-
-add
-
-ConfigurationObjectBaseAbstract.php
-file
-
-
-
-add
-
-Exception.php
-file
-
-
-
-add
-
-DirectoryConfigurationSubscription.php
-file
-
-
-
-add
-
-ConfigurationDiagnosticInfrastructureLogs.php
-file
-
-
-
-add
-
-ConfigurationDirectories.php
-file
-
-
-
-add
-
-ConfigurationDataSources.php
-file
-
-
-
-add
-
-ConfigurationWindowsEventLog.php
-file
-
-
-
-add
-
-PerformanceCounterSubscription.php
-file
-
-
-
-add
-

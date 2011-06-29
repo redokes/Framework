@@ -1,161 +1,0 @@
-10
-
-dir
-0
-http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Service/DeveloperGarden
-http://svn.wesokes.com/wes
-add
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-318181bc-df43-9140-a957-a7fd330d5ca4
-
-LocalSearch
-dir
-
-
-
-add
-
-BaseUserService.php
-file
-
-
-
-add
-
-Exception.php
-file
-
-
-
-add
-
-SecurityTokenServer.php
-file
-
-
-
-add
-
-VoiceCall.php
-file
-
-
-
-add
-
-IpLocation.php
-file
-
-
-
-add
-
-Request
-dir
-
-
-
-add
-
-ConferenceCall.php
-file
-
-
-
-add
-
-BaseUserService
-dir
-
-
-
-add
-
-Response
-dir
-
-
-
-add
-
-SecurityTokenServer
-dir
-
-
-
-add
-
-Credential.php
-file
-
-
-
-add
-
-IpLocation
-dir
-
-
-
-add
-
-SendSms.php
-file
-
-
-
-add
-
-SmsValidation.php
-file
-
-
-
-add
-
-ConferenceCall
-dir
-
-
-
-add
-
-LocalSearch.php
-file
-
-
-
-add
-
-Wsdl
-dir
-
-
-
-add
-
-Client
-dir
-
-
-
-add
-

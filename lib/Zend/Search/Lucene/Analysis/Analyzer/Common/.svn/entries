@@ -1,84 +1,0 @@
-10
-
-dir
-0
-http://svn.wesokes.com/wes/web-projects/wes-framework/lib/Zend/Search/Lucene/Analysis/Analyzer/Common
-http://svn.wesokes.com/wes
-add
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-318181bc-df43-9140-a957-a7fd330d5ca4
-
-Text
-dir
-
-
-
-add
-
-TextNum
-dir
-
-
-
-add
-
-Utf8
-dir
-
-
-
-add
-
-Utf8Num
-dir
-
-
-
-add
-
-Text.php
-file
-
-
-
-add
-
-TextNum.php
-file
-
-
-
-add
-
-Utf8.php
-file
-
-
-
-add
-
-Utf8Num.php
-file
-
-
-
-add
-
