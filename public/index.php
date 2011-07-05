@@ -37,6 +37,8 @@ function show_array($array) {
 	echo '</pre>';
 }
 
+// added in the master
+
 $frontController = Redokes_Controller_Front::getInstance();
 $frontController->run();
 
