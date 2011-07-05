@@ -39,3 +39,5 @@ function show_array($array) {
 
 $frontController = Redokes_Controller_Front::getInstance();
 $frontController->run();
+
+// this is in wes 1
