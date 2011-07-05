@@ -22,5 +22,7 @@ function d(param) {
 }
 
 Ext.onReady(function() {
-	var g = Ext.create('Redokes.game.Game');
+	var g = Ext.create('Redokes.game.Game', {
+		renderTo:'game'
+	});
 });

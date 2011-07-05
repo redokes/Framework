@@ -1,5 +1,5 @@
 Ext.define('Redokes.game.Game', {
-	extend:Ext.util.Observable,
+	extend:'Ext.panel.Panel',
 	requires:[
 		'Redokes.map.Editor',
 		'Redokes.sprite.Sprite'
@@ -9,8 +9,8 @@ Ext.define('Redokes.game.Game', {
 	player:false,
 	players:false,
 	playerCount:0,
-	width:0,
-	height:0,
+	width:480,
+	height:320,
 	numTilesWidth:15,
 	numTilesHeight:10,
 	tileSize:32,
@@ -18,15 +18,110 @@ Ext.define('Redokes.game.Game', {
 	frameCount:0,
 	timer:false,
 	socketManager:false,
-
-	constructor: function() {
+	title:'Wes Game',
+	layout:'border',
+	
+	initComponent: function() {
+		this.items = this.items || [];
+		this.dockedItems = this.dockedItems || [];
+		this.init();
+		this.callParent(arguments);
+	},
+	
+	init: function() {
 		if (location.href.match(/edit/)) {
 			this.initEditor();
 		}
-		this.initPageMarkup();
-		this.initFPS();
-		this.init();
-		window.game = this;
+//		this.initToolbar();
+		this.initCanvas();
+//		this.initUserList();
+	},
+	
+	initToolbar: function() {
+		this.musicButton = Ext.create('Ext.button.Button', {
+			text:'Music',
+			enableToggle:true,
+			scope:this,
+			handler: function(button) {
+				if (button.pressed) {
+					this.unmuteMusic();
+				}
+				else {
+					this.muteMusic();
+				}
+			}
+		})
+		
+		this.topBar = Ext.create('Ext.toolbar.Toolbar', {
+			dock:'top',
+			ui:'footer',
+			items:[this.musicButton]
+		});
+		this.dockedItems.push(this.topBar);
+		
+		
+	},
+	
+	initCanvas: function() {
+		this.canvasHtml = Ext.core.DomHelper.markup({
+			tag:'canvas',
+			cls:'canvas',
+			width:this.tileSize * this.numTilesWidth,
+			height:this.tileSize * this.numTilesHeight
+		});
+		
+		this.centerPanel = Ext.create('Ext.panel.Panel', {
+			region:'center',
+			width:480,
+			height:320,
+			html:this.canvasHtml
+		});
+		this.items.push(this.centerPanel);
+		
+//		this.height += this.centerPanel.height;
+//		this.width += this.centerPanel.width;
+		
+		this.on('afterrender', function(){
+			this.canvas = this.centerPanel.getEl().down('canvas');
+			this.context = this.canvas.dom.getContext('2d');
+			
+			this.initFPS();
+			this.initAudio();
+			this.initMap();
+		}, this);
+	},
+	
+	initUserList: function() {
+		this.userListPanel = Ext.create('Ext.panel.Panel', {
+			region:'east',
+			title:'Users',
+			width:150
+		});
+		this.items.push(this.userListPanel);
+		
+//		this.width += this.userListPanel.width;	
+		
+	},
+	
+	initFPS: function() {
+		this.timer = new Date();
+		this.lastFrameCount = 0;
+		setInterval(Ext.Function.bind(function() {
+			this.setTitle(Math.round(((this.frameCount - this.lastFrameCount) / 2)) + ' FPS');
+			this.lastFrameCount = this.frameCount;
+		}, this), 2000);
+	},
+	
+	initAudio: function() {
+		this.music = Ext.get(document.createElement('audio'));
+		this.getEl().appendChild(this.music);
+	},
+	
+	initMap: function() {
+		this.map = Ext.create('Redokes.map.Map', this);
+		this.map.on('mapload', this.initMusic, this);
+		this.map.on('mapload', this.initPlayer, this);
+		this.map.loadMap('Wes');
 	},
 	
 	initEditor: function() {
@@ -39,44 +134,6 @@ Ext.define('Redokes.game.Game', {
 		});
 	},
 
-	initPageMarkup: function() {
-		this.gameWrapDiv = Ext.get(document.createElement('div'));
-		this.gameWrapDiv.addCls('gameWrap');
-		Ext.getBody().appendChild(this.gameWrapDiv);
-
-		this.canvas = Ext.get(document.createElement('canvas'));
-		this.canvas.addCls('canvas');
-
-		this.width = this.tileSize * this.numTilesWidth
-		this.height = this.tileSize * this.numTilesHeight
-		
-		this.canvas.dom.width = this.width;
-		this.canvas.dom.height = this.height;
-		
-		this.context = this.canvas.dom.getContext('2d');
-		this.gameWrapDiv.appendChild(this.canvas);
-
-		this.music = Ext.get(document.createElement('audio'));
-		Ext.getBody().appendChild(this.music);
-	},
-
-	initFPS: function() {
-		this.timer = new Date();
-		this.fpsDisplay = Ext.get(document.createElement('div'));
-		this.fpsDisplay.addCls('fpsDisplay');
-		this.gameWrapDiv.appendChild(this.fpsDisplay);
-		
-		this.lastFrameCount = 0;
-		setInterval(Ext.Function.bind(function() {
-			this.fpsDisplay.update(Math.round(((this.frameCount - this.lastFrameCount) / 2)) + ' FPS');
-			this.lastFrameCount = this.frameCount;
-		}, this), 2000);
-	},
-
-	init: function() {
-		this.initMap();
-	},
-	
 	initGameLoop: function() {
 		this.gameInterval = setInterval(Ext.Function.bind(this.gameLoop, this), 1000/this.fps);
 	},
@@ -87,13 +144,6 @@ Ext.define('Redokes.game.Game', {
 		this.player.movePlayer();
 		this.map.draw();
 		this.frameCount++;
-	},
-	
-	initMap: function() {
-		this.map = Ext.create('Redokes.map.Map', this);
-		this.map.on('mapload', this.initMusic, this);
-		this.map.on('mapload', this.initPlayer, this);
-		this.map.loadMap('Wes');
 	},
 	
 	initMusic: function() {
@@ -151,7 +201,7 @@ Ext.define('Redokes.game.Game', {
 	
 	addRemotePlayer: function(sessionId) {
 		d('Add remote player ' + sessionId);
-		this.players[sessionId] = Ext.create('Redokes.sprite.PlayerUser', {
+		var remotePlayer = Ext.create('Redokes.sprite.PlayerUser', {
 			img:'/modules/wes/img/sprite/player/mog.png',
 			width:32,
 			height:44,
@@ -160,6 +210,8 @@ Ext.define('Redokes.game.Game', {
 			game:this,
 			context:this.context
 		});
+		this.players[sessionId] = remotePlayer;
+		this.player.socketMovePlayer(this.player.currentAnimation.title);
 	},
 	
 	removeRemotePlayer: function(request) {
