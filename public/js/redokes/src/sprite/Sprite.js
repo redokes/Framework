@@ -19,6 +19,7 @@ Ext.define('Redokes.sprite.Sprite', {
 	
 	x:32,
 	y:32,
+	facing:0,
 	
 	tileX:0,
 	tileY:0,
@@ -101,6 +102,6 @@ Ext.define('Redokes.sprite.Sprite', {
 
 	setAnimationSpeed: function(speed) {
 		this.animationSpeed = 30 / (speed*1.5);
-		this.initAnimations();
+//		this.initAnimations();
 	}
 });

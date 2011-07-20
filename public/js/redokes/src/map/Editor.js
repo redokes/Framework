@@ -63,6 +63,9 @@ Ext.define('Redokes.map.Editor', {
 						this.showPreview();
 					}, this);
 					this.map.src = this.mapSettings.tileSheet;
+					
+					// Load the map in the actual game
+					this.game.map.loadMap(this.fileField.getValue());
 				}
 			}
 		});

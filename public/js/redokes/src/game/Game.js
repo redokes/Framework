@@ -9,8 +9,8 @@ Ext.define('Redokes.game.Game', {
 	player:false,
 	players:false,
 	playerCount:0,
-	width:480,
-	height:320,
+	width:484,
+	height:402,
 	numTilesWidth:15,
 	numTilesHeight:10,
 	tileSize:32,
@@ -20,6 +20,10 @@ Ext.define('Redokes.game.Game', {
 	socketManager:false,
 	title:'Wes Game',
 	layout:'border',
+	
+	bodyStyle:{
+		background:'transparent'
+	},
 	
 	initComponent: function() {
 		this.items = this.items || [];
@@ -32,9 +36,10 @@ Ext.define('Redokes.game.Game', {
 		if (location.href.match(/edit/)) {
 			this.initEditor();
 		}
-//		this.initToolbar();
+		this.initToolbar();
 		this.initCanvas();
-//		this.initUserList();
+		this.initChatWindow();
+		this.initListeners();
 	},
 	
 	initToolbar: function() {
@@ -54,12 +59,9 @@ Ext.define('Redokes.game.Game', {
 		
 		this.topBar = Ext.create('Ext.toolbar.Toolbar', {
 			dock:'top',
-			ui:'footer',
 			items:[this.musicButton]
 		});
 		this.dockedItems.push(this.topBar);
-		
-		
 	},
 	
 	initCanvas: function() {
@@ -91,17 +93,64 @@ Ext.define('Redokes.game.Game', {
 		}, this);
 	},
 	
-	initUserList: function() {
-		this.userListPanel = Ext.create('Ext.panel.Panel', {
-			region:'east',
-			title:'Users',
-			width:150
+	initChatWindow: function() {
+		
+		this.chatPanel = Ext.create('Ext.panel.Panel', {
+			flex:3,
+			region:'center',
+			style:{
+				background:'transparent'
+			},
+			bodyStyle:{
+				background:'transparent'
+			},
+			frame:false,
+			border:false
 		});
-		this.items.push(this.userListPanel);
 		
-//		this.width += this.userListPanel.width;	
+		this.userListPanel = Ext.create('Ext.panel.Panel', {
+			width:116,
+			region:'east',
+			collapsible:true,
+			collapsed:true,
+			frame:false,
+			border:false
+		});
 		
+		this.southPanel = Ext.create('Ext.panel.Panel', {
+			region:'south',
+			height:140,
+			collapsible:true,
+			collapsed:true,
+			hideCollapseTool:true,
+			style:{
+				background:'transparent'
+			},
+			bodyStyle:{
+				background:'transparent'
+			},
+			layout:'border',
+			items:[
+				this.chatPanel,
+				this.userListPanel
+			]
+		});
+		this.items.push(this.southPanel);
 	},
+	
+	initListeners: function() {
+		// Set up chat window toggle
+		Ext.get(document).on('keypress', function(e) {
+			switch(e.button) {
+				case 12:
+					
+				break;
+				case 95:
+					this.southPanel.toggleCollapse();
+				break;
+			}
+		}, this)
+;	},
 	
 	initFPS: function() {
 		this.timer = new Date();
@@ -130,7 +179,8 @@ Ext.define('Redokes.game.Game', {
 		Ext.getBody().appendChild(this.editorWrap);
 		this.editor = Ext.create('Redokes.map.Editor', {
 			renderTo:this.editorWrap,
-			height:800
+			height:800,
+			game:this
 		});
 	},
 
@@ -181,9 +231,9 @@ Ext.define('Redokes.game.Game', {
 			this.player.initControls();
 			this.map.follow(this.player);
 			this.initGameLoop();
+			this.initSocketManager();
 		}
 		this.player.setToTile(this.map.currentMap.spawnX, this.map.currentMap.spawnY, this.map.currentMap.spawnLayer, this.tileSize);
-		this.initSocketManager();
 	},
 	
 	initRemotePlayer: function(request) {

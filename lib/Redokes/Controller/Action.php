@@ -26,11 +26,11 @@ class Redokes_Controller_Action {
 		$this->frontController = $frontController;
 		$this->init();
 		$this->action = $action;
-
 		ob_start();
 		if (method_exists($this, $this->action)) {
 			// auto set the body to the view if it exists
 			$viewPath = MODULE_PATH . $this->frontController->module . '/view/' . $this->frontController->controller . '/' . $this->frontController->action . '.php';
+			$this->$action();
 			if (file_exists($viewPath)) {
 				$this->getView()->setValues(array(
 					'body' => file_get_contents($viewPath)
@@ -40,8 +40,8 @@ class Redokes_Controller_Action {
 					'body' => ''
 				));
 			}
-
-			$this->$action();
+			
+			
 		}
 		else if($this->action){
 			$this->_catch();

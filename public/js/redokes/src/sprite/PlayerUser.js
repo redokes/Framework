@@ -19,12 +19,19 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	onKeyDown: function(e) {
-		if (e.button == 37) {
-			this.setAnimationSpeed(++this.speed);
+		switch (e.button) {
+			case 31:
+				e.preventDefault();
+				this.checkTile();
+			break;
+			case 37:
+//				this.setAnimationSpeed(++this.speed);
+			break;
+			case 39:
+//				this.setAnimationSpeed(--this.speed);
+			break;
 		}
-		else if (e.button == 39) {
-			this.setAnimationSpeed(--this.speed);
-		}
+		
 		/*
 		 * e.button codes
 		 * w = 86
@@ -48,6 +55,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			this.movementSpeed = this.speed;
 			switch (this.keyDown) {
 				case 86:
+					this.facing = 0;
+					
 					// make sure player can walk up
 					if (this.canMoveUp()) {
 						this.isMoving = true;
@@ -63,6 +72,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 					}
 				break;
 				case 67:
+					this.facing = 1;
+					
 					// make sure player can walk right
 					if (this.canMoveRight()) {
 						this.isMoving = true;
@@ -78,6 +89,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 					}
 				break;
 				case 82:
+					this.facing = 2;
+					
 					// make sure player can walk down
 					if (this.canMoveDown()) {
 						this.isMoving = true;
@@ -93,6 +106,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 					}
 				break;
 				case 64:
+					this.facing = 3;
+					
 					// make sure player can walk left
 					if (this.canMoveLeft()) {
 						this.isMoving = true;
@@ -228,6 +243,38 @@ Ext.define('Redokes.sprite.PlayerUser', {
 				this.dy = 0;
 				this.playAnimation('faceUp');
 				this.socketMovePlayer('faceUp');
+			}
+		}
+	},
+	
+	checkTile: function() {
+		if (this.isMoving) {
+			
+		}
+		else {
+			var checkCoords = [-1, -1];
+			switch (this.facing) {
+				case 0:
+					checkCoords = [this.tileX, this.tileY - 1];
+				break;
+				
+				case 1:
+					checkCoords = [this.tileX + 1, this.tileY];
+				break;
+				
+				case 2:
+					checkCoords = [this.tileX, this.tileY + 1];
+				break;
+				
+				case 3:
+					checkCoords = [this.tileX - 1, this.tileY];
+				break;
+			}
+			
+			// Make sure check coordinates are within the map boundaries
+			if (checkCoords[0] >= 0 && checkCoords[1] >= 0 && checkCoords[0] < this.game.map.currentMap.width && checkCoords[1] < this.game.map.currentMap.height) {
+				// Valid trigger. Need to check for an action to perform
+				
 			}
 		}
 	},

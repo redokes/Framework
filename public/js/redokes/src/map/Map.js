@@ -47,10 +47,10 @@ Ext.define('Redokes.map.Map', {
 		this.currentImage = this.loadedSprites[this.currentMap.tileSheet];
 		if (this.currentMap.numLayers) {
 			d('Map has ' + this.currentMap.numLayers + ' layer');
-			this.maxTranslateX = 0 - (this.currentMap.width * this.tileSize) + this.game.width;
-			this.maxTranslateY = 0 - (this.currentMap.height * this.tileSize) + this.game.height;
-			this.halfMapWidth = this.game.width / 2;
-			this.halfMapHeight = this.game.height / 2;
+			this.maxTranslateX = 0 - (this.currentMap.width * this.tileSize) + this.game.canvas.dom.width;
+			this.maxTranslateY = 0 - (this.currentMap.height * this.tileSize) + this.game.canvas.dom.height;
+			this.halfMapWidth = this.game.canvas.dom.width / 2;
+			this.halfMapHeight = this.game.canvas.dom.height / 2;
 		}
 		this.fireEvent('mapload');
 	},
