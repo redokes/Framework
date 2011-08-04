@@ -32,8 +32,16 @@ Ext.define('Redokes.socket.Client', {
     },
 	
 	connect: function(){
+		d('Client Socket Connect');
 		if (this.socket) {
 			this.socket.connect();
+		}
+	},
+	
+	disconnect: function(){
+		d('Client Socket Disconnect');
+		if (this.socket) {
+			this.socket.disconnect();
 		}
 	},
     
@@ -58,7 +66,6 @@ Ext.define('Redokes.socket.Client', {
 					Actions.Update,
 					this.data
 				);
-				
 			}, this));
 			
 			this.socket.on('message', Ext.Function.bind(function(request){

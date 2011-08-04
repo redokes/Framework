@@ -14,7 +14,7 @@ else {
 	});
 }
 
-var showDebug = true;
+var showDebug = false;
 function d(param) {
 	if (showDebug) {
 		console.log(param);
@@ -22,7 +22,7 @@ function d(param) {
 }
 
 Ext.onReady(function() {
-	var g = Ext.create('Redokes.game.Game', {
+	var g = Ext.create('Redokes.game.Panel', {
 		renderTo:'game'
 	});
 });

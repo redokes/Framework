@@ -2,7 +2,7 @@
 
 class Wes_GameController extends Redokes_Controller_Action {
 
-	public function init() {
+	public function indexAction() {
 		$this->getView()
 			->setValues(array(
 				'title' => 'Wes Game'
@@ -12,10 +12,6 @@ class Wes_GameController extends Redokes_Controller_Action {
 			->addJs('/js/ext-4.0.2a/ext-all.js')
 			->addJs('/modules/wes/js/wesokes.js')
 			->addJs('http://redokes.com:8080/socket.io/socket.io.js');
-	}
-
-	public function indexAction() {
-		
 	}
 
 }

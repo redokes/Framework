@@ -4,13 +4,16 @@ Ext.define('Redokes.game.SocketManager', {
 		url: '',
 		port:8080,
 		timeout: 3000,
-		data: {},
-		game:false
+		data: {
+			instanceName:'default'
+		},
+		game:false,
+		instanceName:'default'
 	},
 	
 	constructor: function(config) {
 		if(config.data != null){
-			Ext.apply(config.data, this.config.data);
+			Ext.apply(this.config.data, config.data);
 		}
 		d('Socket Manager Construct');
         this.initConfig(config);
@@ -21,9 +24,13 @@ Ext.define('Redokes.game.SocketManager', {
 		this.client.connect();
         return this;
     },
+	
+	disconnect: function() {
+		this.client.disconnect();
+	},
     
     initClient: function(){
-    	this.client = Ext.create('Redokes.socket.Client', {
+		this.client = Ext.create('Redokes.socket.Client', {
 			url: this.url,
 			data: this.data,
 			port:8080
@@ -63,8 +70,8 @@ Ext.define('Redokes.game.SocketManager', {
     },
 	
 	initPlayerHandler: function(){
-    	this.playerHandler = Ext.create('Redokes.socket.MessageHandler', {
-			module:'player',
+		this.playerHandler = Ext.create('Redokes.socket.MessageHandler', {
+			module:this.instanceName,
 			actions:{
 				move: Ext.bind(function(request) {
 					this.game.players[request.session].updateRemotePlayer(request.data);

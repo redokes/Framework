@@ -1,4 +1,4 @@
-Ext.define('Redokes.game.Game', {
+Ext.define('Redokes.game.Panel', {
 	extend:'Ext.panel.Panel',
 	requires:[
 		'Redokes.map.Editor',
@@ -220,8 +220,7 @@ Ext.define('Redokes.game.Game', {
 	
 	initPlayer: function() {
 		d('Init Player');
-		this.players = [];
-		d(this.players);
+		this.players = {};
 		
 		if (this.player) {
 			// Kill the current socket manager and start a new one with the new map name
@@ -296,7 +295,10 @@ Ext.define('Redokes.game.Game', {
 		this.socketManager = Ext.create('Redokes.game.SocketManager', {
 			game:this,
 			url:'redokes.com',
-			instanceName:instanceName
+			instanceName:instanceName,
+			data:{
+				instanceName:instanceName
+			}
 		});
 		window.sm = this.socketManager;
 	},

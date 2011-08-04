@@ -185,7 +185,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 	
 	socketMovePlayer: function(animation) {
-		this.game.socketManager.client.send('player', 'move', {
+		this.game.socketManager.client.send(this.game.socketManager.instanceName, 'move', {
 			animation:animation,
 			startX:this.x,
 			startY:this.y,
