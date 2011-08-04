@@ -1,99 +1,47 @@
-var Modules = {
-	Server: "server",
-	Client: "client"
-};
-
-var Actions = {
-	Init: "init",
-	Connect: "connect",
-	Disconnect: "disconnect",
-	Update: "update"
-};
-
-
-//Ext.define({String} className, {Object} members, {Function} onClassCreated);
 Ext.define('Redokes.socket.Client', {
 	extend: 'Ext.util.Observable',
 	config:{
 		url: '',
-		server:false,
 		port:8080,
-		timeout: 3000,
-		data:{}
+		namespace:''
 	},
 	handlers: [],
+	socket:false,
 	
 	constructor: function(config) {
         this.initConfig(config);
-        this.addEvents('connect', 'message', 'disconnect');
+		this.addEvents('connect', 'disconnect', 'otherConnect', 'otherDisconnect');
 		this.initSocket();
-		this.initListeners();
-        return this;
     },
 	
-	connect: function(){
-		d('Client Socket Connect');
-		if (this.socket) {
-			this.socket.connect();
-		}
-	},
-	
-	disconnect: function(){
-		d('Client Socket Disconnect');
-		if (this.socket) {
-			this.socket.disconnect();
-		}
-	},
-    
-    initSocket: function() {
+	initSocket: function() {
 		if (window.io == null) {
 			this.socket = false;
 			return false;
 		}
-		this.socket = new io.Socket(this.url, {
-			port:this.port,
-			connectTimeout: this.timeout
-		});
-	},
-	
-	initListeners: function() {
-		if (this.socket) {
-			this.socket.on('connect', Ext.Function.bind(function(){
-				this.fireEvent('connect', arguments);
-				
-				this.send(
-					Modules.Client,
-					Actions.Update,
-					this.data
-				);
-			}, this));
-			
-			this.socket.on('message', Ext.Function.bind(function(request){
-				var params = {
-					module:request.module,
-					action:request.action
-				};
-				this.fireEvent('message', params);
-				
-				if (this.handlers[request.module]) {
-					this.handlers[request.module].callAction(request.action, request);
-				}
-				
-			}, this));
-			
-			this.socket.on('disconnect', Ext.Function.bind(function(client){
-				this.fireEvent('disconnect', arguments);
-			}, this));
+		var url = this.url;
+		if (this.namespace.length) {
+			url += '/' + this.namespace;
 		}
+		this.socket = io.connect(url);
+		
+		this.socket.on('connect', Ext.Function.bind(function() {
+			this.fireEvent('connect');
+		}, this));
+		this.socket.on('disconnect', Ext.Function.bind(function() {
+			this.fireEvent('disconnect');
+		}, this));
+		this.socket.on('otherConnect', Ext.Function.bind(function() {
+			this.fireEvent('otherConnect');
+		}, this));
+		this.socket.on('otherDisconnect', Ext.Function.bind(function() {
+			this.fireEvent('otherDisconnect');
+		}, this));
+		
 	},
 	
-	registerHandler: function(handler){
-		this.handlers[handler.module] = handler;
-	},
-	
-	send: function(module, action, data) {
-		this.socket.send({
-    		module: module,
+	send: function(action, data) {
+		this.socket.json.send({
     		action: action,
     		data: data
     	});

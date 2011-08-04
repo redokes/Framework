@@ -22,6 +22,26 @@ function d(param) {
 }
 
 Ext.onReady(function() {
+	var socket = Ext.create('Redokes.socket.Client', {
+		url:'http://localhost:8080'
+	});
+	socket.on('connect', function() {
+		console.log('connect');
+	});
+	
+	socket.on('disconnect', function() {
+		console.log('disconnect');
+	});
+	
+	socket.on('otherConnect', function() {
+		console.log('otherconnect');
+	});
+	
+	socket.on('otherDisconnect', function() {
+		console.log('other disconnect');
+	});
+	
+	return;
 	var g = Ext.create('Redokes.game.Panel', {
 		renderTo:'game'
 	});
