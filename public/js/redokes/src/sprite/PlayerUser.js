@@ -185,13 +185,15 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 	
 	socketMovePlayer: function(animation) {
-		this.game.socketManager.client.send(this.game.socketManager.instanceName, 'move', {
-			animation:animation,
-			startX:this.x,
-			startY:this.y,
-			dx:this.dx,
-			dy:this.dy
-		});
+		if (this.game.map.currentMap.socket) {
+			this.game.map.currentMap.socket.send('player.move', {
+				animation:animation,
+				startX:this.x,
+				startY:this.y,
+				dx:this.dx,
+				dy:this.dy
+			});
+		}
 	},
 
 	movePlayer: function() {
@@ -285,9 +287,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		this.tileY = coords[1];
 		var tile = this.game.map.currentMap.tileData[this.layer][this.tileY][this.tileX];
 		if (tile.actions) {
-			var numActions = tile.actions.length;
-			for (var i = 0; i < numActions; i++) {
-				this[tile.actions[i].action](tile.actions[i].params);
+			for (var i in tile.actions) {
+				this[tile.actions[i].action](tile.actions[i].params, tile);
 			}
 		}
 	},
@@ -300,11 +301,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		this.layer = params.layer;
 	},
 	
-	teleport: function(params) {
-		d('Teleport to ' + params.x + ', ' + params.y);
-		if (!params.layer) {
-			params.layer = this.layer;
-		}
+	stopMoving: function() {
 		if (this.dx < 0) {
 			this.playAnimation('faceLeft');
 		}
@@ -317,7 +314,35 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		else if (this.dy > 0) {
 			this.playAnimation('faceDown');
 		}
+		this.dx = 0;
+		this.dy = 0;
+	},
+	
+	teleport: function(params) {
+		d('Teleport to ' + params.x + ', ' + params.y);
+		if (!params.layer) {
+			params.layer = this.layer;
+		}
+		this.stopMoving();
 		this.setToTile(params.x, params.y, params.layer, this.game.tileSize);
+	},
+	
+	loadMap: function(params, tile) {
+		this.stopMoving();
+		this.socketMovePlayer(this.currentAnimation.title);
+		var loadMapCoords = tile.actions.loadMapCoords || false;
+		if (loadMapCoords) {
+			loadMapCoords = loadMapCoords.params;
+		}
+		this.game.map.loadMap(params.title, loadMapCoords);
+	},
+	
+	loadMapCoords: function(params) {
+		
+	},
+	
+	setToTile: function() {
+		this.callParent(arguments);
 		this.socketMovePlayer(this.currentAnimation.title);
 	}
 });

@@ -1,3 +1,26 @@
+// not using this file anymore use the game.Panel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Ext.define('Redokes.game.Game', {
 	extend:'Ext.panel.Panel',
 	requires:[
@@ -36,6 +59,7 @@ Ext.define('Redokes.game.Game', {
 		if (location.href.match(/edit/)) {
 			this.initEditor();
 		}
+		this.initSocketManager();
 		this.initToolbar();
 		this.initCanvas();
 		this.initChatWindow();
@@ -225,7 +249,7 @@ Ext.define('Redokes.game.Game', {
 		
 		if (this.player) {
 			// Kill the current socket manager and start a new one with the new map name
-			this.socketManager.disconnect();
+//			this.socketManager.disconnect();
 		}
 		else {
 			// Make the user controlled player
@@ -247,7 +271,7 @@ Ext.define('Redokes.game.Game', {
 		}
 		
 		// Init the socket manager for this map
-		this.initSocketManager(this.map.currentMap.title);
+//		this.initSocketManager(this.map.currentMap.title);
 		
 		// Move the player to the spawn point of the current map
 		this.player.setToTile(this.map.currentMap.spawnX, this.map.currentMap.spawnY, this.map.currentMap.spawnLayer, this.tileSize);
@@ -291,13 +315,15 @@ Ext.define('Redokes.game.Game', {
 		
 	},
 
-	initSocketManager: function(instanceName) {
+	initSocketManager: function(namespace) {
 		d('Init Socket Manager');
+		namespace = namespace || '';
+		
 		this.socketManager = Ext.create('Redokes.game.SocketManager', {
 			game:this,
-			url:'redokes.com',
-			instanceName:instanceName
+			url:'http://localhost:8080'
 		});
+		this.socketManager.createNamespace(namespace);
 		window.sm = this.socketManager;
 	},
 	

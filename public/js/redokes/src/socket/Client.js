@@ -15,29 +15,40 @@ Ext.define('Redokes.socket.Client', {
     },
 	
 	initSocket: function() {
-		if (window.io == null) {
-			this.socket = false;
-			return false;
-		}
+		d('Init socket');
 		var url = this.url;
 		if (this.namespace.length) {
 			url += '/' + this.namespace;
 		}
+		
+		if (window.io == null) {
+			this.socket = false;
+			return false;
+		}
+		
+		d('Connect socket ' + url);
 		this.socket = io.connect(url);
 		
 		this.socket.on('connect', Ext.Function.bind(function() {
-			this.fireEvent('connect');
+			d('connect event');
+			this.fireEvent('connect', this, arguments);
 		}, this));
 		this.socket.on('disconnect', Ext.Function.bind(function() {
-			this.fireEvent('disconnect');
+			this.fireEvent('disconnect', this, arguments);
 		}, this));
 		this.socket.on('otherConnect', Ext.Function.bind(function() {
-			this.fireEvent('otherConnect');
+			this.fireEvent('otherConnect', this, arguments);
 		}, this));
 		this.socket.on('otherDisconnect', Ext.Function.bind(function() {
-			this.fireEvent('otherDisconnect');
+			this.fireEvent('otherDisconnect', this, arguments);
 		}, this));
 		
+	},
+	
+	disconnect: function() {
+		d('Disconnect socket client ' + this.namespace);
+		this.socket.disconnect();
+//		delete this.socket;
 	},
 	
 	send: function(action, data) {

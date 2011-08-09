@@ -2,40 +2,51 @@ Ext.define('Redokes.game.SocketManager', {
 	extend: 'Ext.util.Observable',
 	config:{
 		url: '',
-		port:8080,
 		timeout: 3000,
-		data: {
-			instanceName:'default'
-		},
 		game:false,
-		instanceName:'default'
+		namespaces:{}
 	},
 	
 	constructor: function(config) {
-		if(config.data != null){
-			Ext.apply(this.config.data, config.data);
-		}
 		d('Socket Manager Construct');
+		this.addEvents('initclient');
+		this.namespaces = {};
         this.initConfig(config);
-        this.initClient();
-        this.initClientHandler();
-        this.initServerHandler();
-		this.initPlayerHandler();
-		this.client.connect();
-        return this;
     },
 	
-	disconnect: function() {
-		this.client.disconnect();
+	createNamespace: function(name) {
+		if (!this.namespaces[name]) {
+			d('Create namespace ' + name);
+			if (name.length) {
+				this.namespaces[''].socket.emit('makeNamespace', {
+					name:name
+				}, Ext.Function.bind(function(params) {
+					this.initClient(params.name);
+				}, this));
+			}
+			else {
+				// This is the global namespace
+				this.initClient(name);
+			}
+		}
 	},
-    
-    initClient: function(){
-		this.client = Ext.create('Redokes.socket.Client', {
-			url: this.url,
-			data: this.data,
-			port:8080
+	
+	initClient: function(name) {
+		d('Init client for namespace ' + name);
+		this.namespaces[name] = Ext.create('Redokes.socket.Client', {
+			url:this.url,
+			namespace:name
 		});
-    },
+		this.fireEvent('initclient', this.namespaces[name]);
+	},
+	
+	removeNamespace: function(name) {
+		if (this.namespaces[name]) {
+			d('Remove namespace ' + name);
+			this.namespaces[name].disconnect();
+//			delete this.namespaces[name];
+		}
+	},
     
     initClientHandler: function(){
     	this.clientHandler = Ext.create('Redokes.socket.MessageHandler', {

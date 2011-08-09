@@ -1,25 +1,3 @@
-/**
- * Types of requests - modules
- * 	-client
- * 		-update
- * 		-connect
- * 		-disconnect
- * 	-server
- * 		-update
- * 		-init
- */
-var Modules = {
-	Server: "server",
-	Client: "client"
-};
-
-var Actions = {
-	Init: "init",
-	Connect: "connect",
-	Disconnect: "disconnect",
-	Update: "update"
-};
-
 var http = require('http'); // HTTP server
 var io = require('socket.io'); // socket.io
 var fs = require('fs'); // File System
@@ -34,14 +12,14 @@ var server = http.createServer(function(req, res){
 	res.end('nodejs');
 });
 
-
 // Run on port 8080
 server.listen(8080);
 io = io.listen(server);
+io.set('log level', 1);
 
 function makeNamespace(name) {
 	if (!io.sockets.manager.namespaces['/' + name]) {
-		console.log('making namespace ' + name);
+		console.log('Making namespace ' + name);
 		if (name.length) {
 			initListeners(io.of('/' + name));
 		}
@@ -52,8 +30,9 @@ function makeNamespace(name) {
 }
 
 function initListeners(namespace) {
+	console.log('Init listeners for ' + namespace.name);
 	namespace.on('connection', function(socket) {
-		console.log('connected to new namespace');
+		console.log('Connected to namespace ' + socket.namespace.name);
 		
 		socket.on('makeNamespace', function(params, callback) {
 			makeNamespace(params.name);
@@ -68,20 +47,40 @@ function initListeners(namespace) {
 			}
 		});
 		
-		// Broadcast the connection
-		socket.json.send({
-			test:'testing'
+		// Send the user data about other users
+		socket.on('getSocketIds', function(params, callback) {
+//			console.log('Get socket ids for ' + socket.id + ' in namespace ' + socket.namespace.name);
+			var namespace = socket.namespace.name;
+			var sockets = socket.manager.rooms[namespace];
+			var numSockets = sockets.length;
+			var socketIds = [];
+			var mySocketId = socket.id;
+			for (var i = 0; i < numSockets; i++) {
+				if (sockets[i] != mySocketId) {
+					socketIds.push(sockets[i]);
+				}
+			}
+			
+			callback({
+				socketIds:socketIds
+			});
 		});
+		
+		// Broadcast the connection
 		socket.broadcast.emit('otherConnect', socket.id);
 			
 		// When the server gets a message, during a connection, broadcast the message
 		socket.on('message', function(request){
-			socket.broadcast.emit(request.action, request.data);
+//			console.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
+//			console.log(request);
+			request.id = socket.id;
+			socket.broadcast.emit(request.action, request);
 		});
 
-		// when the server gets a disconnect, during a connection, broadcast the disconnection
+		// When a user disconnects, broadcast the disconnection to other users
 		socket.on('disconnect', function(request) {
-			socket.broadcast.emit('otherDisconnect');
+			console.log('Disconnect from ' + socket.namespace.name);
+			socket.broadcast.emit('otherDisconnect', socket.id);
 		});
 		
 	});

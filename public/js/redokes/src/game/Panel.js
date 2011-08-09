@@ -1,14 +1,8 @@
 Ext.define('Redokes.game.Panel', {
 	extend:'Ext.panel.Panel',
-	requires:[
-		'Redokes.map.Editor',
-		'Redokes.sprite.Sprite'
-	],
 	
 	map:false,
 	player:false,
-	players:false,
-	playerCount:0,
 	width:484,
 	height:402,
 	numTilesWidth:15,
@@ -33,33 +27,46 @@ Ext.define('Redokes.game.Panel', {
 	},
 	
 	init: function() {
-		if (location.href.match(/edit/)) {
-			this.initEditor();
-		}
+		this.initSocketManager();
 		this.initToolbar();
 		this.initCanvas();
 		this.initChatWindow();
 		this.initListeners();
+		window.game = this;
 	},
 	
 	initToolbar: function() {
 		this.musicButton = Ext.create('Ext.button.Button', {
-			text:'Music',
+			text:'Mute Music',
 			enableToggle:true,
 			scope:this,
 			handler: function(button) {
 				if (button.pressed) {
-					this.unmuteMusic();
+					this.muteMusic();
 				}
 				else {
-					this.muteMusic();
+					this.unmuteMusic();
 				}
 			}
 		})
 		
 		this.topBar = Ext.create('Ext.toolbar.Toolbar', {
 			dock:'top',
-			items:[this.musicButton]
+			items:[
+				this.musicButton, {
+					scope:this,
+					text:'Wes Map',
+					handler: function() {
+						this.map.loadMap('Wes')
+					}
+				},{
+					scope:this,
+					text:'Default Map',
+					handler: function() {
+						this.map.loadMap('Default')
+					}
+				}
+			]
 		});
 		this.dockedItems.push(this.topBar);
 	},
@@ -89,53 +96,32 @@ Ext.define('Redokes.game.Panel', {
 			
 			this.initFPS();
 			this.initAudio();
+			this.initPlayer();
 			this.initMap();
 		}, this);
 	},
 	
 	initChatWindow: function() {
-		
-		this.chatPanel = Ext.create('Ext.panel.Panel', {
-			flex:3,
-			region:'center',
-			style:{
-				background:'transparent'
-			},
-			bodyStyle:{
-				background:'transparent'
-			},
-			frame:false,
-			border:false
-		});
-		
-		this.userListPanel = Ext.create('Ext.panel.Panel', {
-			width:116,
-			region:'east',
-			collapsible:true,
-			collapsed:true,
-			frame:false,
-			border:false
-		});
-		
-		this.southPanel = Ext.create('Ext.panel.Panel', {
+		this.chatPanel = Ext.create('Redokes.game.chat.Chat', {
+			game:this,
 			region:'south',
 			height:140,
 			collapsible:true,
 			collapsed:true,
 			hideCollapseTool:true,
-			style:{
-				background:'transparent'
-			},
-			bodyStyle:{
-				background:'transparent'
-			},
-			layout:'border',
-			items:[
-				this.chatPanel,
-				this.userListPanel
-			]
+			title:'Press ` to chat'
 		});
-		this.items.push(this.southPanel);
+		this.chatPanel.on('expand', function() {
+			var tab = this.chatPanel.getActiveTab();
+			if (tab) {
+				tab.chatInput.focus();
+			}
+		}, this);
+		this.items.push(this.chatPanel);
+	},
+	
+	initChatRoom: function() {
+		this.chatPanel.addRoom(this.map.currentMap.title);
 	},
 	
 	initListeners: function() {
@@ -146,11 +132,11 @@ Ext.define('Redokes.game.Panel', {
 					
 				break;
 				case 95:
-					this.southPanel.toggleCollapse();
+					this.chatPanel.toggleCollapse();
 				break;
 			}
-		}, this)
-;	},
+		}, this);
+	},
 	
 	initFPS: function() {
 		this.timer = new Date();
@@ -168,16 +154,28 @@ Ext.define('Redokes.game.Panel', {
 	
 	initMap: function() {
 		this.map = Ext.create('Redokes.map.Map', this);
-		this.map.on('mapload', this.initMusic, this);
-		this.map.on('mapload', this.initPlayer, this);
-		this.map.loadMap('Wes');
+		this.map.on('mapload', function() {
+			
+			// Set up the map music
+//			this.initMusic();
+			
+			// Set up the chat room
+			this.initChatRoom();
+		}, this);
+		
+		this.map.on('mapload', this.initGameLoop, this, {single:true});
+		
+		if (location.href.match(/edit/)) {
+			this.initEditor();
+		}
+//		this.map.loadMap('Wes');
 	},
 	
 	initEditor: function() {
 		this.editorWrap = Ext.get(document.createElement('div'));
 		this.editorWrap.addCls('editorWrap');
 		Ext.getBody().appendChild(this.editorWrap);
-		this.editor = Ext.create('Redokes.map.Editor', {
+		this.editor = Ext.create('Redokes.map.editor.Editor', {
 			renderTo:this.editorWrap,
 			height:800,
 			game:this
@@ -190,18 +188,22 @@ Ext.define('Redokes.game.Panel', {
 
 	gameLoop: function() {
 		this.context.clearRect(0, 0, this.width, this.height);
-		this.player.checkKeys();
-		this.player.movePlayer();
+		if (this.chatPanel.collapsed) {
+			this.player.checkKeys();
+			this.player.movePlayer();
+		}
 		this.map.draw();
 		this.frameCount++;
 	},
 	
 	initMusic: function() {
 		if (this.map.currentMap.music) {
-			this.music.dom.src = this.map.currentMap.music;
-			this.music.dom.play();
-			this.setMusicVolume(.5);
-			this.muteMusic();
+			if (!this.music.dom.src.match(this.map.currentMap.music)) {
+				this.music.dom.src = this.map.currentMap.music;
+				this.music.dom.play();
+			}
+//			this.setMusicVolume(.5);
+//			this.muteMusic();
 		}
 	},
 	
@@ -220,93 +222,34 @@ Ext.define('Redokes.game.Panel', {
 	
 	initPlayer: function() {
 		d('Init Player');
-		this.players = {};
-		
-		if (this.player) {
-			// Kill the current socket manager and start a new one with the new map name
-			this.socketManager.disconnect();
-		}
-		else {
-			// Make the user controlled player
-			this.player = Ext.create('Redokes.sprite.PlayerUser', {
-				game:this,
-				img:'/modules/wes/img/sprite/player/mog.png',
-				width:32,
-				height:44,
-				context:this.context
-			});
-			// Set up the events to control the player
-			this.player.initControls();
-			
-			// Tell the map to follow this user
-			this.map.follow(this.player);
-			
-			// Start the game loop
-			this.initGameLoop();
-		}
-		
-		// Init the socket manager for this map
-		this.initSocketManager(this.map.currentMap.title);
-		
-		// Move the player to the spawn point of the current map
-		this.player.setToTile(this.map.currentMap.spawnX, this.map.currentMap.spawnY, this.map.currentMap.spawnLayer, this.tileSize);
-	},
-	
-	initRemotePlayer: function(request) {
-		d('Init remote player ' + request.session);
-		this.addRemotePlayer(request.session);
-	},
-	
-	initRemotePlayers: function(request) {
-		d('Init remote players');
-		var clients = request.data.clients;
-		for (var sessionId in clients) {
-			this.addRemotePlayer(sessionId);
-		}
-	},
-	
-	addRemotePlayer: function(sessionId) {
-		d('Add remote player ' + sessionId);
-		var remotePlayer = Ext.create('Redokes.sprite.PlayerUser', {
+		// Make the user controlled player
+		this.player = Ext.create('Redokes.sprite.PlayerUser', {
+			game:this,
 			img:'/modules/wes/img/sprite/player/mog.png',
 			width:32,
 			height:44,
-			x:0,
-			y:0,
-			game:this,
 			context:this.context
 		});
-		this.players[sessionId] = remotePlayer;
-		this.player.socketMovePlayer(this.player.currentAnimation.title);
-	},
-	
-	removeRemotePlayer: function(request) {
-		d('Remove remote player ' + request.session);
-		delete this.players[request.session];
-	},
-	
-	updateRemotePlayer: function(request) {
-		d('Update remote player ' + request.session);
-		
-	},
 
-	initSocketManager: function(instanceName) {
+		// Set up the events to control the player
+		this.player.initControls();
+	},
+	
+	initSocketManager: function() {
 		d('Init Socket Manager');
 		this.socketManager = Ext.create('Redokes.game.SocketManager', {
 			game:this,
-			url:'redokes.com',
-			instanceName:instanceName,
-			data:{
-				instanceName:instanceName
-			}
+			url:'http://localhost:8080'
 		});
+//		this.socketManager.on('initclient', this.onInitSocketClient, this);
+		this.socketManager.createNamespace('');
 		window.sm = this.socketManager;
 	},
 	
-	moveToTile: function(request) {
-		var data = request.data;
-		this.players[request.session].x = data.x;
-		this.players[request.session].y = data.y;
+	onInitSocketClient: function(client) {
+		// Send data to server about the player details like name, sprite
+		d('Made socket client ' + client.namespace);
+		
 	}
 	
 });
