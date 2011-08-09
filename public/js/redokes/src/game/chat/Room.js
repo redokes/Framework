@@ -73,7 +73,7 @@ Ext.define('Redokes.game.chat.Room', {
 		this.on('afterrender', function() {
 			this.chatDiv = this.getEl().down('.chat-div');
 			this.chatDiv.setStyle({
-				height:'100px',
+				height:'60px',
 				overflow:'auto',
 				padding:'5px'
 			});

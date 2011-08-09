@@ -12,6 +12,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	startY:0,
 	destinationX:0,
 	destinationY:0,
+	
+	ignoreInput:false,
 
 	initControls: function() {
 		Ext.get(document).on('keydown', this.onKeyDown, this);
@@ -19,6 +21,9 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	onKeyDown: function(e) {
+		if (this.ignoreInput) {
+			return;
+		}
 		switch (e.button) {
 			case 31:
 				e.preventDefault();
@@ -51,6 +56,9 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	checkKeys: function() {
+		if (this.ignoreInput) {
+			return;
+		}
 		if (this.keyDown && !this.isMoving) {
 			this.movementSpeed = this.speed;
 			switch (this.keyDown) {

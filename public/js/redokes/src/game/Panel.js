@@ -108,14 +108,17 @@ Ext.define('Redokes.game.Panel', {
 			height:140,
 			collapsible:true,
 			collapsed:true,
-			hideCollapseTool:true,
-			title:'Press ` to chat'
+			title:'Press enter to chat. Press escape to close'
 		});
 		this.chatPanel.on('expand', function() {
+			this.player.ignoreInput = true;
 			var tab = this.chatPanel.getActiveTab();
 			if (tab) {
 				tab.chatInput.focus();
 			}
+		}, this);
+		this.chatPanel.on('collapse', function() {
+			this.player.ignoreInput = false;
 		}, this);
 		this.items.push(this.chatPanel);
 	},
@@ -126,13 +129,21 @@ Ext.define('Redokes.game.Panel', {
 	
 	initListeners: function() {
 		// Set up chat window toggle
-		Ext.get(document).on('keypress', function(e) {
+		Ext.get(document).on('keydown', function(e) {
 			switch(e.button) {
 				case 12:
-					
+					if (this.chatPanel.collapsed) {
+						this.chatPanel.expand();
+					}
 				break;
+				case 26:
+					if (!this.chatPanel.collapsed) {
+						this.chatPanel.collapse();
+					}
+				break;
+				
 				case 95:
-					this.chatPanel.toggleCollapse();
+					
 				break;
 			}
 		}, this);
@@ -188,10 +199,8 @@ Ext.define('Redokes.game.Panel', {
 
 	gameLoop: function() {
 		this.context.clearRect(0, 0, this.width, this.height);
-		if (this.chatPanel.collapsed) {
-			this.player.checkKeys();
-			this.player.movePlayer();
-		}
+		this.player.checkKeys();
+		this.player.movePlayer();
 		this.map.draw();
 		this.frameCount++;
 	},
