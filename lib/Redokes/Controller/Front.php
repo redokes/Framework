@@ -78,9 +78,9 @@ class Redokes_Controller_Front {
 		
 		if ($requestCount && strlen($request[0])) {
 			$this->module = $request[0];
-			if ($requestCount > 1) {
+			if ($requestCount > 1 && strlen($request[1])) {
 				$this->controller = $request[1];
-				if ($requestCount > 2) {
+				if ($requestCount > 2 && strlen($request[2])) {
 					$this->action = $request[2];
 					if ($requestCount > 3) {
 						for ($i = 3; $i < $requestCount; $i += 2) {

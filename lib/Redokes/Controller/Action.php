@@ -32,16 +32,16 @@ class Redokes_Controller_Action {
 			$viewPath = MODULE_PATH . $this->frontController->module . '/view/' . $this->frontController->controller . '/' . $this->frontController->action . '.php';
 			$this->$action();
 			if (file_exists($viewPath)) {
+				ob_start();
+				include($viewPath);
 				$this->getView()->setValues(array(
-					'body' => file_get_contents($viewPath)
+					'body' => ob_get_clean()
 				));
 				$this->getView()->render();
 				$this->getView()->setValues(array(
 					'body' => ''
 				));
 			}
-			
-			
 		}
 		else if($this->action){
 			$this->_catch();
