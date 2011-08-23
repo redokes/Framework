@@ -12,11 +12,11 @@ Ext.define('Redokes.map.Map', {
 	following:false,
 	loadMapCoords:false,
 	
-	constructor: function(game) {
+	constructor: function(params) {
 		d('Map constructor');
-		this.game = game;
-		this.context = game.context;
-		this.tileSize = game.tileSize;
+		Ext.apply(this, params);
+		this.context = this.game.context;
+		this.tileSize = this.game.tileSize;
 		this.addEvents('mapload');
 		
 		this.init();
@@ -48,6 +48,11 @@ Ext.define('Redokes.map.Map', {
 
 	loadMap: function(mapName, loadMapCoords) {
 		d('Map.loadMap ' + mapName);
+		
+		if (!mapName.length) {
+			return;
+		}
+		
 		this.loadMapCoords = loadMapCoords;
 		
 		// Remove the player from the map socket

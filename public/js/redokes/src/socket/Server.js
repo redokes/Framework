@@ -29,6 +29,12 @@ function makeNamespace(name) {
 	}
 }
 
+function getSocketData(id) {
+	var socketData = io.sockets.sockets[id].store.data;
+	socketData.id = id;
+	return socketData;
+}
+
 function initListeners(namespace) {
 	console.log('Init listeners for ' + namespace.name);
 	namespace.on('connection', function(socket) {
@@ -42,14 +48,16 @@ function initListeners(namespace) {
 		});
 		
 		socket.on('setData', function(params, callback) {
+			console.log('set data');
+//			console.log(params);
 			for (var i in params) {
 				socket.set(i, params[i]);
 			}
+			socket.broadcast.emit('setData', getSocketData(socket.id));
 		});
 		
 		// Send the user data about other users
 		socket.on('getSocketIds', function(params, callback) {
-//			console.log('Get socket ids for ' + socket.id + ' in namespace ' + socket.namespace.name);
 			var namespace = socket.namespace.name;
 			var sockets = socket.manager.rooms[namespace];
 			var numSockets = sockets.length;
@@ -66,14 +74,31 @@ function initListeners(namespace) {
 			});
 		});
 		
+		socket.on('getRemoteUsers', function(params, callback) {
+			var namespace = socket.namespace.name;
+			var sockets = socket.manager.rooms[namespace];
+			var numSockets = sockets.length;
+			var socketArray = [];
+			var mySocketId = socket.id;
+			for (var i = 0; i < numSockets; i++) {
+				if (sockets[i] != mySocketId) {
+					socketArray.push(getSocketData(sockets[i]));
+				}
+			}
+			
+			callback({
+				sockets:socketArray
+			});
+		});
+		
 		// Broadcast the connection
-		socket.broadcast.emit('otherConnect', socket.id);
+		socket.broadcast.emit('otherConnect', getSocketData[socket.id]);
 			
 		// When the server gets a message, during a connection, broadcast the message
 		socket.on('message', function(request){
 //			console.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
 //			console.log(request);
-			request.id = socket.id;
+			request.storeData = getSocketData(socket.id);
 			socket.broadcast.emit(request.action, request);
 		});
 

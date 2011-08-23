@@ -114,7 +114,7 @@ class Redokes_Controller_Front {
 			$controllerClass = new $errorControllerClassName($this, $actionName);
 		}
 		else {
-			echo 'error time';
+			echo "Redokes Error Time. Could not find $controllerClassName or $errorControllerClassName";
 		}
 
 	}

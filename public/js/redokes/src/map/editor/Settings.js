@@ -2,72 +2,64 @@ Ext.define('Redokes.map.editor.Settings', {
 	extend:'Ext.form.Panel',
 	
 	title:'Map Settings',
+	editor:false,
 	
 	initComponent: function() {
 		this.items = this.items || [];
 		this.initFields();
+		this.initListeners();
 		this.callParent(arguments);
 	},
 	
 	initFields: function() {
 		this.titleField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Title',
-			name:'title',
-			value:this.editor.mapSettings.title
+			name:'title'
 		});
 		
 		this.fileField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'File',
-			name:'fileName',
-			value:this.editor.mapSettings.fileName
+			name:'fileName'
 		});
 		
 		this.spawnXField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Spawn X',
-			name:'spawnX',
-			value:this.editor.mapSettings.spawnX
+			name:'spawnX'
 		});
 		
 		this.spawnYField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Spawn Y',
-			name:'spawnY',
-			value:this.editor.mapSettings.spawnY
+			name:'spawnY'
 		});
 		
 		this.spawnLayerField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Spawn Layer',
-			name:'spawnLayer',
-			value:this.editor.mapSettings.spawnLayer
+			name:'spawnLayer'
 		});
 		
 		this.numLayersField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'# Layers',
-			name:'numLayers',
-			value:this.editor.mapSettings.numLayers
+			name:'numLayers'
 		});
 		
 		this.widthField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Width',
-			name:'width',
-			value:this.editor.mapSettings.width
+			name:'width'
 		});
 		
 		this.heightField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Height',
-			name:'height',
-			value:this.editor.mapSettings.height
+			name:'height'
 		});
 		
 		this.tileSizeField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Tile Size',
-			name:'tileSize',
-			value:this.editor.mapSettings.tileSize
+			name:'tileSize'
 		});
 		
 		this.musicField = Ext.create('Ext.form.field.Text', {
 			fieldLabel:'Music',
-			name:'music',
-			value:this.editor.mapSettings.music
+			name:'music'
 		});
 		
 		this.items.push([
@@ -82,5 +74,16 @@ Ext.define('Redokes.map.editor.Settings', {
 			this.tileSizeField,
 			this.musicField
 		]);
+	},
+	
+	initListeners: function() {
+		this.widthField.on('blur', function(field) {
+			this.editor.updateMapSize();
+		}, this);
+		
+		this.heightField.on('blur', function(field) {
+			this.editor.updateMapSize();
+		}, this);
+		
 	}
 });

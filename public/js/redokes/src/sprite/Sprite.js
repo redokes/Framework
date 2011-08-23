@@ -38,16 +38,18 @@ Ext.define('Redokes.sprite.Sprite', {
 			this.loadImage(this.img);
 		}
 		
+		this.initAnimations();
+		this.playAnimation('firstFrame');
+//		this.setAnimationSpeed(this.animationSpeed);
+	},
+	
+	initAnimations: function() {
 		// set up the first frame animation
 		this.addAnimation(Ext.create('Redokes.sprite.Animation', {
 			title:'firstFrame',
 			sequence:[0],
 			fpf:1
 		}));
-		
-		this.playAnimation('firstFrame');
-		
-//		this.setAnimationSpeed(this.animationSpeed);
 	},
 	
 	loadImage: function(src) {
@@ -56,6 +58,15 @@ Ext.define('Redokes.sprite.Sprite', {
 		this.img = Ext.get(new Image());
 		this.img.on('load', this.imageLoaded, this);
 		this.img.dom.src = src;
+	},
+	
+	getImageSrc: function() {
+		if (this.img) {
+			return this.img.dom.src;
+		}
+		else {
+			return false;
+		}
 	},
 	
 	imageLoaded: function() {
@@ -80,7 +91,12 @@ Ext.define('Redokes.sprite.Sprite', {
 	},
 	
 	draw: function() {
-		this.context.drawImage(this.img.dom, this.getFrame() * this.width, 0, this.width, this.height, this.x, this.y - 22, this.width, this.height);
+		try {
+			this.context.drawImage(this.img.dom, this.getFrame() * this.width, 0, this.width, this.height, this.x, this.y-32, this.width, this.height);
+		}
+		catch(e) {
+			console.log(e);
+		}
 	},
 	
 	getFrame: function() {

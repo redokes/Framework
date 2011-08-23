@@ -2,58 +2,60 @@ Ext.define('Redokes.map.MapData', {
 	extend:'Ext.util.Observable',
 	
 	title:false,
+	fileName:false,
 	spawnPoint:{0:0, 1:0, x:0, y:0, layer:0},
 	tileSheet:false,
 	numLayers:0,
 	width:0,
 	height:0,
 	objectLayers:[],
+	
 	spawnX:0,
 	spawnY:0,
 	spawnLayer:0,
-	tileData:[],
-	tiles:[],
+	
+	tileData:false,
 	tileSize:0,
+	
 	music:'/modules/wes/town1.mp3',
 	
 	socket:false,
 	players:false,
 	numPlayers:0,
+	
+	valueFields:['title', 'fileName', 'tileSheet', 'numLayers', 'width', 'height', 'spawnX', 'spawnY', 'spawnLayer', 'music', 'tileSize', 'tileData'],
 
 	constructor: function(config) {
 		d('MapData constructor');
-		config = config || {};
 		Ext.apply(this, config);
-		this.tiles = [];
 		this.players = {
 			0:this.game.player
 		};
-		this.setSpawnPoint(this.spawnX, this.spawnY, this.spawnLayer);
-		this.numLayers = this.tileData.length;
-		if (this.numLayers) {
-			this.width = this.tileData[0][0].length;
-			this.height = this.tileData[0].length;
-			
-			// build tile array for quicker access to data in loop
+		if (!this.tileData) {
+			// Need to init default empty tile data
+			this.tileData = [];
 			for (var layerIndex = 0; layerIndex < this.numLayers; layerIndex++) {
-				// add layer
-				this.tiles.push([]);
-				for (var i = 0; i < this.height; i++) {
-					// add row
-					this.tiles[layerIndex].push([]);
-					for (var j = 0; j < this.width; j++) {
-						var tile = this.tileData[layerIndex][i][j];
-						var extraTileData = {
-							xOffset:tile.tileIndex * this.tileSize
-						};
-						Ext.apply(this.tileData[layerIndex][i][j], extraTileData);
-						
-						// add tile
-						this.tiles[layerIndex][i].push(tile.tileIndex);
+				this.tileData.push([]);
+				for (var rowIndex = 0; rowIndex < this.height; rowIndex++) {
+					this.tileData[layerIndex].push([]);
+					for (var columnIndex = 0; columnIndex < this.width; columnIndex++) {
+						this.tileData[layerIndex][rowIndex].push({
+							tileIndex:false,
+							isWall:false
+						});
 					}
 				}
 			}
 		}
+	},
+	
+	getValues: function() {
+		var numValues = this.valueFields.length;
+		var returnValues = {};
+		for (var i = 0; i < numValues; i++) {
+			returnValues[this.valueFields[i]] = this[this.valueFields[i]];
+		}
+		return returnValues;
 	},
 
 	setSpawnPoint: function(x, y, layer) {
@@ -93,9 +95,13 @@ Ext.define('Redokes.map.MapData', {
 		client.on('connect', function(client, args) {
 			d('Socket connect');
 			
-			client.socket.emit('getSocketIds', {}, Ext.Function.bind(function(params) {
-				this.initRemotePlayers(params.socketIds);
+			client.socket.emit('getRemoteUsers', {}, Ext.bind(function(params) {
+//				console.log('get remote users');
+//				console.log(params.sockets);
+				this.initRemotePlayers(params.sockets);
+				
 				client.send('player.joinmap');
+				
 				this.game.player.socketMovePlayer(this.game.player.currentAnimation.title);
 				
 				client.on('disconnect', function(client, args) {
@@ -111,50 +117,58 @@ Ext.define('Redokes.map.MapData', {
 				}, this);
 
 				client.socket.on('player.move', Ext.Function.bind(function(request) {
-//					console.log('player move');
-					if (!this.players[request.id]) {
-						this.initRemotePlayer(request.id);
+					if (!this.players[request.storeData.id]) {
+						this.initRemotePlayer(request.storeData);
 					}
-					this.players[request.id].updateRemotePlayer(request.data);
+					this.players[request.storeData.id].updateRemotePlayer(request.data);
+				}, this));
+				
+				client.socket.on('setData', Ext.bind(function(data) {
+					if (this.players[data.id].img != data.img) {
+						this.players[data.id].loadImage(data.img);
+					}
 				}, this));
 				
 				client.socket.on('player.joinmap', Ext.Function.bind(function(request) {
 //					console.log('player join map');
-					this.initRemotePlayer(request.id);
+					this.initRemotePlayer(request.storeData);
 					this.game.player.socketMovePlayer(this.game.player.currentAnimation.title);
 				}, this));
 				
 				client.socket.on('player.leavemap', Ext.Function.bind(function(request) {
 //					console.log('player leave map');
-					this.removeRemotePlayer(request.id);
+					this.removeRemotePlayer(request);
 				}, this));
 				
 				client.socket.on('chat.send', Ext.Function.bind(function(request) {
-					this.game.chatPanel.receiveChat(client.namespace, request.id, request.data.text);
+					this.game.receiveChat(client.namespace, request);
 				}, this));
 				
 			}, this));
 		}, this);
 	},
 	
-	initRemotePlayer: function(socketId) {
-		d('Init remote player ' + socketId);
-		this.addRemotePlayer(socketId);
+	initRemotePlayer: function(data) {
+//		console.log('Init remote player ' + data.id);
+//		console.log(data);
+		this.addRemotePlayer(data);
 	},
 	
-	initRemotePlayers: function(socketIds) {
-		d('Init remote players');
-		var numSocketIds = socketIds.length;
-		for (var i = 0; i < numSocketIds; i++) {
-			this.addRemotePlayer(socketIds[i]);
+	initRemotePlayers: function(sockets) {
+//		console.log('Init remote players');
+//		console.log(sockets);
+		var numSockets = sockets.length;
+		for (var i = 0; i < numSockets; i++) {
+			this.addRemotePlayer(sockets[i]);
 		}
 	},
 	
-	addRemotePlayer: function(socketId) {
-		d('Add remote player ' + socketId);
-		if (!this.players[socketId]) {
+	addRemotePlayer: function(data) {
+//		console.log('Add remote player ' + data.id);
+//		console.log(data);
+		if (!this.players[data.id]) {
 			var remotePlayer = Ext.create('Redokes.sprite.PlayerUser', {
-				img:'/modules/wes/img/sprite/player/mog.png',
+				img:data.img,
 				width:32,
 				height:44,
 				x:0,
@@ -162,12 +176,12 @@ Ext.define('Redokes.map.MapData', {
 				game:this.game,
 				context:this.game.context
 			});
-			this.players[socketId] = remotePlayer;
+			this.players[data.id] = remotePlayer;
 		}
 	},
 	
 	removeRemotePlayer: function(socketId) {
-		d('Remove remote player ' + socketId);
+//		console.log('Remove remote player ' + socketId);
 		delete this.players[socketId];
 	},
 	

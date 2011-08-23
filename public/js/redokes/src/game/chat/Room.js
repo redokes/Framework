@@ -3,6 +3,7 @@ Ext.define('Redokes.game.chat.Room', {
 	
 	layout:'border',
 	title:'Chat Room',
+	game:false,
 	
 	style:{
 		background:'transparent'
@@ -96,8 +97,8 @@ Ext.define('Redokes.game.chat.Room', {
 		}
 	},
 	
-	receiveChat: function(id, text) {
-		text = '<p>' + id + ': ' + text + '</p>';
+	receiveChat: function(name, text) {
+		text = '<p>' + name + ': ' + text + '</p>';
 		this.chatDiv.dom.innerHTML += text;
 		this.scrollToBottom();
 	},

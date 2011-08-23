@@ -1,5 +1,6 @@
 Ext.define('Redokes.game.chat.Chat', {
 	extend:'Ext.tab.Panel',
+	game:false,
 	style:{
 		background:'transparent'
 	},
@@ -44,11 +45,11 @@ Ext.define('Redokes.game.chat.Chat', {
 		}
 	},
 	
-	receiveChat: function(namespace, id, text) {
+	receiveChat: function(namespace, request) {
 		var itemId = namespace.replace(/ /, '');
 		var tab = this.child('#' + itemId);
 		if (tab) {
-			tab.receiveChat(id, text);
+			tab.receiveChat(request.storeData.name, request.data.text);
 		}
 	}
 	

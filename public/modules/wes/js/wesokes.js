@@ -22,7 +22,16 @@ function d(param) {
 }
 
 Ext.onReady(function() {
-	var g = Ext.create('Redokes.game.Panel', {
-		renderTo:'game'
-	});
+	if (location.href.match(/edit/)) {
+		Ext.create('Redokes.map.editor.Editor', {
+			renderTo:'game',
+			height:800
+		});
+		
+	}
+	else {
+		Ext.create('Redokes.game.Panel', {
+			renderTo:'game'
+		});
+	}
 });

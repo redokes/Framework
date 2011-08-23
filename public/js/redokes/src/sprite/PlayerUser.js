@@ -4,7 +4,6 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	keyDown:false,
 	dx:0,
 	dy:0,
-	speed:4,
 	isMoving:false,
 	lastActiveTile:false,
 
@@ -24,33 +23,28 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		if (this.ignoreInput) {
 			return;
 		}
-		switch (e.button) {
-			case 31:
+		switch (e.keyCode) {
+			case e.SPACE:
 				e.preventDefault();
 				this.checkTile();
 			break;
-			case 37:
-//				this.setAnimationSpeed(++this.speed);
+			case e.UP:
+				this.setPlayerData({
+					life:this.playerData.life+1
+				});
 			break;
-			case 39:
-//				this.setAnimationSpeed(--this.speed);
+			case e.DOWN:
+				this.setPlayerData({
+					life:this.playerData.life-1
+				});
 			break;
 		}
-		
-		/*
-		 * e.button codes
-		 * w = 86
-		 * d = 67
-		 * s = 82
-		 * a = 64
-		 * enter = 12
-		 * 
-		 */
-		this.keyDown = e.button;
+	
+		this.keyDown = e.keyCode;
 	},
 
 	onKeyUp: function(e) {
-		if (e.button == this.keyDown) {
+		if (e.keyCode == this.keyDown) {
 			this.keyDown = false;
 		}
 	},
@@ -60,9 +54,9 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			return;
 		}
 		if (this.keyDown && !this.isMoving) {
-			this.movementSpeed = this.speed;
+			this.movementSpeed = this.playerData.speed;
 			switch (this.keyDown) {
-				case 86:
+				case 87:
 					this.facing = 0;
 					
 					// make sure player can walk up
@@ -79,7 +73,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 						this.socketMovePlayer('faceUp');
 					}
 				break;
-				case 67:
+				case 68:
 					this.facing = 1;
 					
 					// make sure player can walk right
@@ -96,7 +90,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 						this.socketMovePlayer('faceRight');
 					}
 				break;
-				case 82:
+				case 83:
 					this.facing = 2;
 					
 					// make sure player can walk down
@@ -113,7 +107,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 						this.socketMovePlayer('faceDown');
 					}
 				break;
-				case 64:
+				case 65:
 					this.facing = 3;
 					
 					// make sure player can walk left
@@ -180,6 +174,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 	
 	updateRemotePlayer: function(data) {
+//		console.log('update remote player');
+//		console.log(data);
 		this.x = data.startX;
 		this.y = data.startY;
 		this.dx = data.dx;
@@ -212,7 +208,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			this.isMoving = false;
 
 			// check if we need to stop or if we can keep going
-			if (!this.canMoveRight() || (this.keyDown != 67 && this.dx)) {
+			if (!this.canMoveRight() || (this.keyDown != 68 && this.dx)) {
 				this.x = this.destinationX;
 				this.dx = 0;
 				this.playAnimation('faceRight');
@@ -224,7 +220,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			this.isMoving = false;
 			
 			// check if we need to stop or if we can keep going
-			if (!this.canMoveLeft() || (this.keyDown != 64 && this.dx)) {
+			if (!this.canMoveLeft() || (this.keyDown != 65 && this.dx)) {
 				this.x = this.destinationX;
 				this.dx = 0;
 				this.playAnimation('faceLeft');
@@ -236,7 +232,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			this.isMoving = false;
 
 			// check if we need to stop or if we can keep going
-			if (!this.canMoveDown() || (this.keyDown != 82 && this.dy)) {
+			if (!this.canMoveDown() || (this.keyDown != 83 && this.dy)) {
 				this.y = this.destinationY;
 				this.dy = 0;
 				this.playAnimation('faceDown');
@@ -248,7 +244,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			this.isMoving = false;
 
 			// check if we need to stop or if we can keep going
-			if (!this.canMoveUp() || (this.keyDown != 86 && this.dy)) {
+			if (!this.canMoveUp() || (this.keyDown != 87 && this.dy)) {
 				this.y = this.destinationY;
 				this.dy = 0;
 				this.playAnimation('faceUp');
