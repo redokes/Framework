@@ -1,7 +1,7 @@
 <?php
 
 class Redokes_View_Html extends Redokes_View_Template {
-	public $html = '<html><head><title>{title}</title>{head}</head><body>{body}</body></html>';
+	public $html = '<!DOCTYPE html><html><head><title>{title}</title>{head}</head><body>{body}</body></html>';
 	public $values = array(
 		'title' => '',
 		'head' => '',

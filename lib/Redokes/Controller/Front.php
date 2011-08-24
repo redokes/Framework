@@ -11,6 +11,7 @@ class Redokes_Controller_Front {
 
 	public function __construct() {
 		$this->initSession();
+		$this->initDbAdapter();
 		$this->parseRequest();
 //		$this->processRoutes();
 	}
@@ -36,6 +37,10 @@ class Redokes_Controller_Front {
 			}
 			session_start();
 		}
+	}
+	
+	public function initDbAdapter() {
+		$this->getDbAdapter();
 	}
 
 	public function getParam($key, $defaultValue = '', $array = false) {
@@ -155,17 +160,19 @@ class Redokes_Controller_Front {
      * @return Zend_Db_Adapter_Abstract
      */
     public function getDbAdapter($dbServer = 'default') {
-		if (!isset($this->_dbAdapter[$dbServer])) {
+		if (!isset($this->_dbAdapters[$dbServer])) {
 			// get config
 			$config = array(
 				'host' => 'localhost',
-				'dbname' => 'wes_framework',
+				'dbname' => 'redokes_framework',
 				'username' => 'root',
 				'password' => ''
 			);
-			$this->_dbAdapter[$dbServer] = Zend_Db::factory('Pdo_Mysql', $config);
+			$this->_dbAdapters[$dbServer] = Zend_Db::factory('Pdo_Mysql', $config);
+			Zend_Registry::set($dbServer, $this->_dbAdapters[$dbServer]);
+			Zend_Db_Table_Abstract::setDefaultAdapter($this->_dbAdapters[$dbServer]);
 		}
-		return $this->_dbAdapter[$dbServer];
+		return $this->_dbAdapters[$dbServer];
     }
 
 }
