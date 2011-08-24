@@ -26,24 +26,9 @@ class Wes_IndexController extends Redokes_Controller_Action {
 		return $html;
 	}
 	
-	public function dbAction() {
-		$user = new User_Model_User(1);
-		show_array($user->getRow());
-		$user->loadPost(array(
-			'email' => 'updated@wes.com'
-		));
-		$user->save();
-		$user = new User_Model_User();
-		$user->setRow(array(
-			'email' => 'yeeeaaahhh'
-		));
-		$user->save();
-		show_array($user->errors);
-		show_array($user->getRow());
-	}
-
 	public function indexAction() {
-		echo 'yo';
+		echo 'my user id = ' . User_Model_User::getMyId();
+		echo '<br>';
 		echo $this->getLinks();
 	}
 

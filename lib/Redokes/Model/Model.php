@@ -121,18 +121,18 @@ class Redokes_Model_Model {
 	
 	public function loadRow($value, $field = false) {
 		$select = $this->table->select();
-		
+		//$this->table->getAdapter()->quote($v)
 		// Check if value is an array
 		if (is_array($value)) {
 			foreach ($value as $k => $v) {
-				$select->where("`$k` = ?", $this->table->getAdapter()->quote($v));
+				$select->where("`$k` = ?", $v);
 			}
 		}
 		else {
 			if (!$field) {
 				$field = $this->table->getPrimary();
 			}
-			$select->where("`$field` = ?", $this->table->getAdapter()->quote($value));
+			$select->where("`$field` = ?", $value);
 		}
 		$this->row = $this->table->fetchRow($select);
 	}
@@ -244,7 +244,7 @@ class Redokes_Model_Model {
 			$this->row->hash = sha1(uniqid(rand(), true));
 		}
 		catch (Exception $e) {
-			
+			echo "tried and failed";
 		}
 	}
 
@@ -257,11 +257,15 @@ class Redokes_Model_Model {
 		}
 		if ($this->isValidated()) {
 			if ($this->row->$field) {
+				$this->beforeUpdate();
 				$this->row->save();
+				$this->afterUpdate();
 			}
 			else {
+				$this->beforeInsert();
 				$this->generateHash();
 				$this->row->save();
+				$this->afterInsert();
 			}
 			return true;
 		}
@@ -522,21 +526,6 @@ class Redokes_Model_Model {
 
 	public function getHash() {
 		return sha1($this->_salt . $this->row[$this->primaryKey]);
-	}
-
-	public function loadFromHash($hash) {
-		$query = "SELECT * FROM $this->table
-					WHERE SHA1(CONCAT('$this->_salt', $this->table.$this->primaryKey)) = '$hash' LIMIT 1";
-		$db = $this->_getDbAdapter();
-		$result = $db->fetchAssoc($query);
-		if (count($result)) {
-			$this->setRow($result[0]);
-		}
-		else {
-			return false;
-		}
-
-		return true;
 	}
 
 	public function salt($str) {
