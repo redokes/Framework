@@ -116,7 +116,7 @@ Ext.define('Redokes.map.MapData', {
 					this.removeRemotePlayer(args[0]);
 				}, this);
 
-				client.socket.on('player.move', Ext.Function.bind(function(request) {
+				client.socket.on('player.move', Ext.bind(function(request) {
 					if (!this.players[request.storeData.id]) {
 						this.initRemotePlayer(request.storeData);
 					}
@@ -129,18 +129,18 @@ Ext.define('Redokes.map.MapData', {
 					}
 				}, this));
 				
-				client.socket.on('player.joinmap', Ext.Function.bind(function(request) {
+				client.socket.on('player.joinmap', Ext.bind(function(request) {
 //					console.log('player join map');
 					this.initRemotePlayer(request.storeData);
 					this.game.player.socketMovePlayer(this.game.player.currentAnimation.title);
 				}, this));
 				
-				client.socket.on('player.leavemap', Ext.Function.bind(function(request) {
+				client.socket.on('player.leavemap', Ext.bind(function(request) {
 //					console.log('player leave map');
 					this.removeRemotePlayer(request);
 				}, this));
 				
-				client.socket.on('chat.send', Ext.Function.bind(function(request) {
+				client.socket.on('chat.send', Ext.bind(function(request) {
 					this.game.receiveChat(client.namespace, request);
 				}, this));
 				

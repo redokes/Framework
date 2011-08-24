@@ -12,7 +12,7 @@ class Wes_IndexController extends Redokes_Controller_Action {
 	}
 	
 	public function getLinks() {
-		$html = '';
+		$html = '<div>';
 		$links = array(
 			'/wes/index/index',
 			'/wes/index/index2',
@@ -22,29 +22,41 @@ class Wes_IndexController extends Redokes_Controller_Action {
 		for ($i = 0; $i < count($links); $i++) {
 			$html .= "<a href=\"{$links[$i]}\">{$links[$i]}</a> | ";
 		}
+		$html .= '</div>';
 		
 		return $html;
 	}
 	
 	public function indexAction() {
-		echo 'my user id = ' . User_Model_User::getMyId();
-		echo '<br>';
 		echo $this->getLinks();
+		echo 'this is the index';
+		$track = new Navigation_Model_Track(1);
+		echo $track->getHtml('test-track');
+		
+//		$track->save();
+		
+		$item = new Navigation_Model_Item();
+		$item->setRow(array(
+			'trackId' => 1,
+			'title' => 'test item'
+		));
+//		$item->save();
+//		show_array($item->errors);
 	}
 
 	public function index2Action() {
-		echo 'index2 content';
 		echo $this->getLinks();
+		echo 'index2 content';
 	}
 	
 	public function index3Action() {
-		echo 'index2 content';
 		echo $this->getLinks();
+		echo 'index3 content';
 	}
 	
 	public function index4Action() {
-		echo 'index2 content';
 		echo $this->getLinks();
+		echo 'index4 content';
 	}
 	
 

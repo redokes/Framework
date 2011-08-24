@@ -8,6 +8,7 @@ class Redokes_Controller_Front {
 	public $params = array();
 	private static $_instance;
 	private $_dbAdapters = array();
+	private $_cacheManager = false;
 
 	public function __construct() {
 		$this->initSession();
@@ -174,5 +175,31 @@ class Redokes_Controller_Front {
 		}
 		return $this->_dbAdapters[$dbServer];
     }
+	
+	public function getCacheManager($name = 'file') {
+		if ($this->_cacheManager === false) {
+			$this->_cacheManager = new Zend_Cache_Manager;
+		}
+		return $this->_cacheManager;
+	}
+
+	public function getCache($name = 'file') {
+		$cacheManager = $this->getCacheManager();
+		if (!$cacheManager->hasCache($name)) {
+			$cacheOptions = array(
+				'frontend' => array(
+					'name' => 'Core'
+				),
+				'backend' => array(
+					'name' => 'File',
+					'options' => array(
+						'cache_dir' => CACHE_PATH
+					)
+				)
+			);
+			$cacheManager->setCacheTemplate($name, $cacheOptions);
+		}
+		return $cacheManager->getCache($name);
+	}
 
 }

@@ -244,7 +244,16 @@ class Redokes_Model_Model {
 			$this->row->hash = sha1(uniqid(rand(), true));
 		}
 		catch (Exception $e) {
-			echo "tried and failed";
+			
+		}
+	}
+	
+	public function generateSafeTitle() {
+		try {
+			$this->row->safeTitle = Redokes_Util::safeTitle($this->row->title);
+		}
+		catch (Exception $e) {
+			
 		}
 	}
 
@@ -256,6 +265,8 @@ class Redokes_Model_Model {
 			$this->validate();
 		}
 		if ($this->isValidated()) {
+			$this->generateSafeTitle();
+			
 			if ($this->row->$field) {
 				$this->beforeUpdate();
 				$this->row->save();
