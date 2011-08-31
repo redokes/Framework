@@ -300,7 +300,7 @@ class Redokes_Model_Model {
 	}
 
 	public function insert($doAudit = true) {
-		//Fire the before delete function
+		//Fire the before insert function
 		if ($this->beforeInsert() === false) {
 			return false;
 		}
@@ -329,7 +329,7 @@ class Redokes_Model_Model {
 	}
 
 	public function update($doAudit = true) {
-		//Fire the before delete function
+		//Fire the before update function
 		if ($this->beforeUpdate() === false) {
 			return false;
 		}
@@ -360,9 +360,8 @@ class Redokes_Model_Model {
 		if ($this->beforeDelete() === false) {
 			return false;
 		}
-
-		$db = $this->_getDbAdapter();
-		$db->delete($this->table, "$this->primaryKey = " . $db->quote($this->row[$this->primaryKey]));
+		
+		$this->row->delete();
 
 		// only unharvest if this item is harvested
 		if ($this->harvestOnProcess) {
@@ -388,7 +387,7 @@ class Redokes_Model_Model {
 	}
 
 	public function validate() {
-		$this->errors = array();
+//		$this->errors = array();
 
 		foreach ($this->requiredStringFields as $key => $value) {
 			if (isset($this->row[$key])) {
@@ -478,6 +477,7 @@ class Redokes_Model_Model {
 	}
 
 	public function audit($description) {
+		return;
 		if (!$this->auditOnProcess) {
 			return false;
 		}

@@ -2,6 +2,7 @@
 class Navigation_Model_Track extends Redokes_Model_Model {
 	
 	public $tableClassName = 'Navigation_Model_Db_Track';
+	public $item = false;
 	
 	public $requiredStringFields = array(
 		'title' => 'Title'
@@ -10,18 +11,21 @@ class Navigation_Model_Track extends Redokes_Model_Model {
 	public $keyword = 'Navigation Track';
 	public $auditOnProcess = true;
 	
+	public function __construct($id = false) {
+		parent::__construct($id);
+		$this->itemTable = new Navigation_Model_Db_Item();
+	}
+	
 	public function delete($doAudit = true) {
-		return;
-		$db = Redokes_Controller_Front::getInstance()->getDbAdapter();
-		
 		// get top level items and delete them, which will delete all children
-		$query = "SELECT * FROM navigation_items WHERE trackId = {$this->row->trackId} AND parentId = 0";
-		$rows = $db->fetchAll($query);
+		$itemTable = new Navigation_Model_Db_Item();
+		$select = $itemTable->select()->where('trackId = ?', $this->row->trackId)->where('parentId = 0');
+		$rows = $itemTable->fetchAll($select);
 		$numRows = count($rows);
 		if ($numRows) {
 			for ($i = 0; $i < $numRows; $i++) {
-				$item = new Navigation_Class_NavigationItem();
-				$item->setRow($rows[$i]);
+				$item = new Navigation_Model_Item();
+				$item->row = $rows[$i];
 				$item->delete($doAudit);
 			}
 		}
@@ -30,12 +34,11 @@ class Navigation_Model_Track extends Redokes_Model_Model {
 	
 	private function buildHtml($topId = '', $className = '', $parentId = 0, $urlField = 'url') {
 		$str = '';
-		
-		$select = $this->table->select()
+		$select = $this->itemTable->select()
 				->where('trackId = ?', $this->row->trackId)
 				->where('parentId = ?', $parentId)
 				->order('sortOrder');
-		$rows = $this->table->fetchAll($select);
+		$rows = $this->itemTable->fetchAll($select);
 		
 		$numRows = count($rows);
 		if ($numRows) {

@@ -53,16 +53,14 @@ class Navigation_Model_Item extends Redokes_Model_Model {
 	}
 	
 	public function delete($doAudit = true) {
-		$db = FrontController::getInstance()->getDbAdapter();
-		
 		// delete children first
-		$query = "SELECT * FROM navigation_items WHERE trackId = {$this->row['trackId']} AND parentId = {$this->row['itemId']}";
-		$rows = $db->fetchAll($query);
+		$select = $this->table->select()->where('trackId = ?', $this->row->trackId)->where('parentId = ?', $this->row->itemId);
+		$rows = $this->table->fetchAll($select);
 		$numRows = count($rows);
 		if ($numRows) {
 			for ($i = 0; $i < $numRows; $i++) {
-				$item = new Navigation_Class_NavigationItem();
-				$item->setRow($rows[$i]);
+				$item = new Navigation_Model_Item();
+				$item->row = $rows[$i];
 				$item->delete($doAudit);
 			}
 		}
@@ -72,7 +70,7 @@ class Navigation_Model_Item extends Redokes_Model_Model {
 	
 	public static function deleteByUrl($url) {
 		$db = FrontController::getInstance()->getDbAdapter();
-		$navigationItem = new Navigation_Class_NavigationItem();
+		$navigationItem = new Navigation_Model_Item();
 		
 		$query = "SELECT * FROM {$navigationItem->table} WHERE url = {$db->quote($url)}";
 		$rows = $db->fetchAll($query);

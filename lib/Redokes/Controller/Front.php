@@ -44,7 +44,7 @@ class Redokes_Controller_Front {
 		$this->getDbAdapter();
 	}
 
-	public function getParam($key, $defaultValue = '', $array = false) {
+	public function getParam($key, $defaultValue = false, $array = false) {
 		if (!is_array($array)) {
 			$array = $_REQUEST;
 		}

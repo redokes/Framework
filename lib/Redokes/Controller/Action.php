@@ -21,6 +21,8 @@ class Redokes_Controller_Action {
 	 * @var bool
 	 */
 	public $doRender = true;
+	
+	public $viewPath = false;
 
 	public function __construct($frontController, $action = 'index'){
 		$this->frontController = $frontController;
@@ -28,12 +30,19 @@ class Redokes_Controller_Action {
 		$this->action = $action;
 		ob_start();
 		if (method_exists($this, $this->action)) {
-			// auto set the body to the view if it exists
-			$viewPath = MODULE_PATH . $this->frontController->module . '/view/' . $this->frontController->controller . '/' . $this->frontController->action . '.php';
+			
+			// Run the action
 			$this->$action();
-			if (file_exists($viewPath)) {
+			
+			// If the action did not set a view path, auto set the view path
+			if (!$this->viewPath) {
+				$this->setView();
+			}
+			
+			// Render the view if a view file exists
+			if (file_exists($this->viewPath)) {
 				ob_start();
-				include($viewPath);
+				include($this->viewPath);
 				$this->getView()->setValues(array(
 					'body' => ob_get_clean()
 				));
@@ -47,6 +56,7 @@ class Redokes_Controller_Action {
 			$this->_catch();
 		}
 		$contents = ob_get_clean();
+		
 		$this->getView()->setValues(array(
 			'body' => $contents
 		), true);
@@ -54,7 +64,27 @@ class Redokes_Controller_Action {
 		// rename send headers to something like output content or send output
 		$this->sendHeaders();
 	}
-
+	
+	public function setView($action = false, $controller = false, $module = false) {
+		if (is_file($action)) {
+			$this->viewPath = $action;
+		}
+		else {
+			// auto set the body to the view if it exists
+			if (!$action) {
+				$action = $this->frontController->action;
+			}
+			if (!$controller) {
+				$controller = $this->frontController->controller;
+			}
+			if (!$module) {
+				$module = $this->frontController->module;
+			}
+			
+			$this->viewPath = MODULE_PATH . "$module/view/$controller/$action.php";
+		}
+	}
+	
 	public function init() {}
 
 	public function sendHeaders() {

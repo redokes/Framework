@@ -69,15 +69,14 @@ class User_Model_User extends Redokes_Model_Model {
 
 	public function logout() {
 		if (!$this->row->userId) {
-//			$this->loadSessionUser();
+			$this->loadSessionUser();
 		}
 		$_SESSION['user'] = array();
 		setcookie(md5('rememberEmail'), false, time() - 60, '/');
 		setcookie(md5('rememberPassword'), false, time() - 60, '/');
 	}
-
-	public function validateFrontend() {
-		
+	
+	public function validate() {
 		// make sure email is unique
 		$query = "SELECT COUNT(*) total FROM user WHERE email = '{$this->row->email}' AND userId <> '{$this->row->userId}'";
 		$row = $this->table->fetchRow($query);
@@ -92,18 +91,16 @@ class User_Model_User extends Redokes_Model_Model {
 		if (strlen($this->row->password) < 5) {
 			$this->addError("Password must be 5 characters or longer");
 		}
-
-//		if ($this->row->password != $this->cpassword) {
-//			$this->addError("Passwords don't match. Please confirm your password.");
-//		}
-
-		return $this->errors;
-	}
-
-	public function validate() {
+		
+		$confirmPassword = Redokes_Controller_Front::getInstance()->getParam('confirmPassword');
+		
+		if ($this->row->password != $confirmPassword) {
+			$this->addError("Passwords don't match. Please confirm your password.");
+		}
+		
 		parent::validate();
-		return true;
-
+		return $this->errors;
+		
 		// don't let a non papercut user edit a papercut user
 //		if ($this->row['userId']) {
 //
@@ -126,7 +123,7 @@ class User_Model_User extends Redokes_Model_Model {
 				$this->addError("Please choose a different email address. Email is already in use");
 			}
 		}
-
+		
 		// check length
 		if (!valid_email($this->row['email'])) {
 			$this->addError("Please enter a valid email address");

@@ -22,7 +22,7 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 	init: function(){
 		this.initToolbar();
 		this.initTree();
-//		this.initTreeEditor();
+		//		this.initTreeEditor();
 		this.initEastPanel();
 		this.initListeners();
 	},
@@ -33,12 +33,12 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 				text:'Add Track',
 				handler: this.addTrack,
 				scope:this,
-				icon: '/js/ext/resources/icons/add.gif'
+				icon: '/resources/icons/add-16.png'
 			},{
 				text:'Add Item',
 				handler: this.addItem,
 				scope:this,
-				icon: '/js/ext/resources/icons/add.gif'
+				icon: '/resources/icons/add-16.png'
 			},{
 				text:'Refresh',
 				handler: this.refreshNode,
@@ -47,39 +47,47 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 				text:'Paste List',
 				handler: this.showPasteList,
 				scope:this,
-				icon: '/js/ext/resources/icons/paste.png'
+				icon: '/resources/icons/paste-16.png'
 			},'|',{
 				text:'Delete',
 				handler: this.deleteItem,
 				scope:this,
-				icon: '/js/ext/resources/icons/delete.gif'
+				icon: '/resources/icons/delete-16.png'
 			}]
 		});
 	},
 	
 	initTree: function() {
-		this.tree = new Ext.tree.TreePanel({
-			useArrows: true,
-			autoScroll: true,
-			animate: true,
-			enableDD: true,
-			containerScroll: true,
-			border: false,
-			region:'center',
-			height:400,
-			
-			// auto create TreeLoader
-			dataUrl: this.processingPage + 'get-nodes',
-			
+		this.store = Ext.create('Ext.data.TreeStore', {
+			autoSync:true,
+			proxy: {
+				type:'ajax',
+				url:this.processingPage + 'get-nodes'
+			},
 			root: {
-				nodeType: 'async',
+				//				nodeType: 'async',
 				text: 'Navigation Tracks',
 				draggable: false,
-				id: 'rootNode'
-			},
-			rootVisible:false
+				id: 'rootNode',
+				expanded:true
+			}
 		});
-//		this.selModel = this.tree.getSelectionModel();
+		this.tree = new Ext.tree.TreePanel({
+			store:this.store,
+			
+			useArrows: true,
+//			autoScroll: true,
+//			animate: true,
+			viewConfig: {
+				plugins: {
+					ptype: 'treeviewdragdrop'
+				}
+			},
+//			containerScroll: true,
+//			border: false,
+			region:'center'
+//			rootVisible:false
+		});
 		
 		this.on('afterrender', function(){
 			this.tree.getRootNode().expand();
@@ -97,75 +105,77 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 	
 	initEastPanel: function() {
 		this.pageStore = new Ext.data.JsonStore({
-	        url: this.processingPage + 'pages',
+			url: this.processingPage + 'pages',
 			root: 'records',
-	        totalProperty: 'total',
-	        fields: [
-	            'title',
-	        	'url'
-	        ]
-	    });
+			totalProperty: 'total',
+			fields: [
+			'title',
+			'url'
+			]
+		});
 	    
-	    // Custom rendering Template
-	    var resultTpl = new Ext.XTemplate(
-	        '<tpl for="."><div class="search-item" style="padding:5px">',
-	            '{title}',
-	        '</div></tpl>'
-	    );
+		// Custom rendering Template
+		var resultTpl = new Ext.XTemplate(
+			'<tpl for="."><div class="search-item" style="padding:5px">',
+			'{title}',
+			'</div></tpl>'
+			);
 		
 		this.pageCombo = new Ext.form.ComboBox({
-	        store: this.pageStore,
-	        fieldLabel: 'URL',
-	        hiddenName: 'url',
-	        name: 'url',
-	        displayField:'url',
-	        valueField: 'url',
-	        typeAhead: false,
-	        loadingText: 'Searching...',
-	        width: 200,
-	        pageSize:10,
-	        hideTrigger:false,
-	        triggerAction: 'all',
-	        minChars: 1,
-	        tpl: resultTpl,
-	        itemSelector: 'div.search-item'
-	    });
+			store: this.pageStore,
+			fieldLabel: 'URL',
+			hiddenName: 'url',
+			name: 'url',
+			displayField:'url',
+			valueField: 'url',
+			typeAhead: false,
+			loadingText: 'Searching...',
+			width: 200,
+			pageSize:10,
+			hideTrigger:false,
+			triggerAction: 'all',
+			minChars: 1,
+			tpl: resultTpl,
+			itemSelector: 'div.search-item'
+		});
 		
-		this.itemFormPanel = new Ext.FormPanel({
+		this.itemFormPanel = Ext.create('Ext.form.Panel', {
 			labelWidth: 50, // label settings here cascade unless overridden
 			url: this.processingPage + 'update-item',
 			bodyStyle:'padding:5px 5px 0',
-			defaults: {width: 200},
+			defaults: {
+				width: 200
+			},
 			defaultType: 'textfield',
 			frame: true,
 	
 			items: [{
-					fieldLabel: 'Display',
-					name: 'title',
-					allowBlank:false
-				},
-				this.pageCombo,
-				{
-					fieldLabel: 'Target',
-					hiddenName:'target',
-					store: new Ext.data.SimpleStore({
-						fields:['target', 'displayText'],
-						data:[[0, 'Same Window'],[1, 'New Window']]
-					}),
-					mode:'local',
-					editable:false,
-					xtype:'combo',
-					lazyRender:true,
-					valueField:'target',
-					displayField:'displayText',
-					triggerAction:'all'
-				},{
-					name: 'itemId',
-					xtype: 'hidden'
-				}
+				fieldLabel: 'Display',
+				name: 'title',
+				allowBlank:false
+			},
+			this.pageCombo,
+			{
+				fieldLabel: 'Target',
+				hiddenName:'target',
+				store: new Ext.data.SimpleStore({
+					fields:['target', 'displayText'],
+					data:[[0, 'Same Window'],[1, 'New Window']]
+				}),
+				mode:'local',
+				editable:false,
+				xtype:'combo',
+				lazyRender:true,
+				valueField:'target',
+				displayField:'displayText',
+				triggerAction:'all'
+			},{
+				name: 'itemId',
+				xtype: 'hidden'
+			}
 			],
 	
-			buttons: [{
+			bbar: [{
 				text: 'Save',
 				handler: this.updateItem,
 				scope:this
@@ -176,25 +186,27 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 			}]
 		});
 		
-		this.trackFormPanel = new Ext.FormPanel({
+		this.trackFormPanel = Ext.create('Ext.form.Panel', {
 			labelWidth: 50, // label settings here cascade unless overridden
 			url: this.processingPage + 'update-track',
 			bodyStyle:'padding:5px 5px 0',
-			defaults: {width: 200},
+			defaults: {
+				width: 200
+			},
 			defaultType: 'textfield',
 			frame: true,
 	
 			items: [{
-					fieldLabel: 'Title',
-					name: 'title',
-					allowBlank:false
-				},{
-					name: 'trackId',
-					xtype: 'hidden'
-				}
+				fieldLabel: 'Title',
+				name: 'title',
+				allowBlank:false
+			},{
+				name: 'trackId',
+				xtype: 'hidden'
+			}
 			],
 	
-			buttons: [{
+			bbar: [{
 				text: 'Save',
 				handler: this.updateItem,
 				scope:this
@@ -205,7 +217,7 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 			}]
 		});
 		
-		this.eastPanel = new Ext.Panel({
+		this.eastPanel = Ext.create('Ext.panel.Panel', {
 			title:'Edit Item',
 			layout:'card',
 			region:'east',
@@ -220,11 +232,10 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 	},
 	
 	initListeners: function() {
-		return;
-		this.selModel.on('selectionchange', this.selectionChange, this);
-		this.tree.getLoader().on('load', this.loadedNode, this, 500);
-		this.tree.on('beforemovenode', this.beforeMoveNode, this);
-		this.tree.on('movenode', this.moveNode, this);
+		this.tree.selModel.on('selectionchange', this.selectionChange, this);
+//		this.tree.store.on('load', this.loadedNode, this, 500);
+		this.tree.view.on('beforedrop', this.beforeMoveNode, this);
+		this.tree.view.on('drop', this.moveNode, this);
 	},
 	
 	selectionChange: function(sm, nodes) {
@@ -233,31 +244,31 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 			if (nodes.length == 1) {
 				this.eastPanel.enable();
 				var node = nodes[0];
-				if (node.attributes.itemType == 'item') {
+				if (node.raw.itemType == 'item') {
 					this.eastPanel.getLayout().setActiveItem(0);
-					this.eastPanel.setTitle(node.attributes.title);
+					this.eastPanel.setTitle(node.raw.title);
 					this.itemFormPanel.getForm().setValues([{
 						id:'title',
-						value:node.attributes.title
+						value:node.raw.title
 					},{
 						id:'url',
-						value:node.attributes.url
+						value:node.raw.url
 					},{
 						id:'itemId',
-						value:node.attributes.itemId
+						value:node.raw.itemId
 					}]);
 					var targetField = this.itemFormPanel.getForm().findField('target');
-					targetField.setValue(node.attributes.target);
+					targetField.setValue(node.raw.target);
 				}
-				else if (node.attributes.itemType == 'track') {
+				else if (node.raw.itemType == 'track') {
 					this.eastPanel.getLayout().setActiveItem(1);
-					this.eastPanel.setTitle(node.attributes.title);
+					this.eastPanel.setTitle(node.raw.title);
 					this.trackFormPanel.getForm().setValues([{
 						id:'title',
-						value:node.attributes.title
+						value:node.raw.title
 					},{
 						id:'trackId',
-						value:node.attributes.trackId
+						value:node.raw.trackId
 					}]);
 				}
 			}
@@ -274,7 +285,7 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 	},
 
 	refreshNode: function(node) {
-		var nodes = this.selModel.getSelectedNodes();
+		var nodes = this.tree.selModel.getSelectedNodes();
 		if (nodes.length) {
 			var node = nodes[0];
 			if (node.isExpanded()) {
@@ -288,6 +299,7 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 	},
 	
 	beforeMoveNode: function(tree, node, oldParentNode, newParentNode, index) {
+		console.log('before');return;
 		// return false to cancel move
 		
 		// don't let a node be dragged to the root
@@ -297,20 +309,21 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 	},
 	
 	moveNode: function(tree, node, oldParentNode, newParentNode, index) {
+		console.log('move');return;
 		var childNodes = newParentNode.childNodes;
 		var newOrder = [];
 		for (var i = 0; i < childNodes.length; i++) {
-			if (childNodes[i].attributes.itemId) {
-				newOrder.push(childNodes[i].attributes.itemId);
+			if (childNodes[i].raw.itemId) {
+				newOrder.push(childNodes[i].raw.itemId);
 			}
 		}
 		var params = {
 			'newOrder[]':newOrder,
-			itemId:node.attributes.itemId,
-			trackId:newParentNode.attributes.trackId,
-			parentId:newParentNode.attributes.itemId,
+			itemId:node.raw.itemId,
+			trackId:newParentNode.raw.trackId,
+			parentId:newParentNode.raw.itemId,
 			sortOrder:index,
-			oldParentId:oldParentNode.attributes.trackId
+			oldParentId:oldParentNode.raw.trackId
 		};
 		Ext.Ajax.request({
 			scope: this,
@@ -351,10 +364,10 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 				url: this.processingPage + 'update',
 				method:'post',
 				params: {
-					trackId:node.attributes.trackId,
+					trackId:node.raw.trackId,
 					title:newValue,
-					itemType:node.attributes.itemType,
-					itemId:node.attributes.itemId
+					itemType:node.raw.itemType,
+					itemId:node.raw.itemId
 				},
 				success: function(r){
 					var response = Ext.decode(r.responseText);
@@ -391,52 +404,51 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 			},
 			success: function(r){
 				var response = Ext.decode(r.responseText);
-				this.tree.getLoader().load(this.tree.getRootNode());
+				this.tree.store.load();
 			}
 		});
 	},
 	
 	addItem: function() {
 		// only select the first selected node
-		var nodes = this.selModel.getSelectedNodes();
+		var nodes = this.tree.selModel.getSelection();
 		if (nodes.length) {
-			var node = nodes[0];
-			this.selModel.select(node);
+			this.addToNode = nodes[0];
+			this.tree.selModel.select(this.addToNode);
 			Ext.Ajax.request({
 				scope: this,
 				url: this.processingPage + 'add-item',
 				method:'post',
 				params: {
-					trackId:node.attributes.trackId,
-					parentId:node.attributes.itemId,
-					title: node.attributes.title
+					trackId:this.addToNode.raw.trackId,
+					parentId:this.addToNode.raw.itemId,
+					title: this.addToNode.data.text
 				},
 				success: function(r){
 					var response = Ext.decode(r.responseText);
 					if (response.itemId) {
 						// get parent node
-						var node = this.tree.getNodeById('itemId-' + response.itemId);
-						this.tree.getLoader().load(node);
+//						this.tree.store.load();
+//						this.addToNode.expand();
 					}
 					else {
 						// get parent node
-						var node = this.tree.getNodeById('trackId-' + response.trackId);
-						this.tree.getLoader().load(node);
+						console.log(this.addToNode);
+//						this.tree.store.load();
+//						this.addToNode.expand();
+						window.node = this.addToNode;
 					}
-					new Ext.ux.Notify({
-			 			title: 'Success',
-			 			msg: response.messages
-			 		}).show(document);
+					
 				}
 			});
 		}
 	},
 	
 	showPasteList: function() {
-		var nodes = this.selModel.getSelectedNodes();
+		var nodes = this.tree.selModel.getSelectedNodes();
 		if (nodes.length) {
 			var node = nodes[0];
-			this.selModel.select(node);
+			this.tree.selModel.select(node);
 			if (this.pasteWindow == null) {
 				this.pasteWindow = new Ext.Window({
 					title:'Paste List',
@@ -477,7 +489,7 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 				}
 				
 				node.setText(response.row.title);
-				Ext.apply(node.attributes, response.row);
+				Ext.apply(node.raw, response.row);
 			},
 			failure: function(form, action) {
 				var response = action.result;
@@ -490,18 +502,18 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 	},
 
 	pasteList: function() {
-		var nodes = this.selModel.getSelectedNodes();
+		var nodes = this.tree.selModel.getSelectedNodes();
 		if (nodes.length) {
 			var node = nodes[0];
-			this.selModel.select(node);
+			this.tree.selModel.select(node);
 			Ext.Ajax.request({
 				scope: this,
 				url: this.processingPage + 'paste-list',
 				method:'post',
 				params: {
 					html:Ext.get('pasteListText').dom.value,
-					trackId:node.attributes.trackId,
-					parentId:node.attributes.itemId
+					trackId:node.raw.trackId,
+					parentId:node.raw.itemId
 				},
 				success: function(r){
 					var response = Ext.decode(r.responseText);
@@ -514,14 +526,14 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 	
 	deleteItem: function() {
 		Ext.Msg.show({
-    	   scope: this,
-		   title:'Confirm Delete',
-		   msg: 'Are you sure you want to delete the selected items?',
-		   buttons: Ext.Msg.YESNOCANCEL,
-		   fn: function(id){
-		   		if(id == "yes"){
-		   			this.eastPanel.disable();
-					var nodes = this.selModel.getSelectedNodes();
+			scope: this,
+			title:'Confirm Delete',
+			msg: 'Are you sure you want to delete the selected items?',
+			buttons: Ext.Msg.YESNOCANCEL,
+			fn: function(id){
+				if(id == "yes"){
+					this.eastPanel.disable();
+					var nodes = this.tree.selModel.getSelection();
 					if (nodes.length) {
 						var items = [];
 
@@ -529,8 +541,8 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 						for (var i = 0; i < nodes.length; i++) {
 							var node = nodes[i];
 							items.push({
-								trackId:node.attributes.trackId,
-								itemId:node.attributes.itemId
+								trackId:node.raw.trackId,
+								itemId:node.raw.itemId
 							});
 						}
 
@@ -555,8 +567,8 @@ Ext.define('Modules.navigation.js.NavigationManager', {
 							}
 						});
 					}
-		   		}
-		   }
+				}
+			}
 		});
 	}
 });

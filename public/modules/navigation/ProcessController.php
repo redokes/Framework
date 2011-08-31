@@ -1,5 +1,5 @@
 <?php 
-class Navigation_ProcessController extends Papercut_AjaxController {
+class Navigation_ProcessController extends Redokes_Controller_Ajax {
 	
 	
 }

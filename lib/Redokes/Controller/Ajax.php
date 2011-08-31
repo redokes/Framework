@@ -80,7 +80,7 @@ class Redokes_Controller_Ajax extends Redokes_Controller_Action {
 
 		if (!headers_sent()) {
 			if ($this->_sendPlainText) {
-				//echo $this->_returnCode;
+				echo $this->getView()->values['body'];
 			}
 			else {
 				header('Content-type: application/json');
