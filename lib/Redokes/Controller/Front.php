@@ -14,7 +14,7 @@ class Redokes_Controller_Front {
 		$this->initSession();
 		$this->initDbAdapter();
 		$this->parseRequest();
-//		$this->processRoutes();
+		$this->processRoutes();
 	}
 
 	/**
@@ -103,6 +103,18 @@ class Redokes_Controller_Front {
 		}
 		$this->params = array_merge($this->params, $_GET);
 	}
+	
+	 public function processRoutes() {
+		return;
+    	$router = new Redokes_Controller_Router();
+		$routes = $router->getRoutes();
+    	$route = "$this->module/$this->controller/$this->action";
+    	if (isset($routes[$route])) {
+    		foreach ($routes[$route] as $key => $value) {
+    			$this->$key = $value;
+    		}
+    	}
+    }
 
 	public function run() {
 		$moduleName = $this->getModuleName($this->module);

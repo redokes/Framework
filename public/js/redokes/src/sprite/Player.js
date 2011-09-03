@@ -27,8 +27,8 @@ Ext.define('Redokes.sprite.Player', {
 	},
 	
 	save: function() {
-		console.log('save');
-		console.log(Ext.encode(this.playerData));
+//		console.log('save');
+//		console.log(Ext.encode(this.playerData));
 		localStorage['player ' + this.playerData.name] = Ext.encode(this.playerData);
 	},
 	

@@ -1,1 +1,1 @@
-this is index
+this is index. logged in as <?php echo User_Model_User::getMyEmail(); ?> <a href="/user/process/logout">Logout</a>

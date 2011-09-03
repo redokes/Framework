@@ -124,7 +124,7 @@ Ext.define('Redokes.map.MapData', {
 				}, this));
 				
 				client.socket.on('setData', Ext.bind(function(data) {
-					if (this.players[data.id].img != data.img) {
+					if (this.players[data.id] && this.players[data.id].img != data.img) {
 						this.players[data.id].loadImage(data.img);
 					}
 				}, this));

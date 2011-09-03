@@ -23,7 +23,7 @@ class User_ProcessController extends Redokes_Controller_Ajax {
 		$user->loadPost();
 		$success = $user->login();
 		if (!$success) {
-			$this->addError('nope');
+			$this->addError('Incorrect login');
 		}
 	}
 	
