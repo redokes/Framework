@@ -130,7 +130,8 @@ Ext.define('Redokes.map.MapData', {
 				}, this));
 				
 				client.socket.on('player.joinmap', Ext.bind(function(request) {
-//					console.log('player join map');
+					console.log('player join map');
+					console.log(request.storeData);
 					this.initRemotePlayer(request.storeData);
 					this.game.player.socketMovePlayer(this.game.player.currentAnimation.title);
 				}, this));
@@ -164,8 +165,8 @@ Ext.define('Redokes.map.MapData', {
 	},
 	
 	addRemotePlayer: function(data) {
-//		console.log('Add remote player ' + data.id);
-//		console.log(data);
+		console.log('Add remote player ' + data.id);
+		console.log(data);
 		if (!this.players[data.id]) {
 			var remotePlayer = Ext.create('Redokes.sprite.PlayerUser', {
 				img:data.img,
@@ -173,6 +174,7 @@ Ext.define('Redokes.map.MapData', {
 				height:44,
 				x:0,
 				y:0,
+				layer:data.layer,
 				game:this.game,
 				context:this.game.context
 			});
