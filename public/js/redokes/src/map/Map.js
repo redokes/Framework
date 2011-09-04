@@ -44,7 +44,7 @@ Ext.define('Redokes.map.Map', {
 				layer:this.game.player.layer
 			});
 			this.game.player.socketSendPlayerData();
-			console.log('set player data ' + this.game.player.layer);
+//			console.log('set player data ' + this.game.player.layer);
 
 			// Set up the map socket
 			this.currentMap.initMapSocket();

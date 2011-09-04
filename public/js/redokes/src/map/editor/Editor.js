@@ -1,6 +1,6 @@
 Ext.define('Redokes.map.editor.Editor', {
 	extend:'Ext.tab.Panel',
-	height:800,
+	height:300,
 	activeTab:0,
 	deferredRender:false,
 	blankTile:{
@@ -109,13 +109,18 @@ Ext.define('Redokes.map.editor.Editor', {
 		
 		this.westPanel = new Ext.panel.Panel({
 			region:'west',
+			layout:'accordion',
 			items:[
 				this.settingsForm,
 				this.layerTree,
 				this.tilePropertiesForm
 			],
 			width:280,
-			collapsible:true
+			collapsible:true,
+			defaults: {
+				// applied to each contained panel
+				bodyStyle: 'padding:8px'
+			}
 		});
 		
 		this.mapSelector = Ext.create('Redokes.map.editor.MapSelector');
@@ -167,6 +172,7 @@ Ext.define('Redokes.map.editor.Editor', {
 	
 	initListeners: function() {
 		this.gamePanel.on('afterrender', function() {
+			this.setHeight(Ext.getBody().getHeight());
 			this.game.map.on('mapload', function() {
 				this.settingsForm.getForm().setValues(this.game.map.currentMap.getValues());
 				
@@ -323,6 +329,7 @@ Ext.define('Redokes.map.editor.Editor', {
 		// update canvas size
 		var width = this.game.map.currentMap.width * this.game.map.currentMap.tileSize;
 		var height = this.game.map.currentMap.height * this.game.map.currentMap.tileSize;
+		
 		this.previewCanvas.set({
 			width:width,
 			height:height

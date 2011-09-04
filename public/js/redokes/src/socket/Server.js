@@ -49,7 +49,7 @@ function initListeners(namespace) {
 		
 		socket.on('setData', function(params, callback) {
 			console.log('set data');
-			console.log(params);
+//			console.log(params);
 			for (var i in params) {
 				socket.set(i, params[i]);
 			}

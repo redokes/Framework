@@ -12,6 +12,7 @@ Ext.define('Redokes.game.SocketManager', {
 		this.addEvents('initclient');
 		this.namespaces = {};
         this.initConfig(config);
+		window.sockets = this;
     },
 	
 	createNamespace: function(name) {

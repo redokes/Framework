@@ -25,9 +25,15 @@ Ext.define('Redokes.sprite.Sprite', {
 	tileY:0,
 	layer:0,
 	
+	numSprites:0,
+	sprites:false,
+	following:false,
+	visible:true,
+	
 	constructor: function(params) {
 		d('Sprite constructor');
 		Ext.apply(this, params);
+		this.sprites = [];
 		this.currentAnimation = Ext.create('Redokes.sprite.Animation');
 		this.init();
 	},
@@ -91,11 +97,27 @@ Ext.define('Redokes.sprite.Sprite', {
 	},
 	
 	draw: function() {
-		try {
-			this.context.drawImage(this.img.dom, this.getFrame() * this.width, 0, this.width, this.height, this.x, this.y-32, this.width, this.height);
-		}
-		catch(e) {
-			console.log(e);
+		if (this.visible) {
+			try {
+				if (this.following) {
+					if (this.img) {
+						this.context.drawImage(this.img.dom, this.getFrame() * this.width, 0, this.width, this.height, this.following.x, this.following.y-32, this.width, this.height);
+					}
+				}
+				else {
+					if (this.img) {
+						this.context.drawImage(this.img.dom, this.getFrame() * this.width, 0, this.width, this.height, this.x, this.y-32, this.width, this.height);
+					}
+				}
+			}
+			catch(e) {
+				console.log(e);
+			}
+			
+			// draw any child sprites
+			for (var i = 0; i < this.numSprites; i++) {
+				this.sprites[i].draw();
+			}
 		}
 	},
 	
@@ -119,5 +141,12 @@ Ext.define('Redokes.sprite.Sprite', {
 	setAnimationSpeed: function(speed) {
 		this.animationSpeed = 30 / (speed*1.5);
 //		this.initAnimations();
+	},
+	
+	addSprite: function(sprite) {
+		sprite.following = this;
+		sprite.context = this.context;
+		this.sprites.push(sprite);
+		this.numSprites = this.sprites.length;
 	}
 });
