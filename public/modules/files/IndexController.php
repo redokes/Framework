@@ -2,7 +2,7 @@
 
 class Files_IndexController extends Redokes_Controller_Action {
 	
-	public function indexAction() {
+	public function init() {
 		$this->getView()
 			->setValues(array(
 				'title' => 'File Test'
@@ -10,5 +10,13 @@ class Files_IndexController extends Redokes_Controller_Action {
 			->addCss('/js/ext-4.0.2a/resources/css/ext-all.css')
 			->addJs('/js/ext-4.0.2a/ext-all.js')
 			->addJs('/js/redokes/redokes.js');
+	}
+	
+	public function indexAction() {
+		
+	}
+	
+	public function wesAction() {
+		
 	}
 }
