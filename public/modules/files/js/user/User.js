@@ -15,13 +15,26 @@ Ext.define('Modules.files.js.user.User', {
 	//Init Functions
 	init: function(){
 		this.initMenu();
+		this.initUserView();
 	},
 	
 	initMenu: function(){
-		this.menu = new Ext.panel.Panel({
+		this.menu = Ext.create('Modules.files.js.user.Menu', {
 			scope: this,
-			title: 'My Shared Folders'
+			title: 'Shared Folders'
 		});
-		this.application.getWest().add(this.menu);
+		this.application.getAccordion().add(this.menu);
+	},
+	
+	initUserView: function(){
+		this.userView = Ext.create('Modules.files.js.user.view.User', {
+			scope: this,
+			title: 'User'
+		});
+		this.application.getCenter().add(this.userView);
+		
+		this.menu.folder.on('select', function(){
+			this.userView.tree.addFileList(this.menu.folder.getFiles());
+		}, this);
 	}
 });

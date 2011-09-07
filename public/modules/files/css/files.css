@@ -1,0 +1,10 @@
+/******************************************
+* User Module
+******************************************/
+.shared-folder{
+	margin: 5px;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: #ddd;
+	border: 1px solid #ccc;
+}

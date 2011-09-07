@@ -43,6 +43,10 @@ Ext.define('Modules.files.js.Application', {
 		this.initWest();
 		this.initCenter();
 		
+		//Menus
+		this.initMenu();
+		this.initAccordion();
+		
 		//Init the modules
 		this.initModules();
 	},
@@ -100,7 +104,10 @@ Ext.define('Modules.files.js.Application', {
 			scope: this,
 			title: 'West',
 			region: 'west',
-			layout: 'accordion',
+			layout: {
+				type: 'vbox',
+				align: 'stretch'
+			},
 			width: 250,
 			split: true
 		});
@@ -142,6 +149,32 @@ Ext.define('Modules.files.js.Application', {
      */
 	getCenter: function(){
 		return this.center;
+	},
+	
+	initMenu: function(){
+		this.menu = Ext.create('Modules.files.js.menu.Menu', {
+			scope: this
+		});
+		this.west.add(this.menu);
+	},
+	
+	getMenu: function(){
+		return this.menu;
+	},
+	
+	initAccordion: function(){
+		this.accordion = new Ext.panel.Panel({
+			scope: this,
+			layout: {
+				type: 'accordion'
+			},
+			flex: 1
+		});
+		this.west.add(this.accordion);
+	},
+	
+	getAccordion: function(){
+		return this.accordion;
 	},
 
 	registerModule: function(module){

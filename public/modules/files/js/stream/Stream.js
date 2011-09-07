@@ -23,11 +23,8 @@ Ext.define('Modules.files.js.stream.Stream', {
 	},
 	
 	initMenu: function(){
-		this.menu = new Ext.panel.Panel({
-			scope: this,
-			title: 'Stream'
+		this.application.getMenu().addMenuItem({
+			text: 'Stream'
 		});
-		
-		this.application.getWest().add(this.menu);
 	}
 });
