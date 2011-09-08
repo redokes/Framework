@@ -19,12 +19,33 @@ Ext.define('Modules.files.js.stream.Stream', {
 
 	//Init Functions
 	init: function(){
-		this.initMenu();
+		this.initMenuItem();
+		this.initView();
 	},
 	
-	initMenu: function(){
+	initMenuItem: function(){
 		this.application.getMenu().addMenuItem({
-			text: 'Stream'
+			scope: this,
+			text: 'Stream',
+			handler: function(){
+				this.application.setActiveItem(this.view);
+			}
 		});
+	},
+	
+	initView: function(){
+		this.view = Ext.create('Modules.files.js.stream.view.Stream', {
+			scope: this,
+			title: 'Stream'
+		});
+		this.addMessage({
+			text: 'Welcome...'
+		});
+		this.application.getCenter().add(this.view);
+	},
+	
+	//Helper Functions
+	addMessage: function(record){
+		this.view.addMessage(record);
 	}
 });

@@ -4,6 +4,12 @@ Ext.define('Modules.files.js.model.File', {
 		name:'text',
 		type:'string'
 	},{
+		name: 'icon',
+		type: 'string',
+		convert: function(){
+			console.log(arguments);
+		}
+	},{
 		name:'leaf',
 		type:'boolean'
 	},{

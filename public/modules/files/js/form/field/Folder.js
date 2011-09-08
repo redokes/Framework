@@ -11,17 +11,17 @@ Ext.define('Modules.files.js.form.field.Folder', {
             cls: Ext.baseCSSPrefix + 'form-file-input',
             tag: 'input',
             type: 'file',
-			webkitdirectory: true,
-            size: 1
+			webkitdirectory: true
         }).on('change', me.onFileChange, me);
 		
 		me.fileInputEl.on('change', function(e) {
+			console.log('change');
 			this.lastEvent = e;
 			this.fireEvent('select', this, this.fileInputEl, e);
 			var files = this.getFiles();
 			var file = files[2];
-			var userFile = Ext.create('Modules.files.js.user.File', file);
-			userFile.download();
+			//var userFile = Ext.create('Modules.files.js.user.File', file);
+			//userFile.download();
 		}, this);
     },
 	
