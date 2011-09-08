@@ -106,11 +106,8 @@ Ext.define('Modules.files.js.Application', {
 		this.west = Ext.create('Ext.panel.Panel', {
 			scope: this,
 			region: 'west',
-			layout: {
-				type: 'vbox',
-				align: 'stretch'
-			},
-			width: 250,
+			layout: 'fit',
+			width: 300,
 			split: true
 		});
 		this.items.push(this.west);
@@ -154,9 +151,10 @@ Ext.define('Modules.files.js.Application', {
 	
 	initMenu: function(){
 		this.menu = Ext.create('Modules.files.js.menu.Menu', {
-			scope: this
+			scope: this,
+			docked: 'top'
 		});
-		this.west.add(this.menu);
+		this.west.addDocked(this.menu);
 	},
 	
 	getMenu: function(){
@@ -167,9 +165,9 @@ Ext.define('Modules.files.js.Application', {
 		this.accordion = new Ext.panel.Panel({
 			scope: this,
 			layout: {
-				type: 'accordion'
-			},
-			flex: 1
+				type: 'accordion',
+				multi: true
+			}
 		});
 		this.west.add(this.accordion);
 	},

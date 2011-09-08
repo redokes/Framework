@@ -19,8 +19,13 @@ Ext.define('Modules.files.js.music.Music', {
 	},
 	
 	initPlayer: function(){
-		this.audio = document.createElement('audio');
-		document.body.appendChild(this.audio);
+		this.player = Ext.create('Modules.files.js.music.Player', {
+			scope: this,
+			title: 'Music'
+		}, this);
+		this.application.getAccordion().add(this.player);
+		//this.audio = document.createElement('audio');
+		//document.body.appendChild(this.audio);
 		//audio.src = 'data:' + this.file.type + ';base64,' + window.btoa(this.chunks.join(''));
 		//audio.play();
 	},
@@ -38,9 +43,8 @@ Ext.define('Modules.files.js.music.Music', {
 			console.log(record.raw.file);
 			var file = Ext.create('Modules.files.js.file.File', record.raw.file);
 			file.on('complete', function(file, data){
-				console.log('complete');
-				this.audio.src = 'data:' + file.file.type + ';base64,' + window.btoa(data);
-				this.audio.play();
+				this.player.setRawSrc(file.type, data);
+				this.player.play();
 				
 				//Share this on the stream
 				var stream = this.application.getModule('stream');
