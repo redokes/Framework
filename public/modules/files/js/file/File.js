@@ -1,4 +1,4 @@
-Ext.define('Modules.files.js.user.File', {
+Ext.define('Modules.files.js.file.File', {
 	extend: 'Ext.util.Observable',
 	
 	//Config
@@ -11,6 +11,7 @@ Ext.define('Modules.files.js.user.File', {
 	currentChunk: 0,
 
 	constructor: function(file, config){
+		Ext.apply(this, file);
 		this.file = file;
 		this.callParent([config]);
 		this.init();
@@ -19,7 +20,6 @@ Ext.define('Modules.files.js.user.File', {
 	init: function(){
 		this.initFile();
 		this.initReader();
-		console.log(this.file.size);
 	},
 	
 	initFile: function(){
@@ -51,15 +51,14 @@ Ext.define('Modules.files.js.user.File', {
 	onDownloadChunk: function(event, options){
 		this.chunks[this.currentChunk] = event.target.result;
 		this.currentChunk++;
-		console.log(this.currentChunk);
 		//Check if we are finished
 		if(this.currentChunk >= this.totalChunks){
 			this.un('chunk', this.onDownloadChunk, this);
-			this.fireEvent('complete');
-			var audio = document.createElement('audio');
-			document.body.appendChild(audio);
-			audio.src = 'data:' + this.file.type + ';base64,' + window.btoa(this.chunks.join(''));
-			audio.play();
+			this.fireEvent('complete', this, this.chunks.join(''));
+			//var audio = document.createElement('audio');
+			//document.body.appendChild(audio);
+			//audio.src = 'data:' + this.file.type + ';base64,' + window.btoa(this.chunks.join(''));
+			//audio.play();
 		}
 		
 		//Keep downloading

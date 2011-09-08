@@ -1,4 +1,14 @@
 /******************************************
+* Icons
+******************************************/
+.audio-icon-16{
+	background-image: url(../images/icons/audio-16.png);
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+}
+
+/******************************************
 * User Module
 ******************************************/
 .shared-folder{

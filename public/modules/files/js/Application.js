@@ -8,7 +8,9 @@ Ext.define('Modules.files.js.Application', {
 	//Require Modules
 	requires:[
 		'Modules.files.js.stream.Stream',
-		'Modules.files.js.user.User'
+		'Modules.files.js.user.User',
+		'Modules.files.js.chat.Chat',
+		'Modules.files.js.music.Music'
 	],
 	
 	//Config
@@ -54,6 +56,8 @@ Ext.define('Modules.files.js.Application', {
 	initModules: function(){
 		Modules.files.js.stream.Stream.register(this);
 		Modules.files.js.user.User.register(this);
+		Modules.files.js.chat.Chat.register(this);
+		Modules.files.js.music.Music.register(this);
 	},
 	
 	initExt: function(){
@@ -69,7 +73,6 @@ Ext.define('Modules.files.js.Application', {
 		 */
 		this.north = new Ext.panel.Panel({
 			scope: this,
-			title: 'North',
 			unstyled: true,
 			border: false,
 			hidden: true,
@@ -102,13 +105,9 @@ Ext.define('Modules.files.js.Application', {
 		 */
 		this.west = Ext.create('Ext.panel.Panel', {
 			scope: this,
-			title: 'West',
 			region: 'west',
-			layout: {
-				type: 'vbox',
-				align: 'stretch'
-			},
-			width: 250,
+			layout: 'fit',
+			width: 300,
 			split: true
 		});
 		this.items.push(this.west);
@@ -129,7 +128,6 @@ Ext.define('Modules.files.js.Application', {
 		 */
 		this.center = Ext.create('Ext.panel.Panel', {
 			scope: this,
-			title: 'Center',
 			region: 'center',
 			layout: 'card',
 			activeItem: 0,
@@ -153,9 +151,10 @@ Ext.define('Modules.files.js.Application', {
 	
 	initMenu: function(){
 		this.menu = Ext.create('Modules.files.js.menu.Menu', {
-			scope: this
+			scope: this,
+			docked: 'top'
 		});
-		this.west.add(this.menu);
+		this.west.addDocked(this.menu);
 	},
 	
 	getMenu: function(){
@@ -166,9 +165,9 @@ Ext.define('Modules.files.js.Application', {
 		this.accordion = new Ext.panel.Panel({
 			scope: this,
 			layout: {
-				type: 'accordion'
-			},
-			flex: 1
+				type: 'accordion',
+				multi: true
+			}
 		});
 		this.west.add(this.accordion);
 	},
@@ -202,5 +201,13 @@ Ext.define('Modules.files.js.Application', {
 				}
 			}, this, {name: name, callback: callback, scope: scope, options: options});
 		}
+	},
+	
+	setActiveItem: function(item){
+		this.getCenter().setActiveItem(item);
+	},
+	
+	getActiveItem: function(){
+		return this.getCenter().getActiveItem();
 	}
 });

@@ -59,10 +59,12 @@ Ext.define('Modules.files.js.user.view.Tree', {
 				}
 				subPath = subPath[folderName];
 			}
-			subPath[fileName] = {
-				record:fileList[i],
-				isFile:true
-			};
+			if(fileName != "."){
+				subPath[fileName] = {
+					record:fileList[i],
+					isFile:true
+				};
+			}
 		}
 		this.buildNodes(paths[topDir], processedList.children);
 		return processedList;
@@ -70,15 +72,26 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	
 	buildNodes: function(dir, children) {
 		for (var i in dir) {
-			if (i == 'record') {
-				
-			}
-			else {
+			var item = dir[i];
+			var config = {};
+			if (i != 'record') {
+				config = {
+					text: i
+				};
 				if (dir[i].isFile) {
-					children.push(Ext.apply({
-						text:i,
-						leaf:true
-					}, dir[i].record));
+					//Add Config
+					Ext.apply(config, {
+						leaf:true,
+						file: dir[i].record
+					});
+					
+					//Check File type
+					if(item.record.type.match(/^audio/gi)){
+						Ext.apply(config, {
+							iconCls: 'audio-icon-16'
+						});
+					}
+					children.push(config);
 				}
 				else {
 					children.push(Ext.apply({
@@ -89,7 +102,6 @@ Ext.define('Modules.files.js.user.view.Tree', {
 					this.buildNodes(dir[i], children[children.length-1].children);
 				}
 			}
-				
 		}
 		return children;
 	}
