@@ -17,6 +17,10 @@ server.listen(8080);
 io = io.listen(server);
 io.set('log level', 1);
 
+/**
+ * Creates a new namespace if it doesn't already exist
+ * @param {String} name
+ */
 function makeNamespace(name) {
 	if (!io.sockets.manager.namespaces['/' + name]) {
 		console.log('Making namespace ' + name);
@@ -29,17 +33,32 @@ function makeNamespace(name) {
 	}
 }
 
+/**
+ * Returns an object containing the store data for a given socket id
+ * @param {String} id
+ */
 function getSocketData(id) {
 	var socketData = io.sockets.sockets[id].store.data;
 	socketData.id = id;
 	return socketData;
 }
 
+/**
+ * Sets up all of the listeners for a namespace when it is created. This
+ * includes the main global namespace
+ */
 function initListeners(namespace) {
 	console.log('Init listeners for ' + namespace.name);
+	
+	/**
+     * All socket listeners will be set once the namespace has been connected to
+     */
 	namespace.on('connection', function(socket) {
 		console.log('Connected to namespace ' + socket.namespace.name);
 		
+		/**
+		 * Ensures that a namespace exists when a user tries to connect to it
+		 */
 		socket.on('makeNamespace', function(params, callback) {
 			makeNamespace(params.name);
 			callback({
@@ -47,6 +66,9 @@ function initListeners(namespace) {
 			});
 		});
 		
+		/**
+		 * Set any passed data in the user's data store
+		 */
 		socket.on('setData', function(params, callback) {
 			console.log('set data');
 //			console.log(params);
@@ -56,7 +78,11 @@ function initListeners(namespace) {
 			socket.broadcast.emit('setData', getSocketData(socket.id));
 		});
 		
-		// Send the user data about other users
+		/**
+		 * Sends an object containing an array of socket ids
+		 * for all users connected to the current namespace
+		 * to the callback function
+		 */
 		socket.on('getSocketIds', function(params, callback) {
 			var namespace = socket.namespace.name;
 			var sockets = socket.manager.rooms[namespace];
@@ -74,6 +100,11 @@ function initListeners(namespace) {
 			});
 		});
 		
+		/**
+		 * Sends an object containing an array of socket data stores
+		 * for all users connected to the current namespace
+		 * to the callback function
+		 */
 		socket.on('getRemoteUsers', function(params, callback) {
 			var namespace = socket.namespace.name;
 			var sockets = socket.manager.rooms[namespace];
@@ -91,18 +122,35 @@ function initListeners(namespace) {
 			});
 		});
 		
-		// Broadcast the connection
+		/**
+		 * Let all other users know this user has connected to the namespace
+		 * Send the socket's data store as a parameter
+		 */
 		socket.broadcast.emit('otherConnect', getSocketData[socket.id]);
 			
-		// When the server gets a message, during a connection, broadcast the message
+		/**
+		 * Fire an event on all other users as defined by request.action
+		 * If the client is using the module/action communication method, the "message" event
+		 * will always be fired so the module and action data can be handled by
+		 * a message handler on the client side
+		 * Adds the socket's store data to the response
+		 */
 		socket.on('message', function(request){
 //			console.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
 //			console.log(request);
 			request.storeData = getSocketData(socket.id);
-			socket.broadcast.emit(request.action, request);
+			if (request.module == null) {
+				socket.broadcast.emit(request.action, request);
+			}
+			else {
+				socket.broadcast.emit('message', request);
+			}
 		});
 
-		// When a user disconnects, broadcast the disconnection to other users
+		/**
+		 * When a user disconnects, broadcast the disconnection to other users
+		 * Fire the otherDisconnect event to all other users in this namespace
+		 */
 		socket.on('disconnect', function(request) {
 			console.log('Disconnect from ' + socket.namespace.name);
 			socket.broadcast.emit('otherDisconnect', socket.id);
@@ -111,4 +159,7 @@ function initListeners(namespace) {
 	});
 }
 
+/**
+ * Make the global namespace when the server is first created
+ */
 makeNamespace('');
