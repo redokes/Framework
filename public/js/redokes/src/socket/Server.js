@@ -174,8 +174,8 @@ var socketServer = {
 		 * Adds the socket's store data to the response
 		 */
 		socket.on('message', function(request){
-	//			console.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
-	//			console.log(request);
+			console.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
+			console.log(request);
 			request.storeData = this.getSocketData(socket.id);
 			if (request.module == null) {
 				socket.broadcast.emit(request.action, request);
