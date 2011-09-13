@@ -17,14 +17,7 @@ Ext.define('Modules.files.js.chat.Chat', {
 		this.application.onModuleReady('stream', function(stream){
 			this.initMessagePanel();
 		}, this);
-	},
-	
-	initMenu: function(){
-		this.menu = Ext.create('Modules.files.js.user.Menu', {
-			scope: this,
-			title: 'Shared Folders'
-		});
-		this.application.getAccordion().add(this.menu);
+		this.initMessageHandler();
 	},
 	
 	initMessagePanel: function(){
@@ -44,7 +37,7 @@ Ext.define('Modules.files.js.chat.Chat', {
 							'message',
 							{ message: this.messageField.getValue() }
 						);
-						this.addMessage(0, 'Me', this.messageField.getValue());
+						//this.addMessage(0, 'Me', this.messageField.getValue());
 						this.messageField.setValue('');
                     }
                 }
@@ -71,5 +64,37 @@ Ext.define('Modules.files.js.chat.Chat', {
     	    items: [this.messageField]
     	});
 		this.application.getCenter().dockedItems.add(this.messagePanel);
+	},
+	
+	initMessageHandler: function(){
+		Ext.create('Redokes.socket.client.Handler', {
+			scope: this,
+			client: this.application.getSocketClient(),
+			module: 'user',
+			actions: {
+				message: function(handler, response){
+					console.log(response);
+					//Share this on the stream
+					var stream = this.application.getModule('stream');
+					if(stream){
+						stream.addMessage({
+							text: response.storeData.id + ": " + response.data.message
+						});
+					}
+				},
+				typing: function(handler, response){
+					return;
+					var panel = this.userList.down('#' + response.session);
+					if(panel != null){
+						if(response.data.message.length){	
+							panel.getEl().down('.info').update('typing...');
+						}
+						else{
+							panel.getEl().down('.info').update('');
+						}
+					}
+				}
+			}
+		});
 	}
 });

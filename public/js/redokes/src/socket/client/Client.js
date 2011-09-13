@@ -73,8 +73,6 @@ Ext.define('Redokes.socket.client.Client', {
 			}, this));
 			
 			this.socket.on('message', Ext.bind(function(request){
-				console.log('message');
-				console.log(request);
 				var params = {
 					module:request.module,
 					action:request.action
