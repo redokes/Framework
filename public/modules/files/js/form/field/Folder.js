@@ -18,10 +18,6 @@ Ext.define('Modules.files.js.form.field.Folder', {
 			console.log('change');
 			this.lastEvent = e;
 			this.fireEvent('select', this, this.fileInputEl, e);
-			var files = this.getFiles();
-			var file = files[2];
-			//var userFile = Ext.create('Modules.files.js.user.File', file);
-			//userFile.download();
 		}, this);
     },
 	

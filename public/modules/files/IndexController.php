@@ -18,6 +18,7 @@ class Files_IndexController extends Redokes_Controller_Action {
 	}
 	
 	public function wesAction() {
-		
+		$this->getView()
+			->addJs('http://localhost:8080/socket.io/socket.io.js');
 	}
 }
