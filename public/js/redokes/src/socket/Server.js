@@ -181,12 +181,12 @@ var socketServer = {
 			/**
 			 * Check if this is a message for one person or if it needs to be broadcasted
 			 */
-			if (request.socketId) {
+			if (request.data && request.data.socketId) {
 				if (request.module == null) {
-					this.io.sockets.sockets[request.socketId].emit(request.action, request);
+					this.io.sockets.sockets[request.data.socketId].emit(request.action, request);
 				}
 				else {
-					this.io.sockets.sockets[request.socketId].emit('message', request);
+					this.io.sockets.sockets[request.data.socketId].emit('message', request);
 				}
 			}
 			else {
