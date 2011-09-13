@@ -20,17 +20,49 @@ Ext.define('Modules.files.js.stream.Stream', {
 	//Init Functions
 	init: function(){
 		this.initMenuItem();
+		this.initBadge();
 		this.initView();
 	},
 	
 	initMenuItem: function(){
-		this.application.getMenu().addMenuItem({
+		this.menuItem = new Ext.menu.Item({
 			scope: this,
 			text: 'Stream',
 			handler: function(){
 				this.application.setActiveItem(this.view);
 			}
-		});
+		})
+		this.application.getMenu().addMenuItem(this.menuItem);
+	},
+	
+	initBadge: function(){
+		if(!this.menuItem.rendered){
+			this.menuItem.on('afterrender', function(){
+				this.initBadge();
+			}, this);
+			return;
+		}
+		
+		this.badge = Ext.get(this.menuItem.getEl().createChild({
+            tag: 'div',
+			html: '',
+			cls: 'menu-item-badge'
+        }));
+		this.badge.count = 0;
+		this.badge.hide();
+		
+		this.view.store.on('add', function(){
+			if(this.application.getActiveItem != this.view){
+				this.badge.count++;
+				this.badge.update(this.badge.count);
+				this.badge.show();
+			}
+		}, this);
+		
+		this.view.on('show', function(){
+			this.badge.count = 0;
+			this.badge.hide();
+		}, this);
 	},
 	
 	initView: function(){

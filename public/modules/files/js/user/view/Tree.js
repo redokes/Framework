@@ -6,16 +6,35 @@ Ext.define('Modules.files.js.user.view.Tree', {
 
     initComponent: function() {
 		this.items = [];
+		this.dockedItems = [];
 		this.init();
 		this.callParent(arguments);
 	},
 	
 	init: function(){
 		this.initStore();
+		this.initToolbar();
+		this.initSearch();
 	},
 	
 	initStore: function(){
 		this.store = Ext.create('Ext.data.TreeStore');
+	},
+	
+	initToolbar: function(){
+		this.toolbar = new Ext.toolbar.Toolbar({
+			scope: this,
+			docked: 'top'
+		});
+		this.dockedItems.push(this.toolbar);
+	},
+	
+	initSearch: function(){
+		this.search = new Ext.form.field.Text({
+			scope: this,
+			emptyText: 'Search...'
+		});
+		this.toolbar.add(this.search);
 	},
 	
 	addFileList: function(fileList){
