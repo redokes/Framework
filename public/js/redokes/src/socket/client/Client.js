@@ -117,4 +117,5 @@ Ext.define('Redokes.socket.client.Client', {
     		data: data
     	});
 	}
+	
 });
