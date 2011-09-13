@@ -115,7 +115,7 @@ var socketServer = {
 		 */
 		socket.on('setData', function(params, callback) {
 			console.log('set data');
-	//			console.log(params);
+//			console.log(params);
 			for (var i in params) {
 				socket.set(i, params[i]);
 			}
@@ -177,11 +177,25 @@ var socketServer = {
 			console.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
 			console.log(request);
 			request.storeData = this.getSocketData(socket.id);
-			if (request.module == null) {
-				socket.broadcast.emit(request.action, request);
+			
+			/**
+			 * Check if this is a message for one person or if it needs to be broadcasted
+			 */
+			if (request.socketId) {
+				if (request.module == null) {
+					this.io.sockets.sockets[request.socketId].emit(request.action, request);
+				}
+				else {
+					this.io.sockets.sockets[request.socketId].emit('message', request);
+				}
 			}
 			else {
-				socket.broadcast.emit('message', request);
+				if (request.module == null) {
+					socket.broadcast.emit(request.action, request);
+				}
+				else {
+					socket.broadcast.emit('message', request);
+				}
 			}
 		}.bind(this));
 

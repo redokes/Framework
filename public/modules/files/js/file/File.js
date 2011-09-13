@@ -4,7 +4,7 @@ Ext.define('Modules.files.js.file.File', {
 	//Config
 	file: null,
 	reader: null,
-	chunkSize: 262144,	//256kb
+	chunkSize: 65536,	//1024*64
 	chunks: [],
 	chunkOffsets: [],
 	totalChunks: 0,
@@ -26,9 +26,8 @@ Ext.define('Modules.files.js.file.File', {
 		this.chunks = [];
 		this.chunkOffsets = [];
 		this.totalChunks = Math.ceil(this.file.size / this.chunkSize);
-		for(var i = 0; i <= this.file.size;){
+		for(var i = 0; i <= this.file.size; i += this.chunkSize){
 			this.chunkOffsets.push(i);
-			i += (this.chunkSize);
 		}
 	},
 	
