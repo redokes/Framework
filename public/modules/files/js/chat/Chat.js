@@ -38,9 +38,8 @@ Ext.define('Modules.files.js.chat.Chat', {
 			listeners: {
 				scope: this,
                 specialkey: function(field, e){
-					/*
                     if (e.getKey() == e.ENTER) {
-                        this.client.send(
+                        this.application.getSocketClient().send(
 							'user',
 							'message',
 							{ message: this.messageField.getValue() }
@@ -48,15 +47,13 @@ Ext.define('Modules.files.js.chat.Chat', {
 						this.addMessage(0, 'Me', this.messageField.getValue());
 						this.messageField.setValue('');
                     }
-					*/
                 }
             }
     	});
 		
 		//on key up, send a request to the server that says the user is typing or not typing
-		/*
     	this.messageField.on('keyup', function(){
-    		this.client.send(
+    		this.application.getSocketClient().send(
 				'user',
 				'typing',
 				{
@@ -64,7 +61,6 @@ Ext.define('Modules.files.js.chat.Chat', {
 				}
 			);
     	}, this);
-		*/
 		
 		//Create a toolbar to hold the message field
     	this.messagePanel = Ext.create('Ext.panel.Panel', {

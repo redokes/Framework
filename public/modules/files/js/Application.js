@@ -49,8 +49,21 @@ Ext.define('Modules.files.js.Application', {
 		this.initMenu();
 		this.initAccordion();
 		
+		//Init socket client
+		this.initSocketClient();
+		
 		//Init the modules
 		this.initModules();
+	},
+	
+	initSocketClient: function() {
+		this.socketClient = Ext.create('Redokes.socket.client.Client', {
+			url:'http://localhost:8080'
+		});
+	},
+	
+	getSocketClient: function() {
+		return this.socketClient;
 	},
 	
 	initModules: function(){
