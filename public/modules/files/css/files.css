@@ -1,0 +1,44 @@
+.menu-item-badge{
+	position: absolute;
+	padding: 2px 0px 0px 0px;
+	text-align: center;
+	width: 16px;
+	height: 16px;
+	top: 5px;
+	right: 5px;
+	background-color: #e50202;
+	border: 1px solid #c60505;
+	color: #eee;
+	font-size: 9px;
+	font-weight: bold;
+	border-radius: 8px;
+}
+
+/******************************************
+* Icons
+******************************************/
+.audio-icon-16{
+	background-image: url(../images/icons/audio-16.png);
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+}
+
+/******************************************
+* Stream Module
+******************************************/
+.stream-item{
+	padding: 10px;
+	border-bottom: 1px dashed #000;
+}
+
+/******************************************
+* User Module
+******************************************/
+.shared-folder{
+	margin: 5px;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: #ddd;
+	border: 1px solid #ccc;
+}

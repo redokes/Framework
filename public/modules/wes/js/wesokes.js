@@ -26,9 +26,8 @@ function d(param) {
 
 Ext.onReady(function() {
 	if (location.href.match(/edit/)) {
-		Ext.create('Redokes.map.editor.Editor', {
-			renderTo:'game',
-			height:800
+		Ext.create('Redokes.map.editor.Viewport', {
+			
 		});
 		
 	}

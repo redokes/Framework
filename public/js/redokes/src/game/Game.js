@@ -9,7 +9,7 @@ Ext.define('Redokes.game.Game', {
 	numTilesWidth:15,
 	numTilesHeight:10,
 	tileSize:32,
-	fps:30,
+	fps:60,
 	frameCount:0,
 	timer:false,
 	socketManager:false,

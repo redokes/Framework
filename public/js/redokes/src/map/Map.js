@@ -39,6 +39,12 @@ Ext.define('Redokes.map.Map', {
 			else {
 				this.game.player.setToTile(this.currentMap.spawnX, this.currentMap.spawnY, this.currentMap.spawnLayer, this.game.tileSize);
 			}
+			
+			this.game.player.setPlayerData({
+				layer:this.game.player.layer
+			});
+			this.game.player.socketSendPlayerData();
+//			console.log('set player data ' + this.game.player.layer);
 
 			// Set up the map socket
 			this.currentMap.initMapSocket();
