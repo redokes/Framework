@@ -16,5 +16,6 @@ Ext.onReady(function() {
 	});
 	
 	window.client = client;
+	
 });
 </script>
