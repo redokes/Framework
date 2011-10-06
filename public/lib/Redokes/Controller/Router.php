@@ -17,11 +17,6 @@ class Redokes_Controller_Router {
 
 	public function getRoutes() {
 //		$this->routes = json_decode(FileSystem::readResourceFile($this->routeCache, false), true);
-		$this->routes = array(
-			'index/index/index' => array(
-				'module' => 'scottandkassi'
-			)
-		);
 		return $this->routes;
 	}
 
