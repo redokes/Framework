@@ -188,7 +188,6 @@ class Redokes_Controller_Front {
 					'password' => ''
 				);
 			}
-			
 			$this->_dbAdapters[$dbServer] = Zend_Db::factory('Pdo_Mysql', $config);
 			Zend_Registry::set($dbServer, $this->_dbAdapters[$dbServer]);
 			Zend_Db_Table_Abstract::setDefaultAdapter($this->_dbAdapters[$dbServer]);

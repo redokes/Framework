@@ -30,7 +30,7 @@ class Wes_IndexController extends Redokes_Controller_Action {
 	public function indexAction() {
 		echo $this->getLinks();
 		echo 'this is the index';
-		$track = new Navigation_Model_Track(1);
+		$track = new Navigation_Model_Track(2);
 		echo $track->getHtml('test-track');
 		
 //		$track->save();

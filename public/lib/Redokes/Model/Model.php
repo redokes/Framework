@@ -259,6 +259,7 @@ class Redokes_Model_Model {
 
 	public function save($doAudit = true) {
 		$field = $this->table->getPrimary();
+		
 		// make sure data is valid
 		if (!$this->_validated) {
 			$this->validate();
