@@ -57,7 +57,7 @@ Ext.define('Redokes.game.Game', {
 	
 	initSocketManager: function() {
 		d('Init Socket Manager');
-		this.socketManager = Ext.create('Redokes.game.SocketManager', {
+		this.socketManager = Ext.create('Redokes.socket.SocketManager', {
 			game:this,
 			url:'http://localhost:8080'
 		});
