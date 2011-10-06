@@ -6,9 +6,9 @@ ini_set('display_errors', '1');
 date_default_timezone_set('America/New_York');
 
 //Set up constant varaibles
-define('ROOT_PATH', dirname(__FILE__) . '/../');
+define('ROOT_PATH', dirname(__FILE__) . '/');
 define('APPLICATION_PATH', ROOT_PATH . 'application/');
-define('PUBLIC_PATH', ROOT_PATH . 'public/');
+define('PUBLIC_PATH', ROOT_PATH);
 define('MODULE_PATH', PUBLIC_PATH . 'modules/');
 define('LIBRARY_PATH', ROOT_PATH . 'lib/');
 define('CACHE_PATH', ROOT_PATH . 'cache/');
