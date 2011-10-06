@@ -1,0 +1,532 @@
+.x-clear {
+	overflow:hidden;
+	clear:both;
+	height:0;
+	width:0;
+	font-size:0;
+	line-height:0;
+}
+
+ul, li, h1, h2, h3, h4, h5, h6 {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+
+html, body, p {
+	font-family:Georgia;
+	color:#49423c;
+	letter-spacing:1.5px;
+	line-height:18px;
+	margin:0;
+	padding:0;
+	font-size:12px;
+}
+
+a {
+	color:#d36633;
+	text-decoration:none;
+}
+
+a:hover {
+	text-decoration:underline;
+}
+
+#header-wrap {
+	height:127px;
+	background:url(/modules/scottandkassi/img/nav/nav-bg.png) repeat-x;
+	position:fixed;
+	left:0;
+	top:0;
+	width:100%;
+}
+
+#header-inner {
+	width:858px;
+	margin:0 auto;
+}
+
+#logo-wrap {
+	
+}
+
+#logo {
+	width:170px;
+	height:88px;
+	background:url(/modules/scottandkassi/img/nav/logo.png) no-repeat;
+	text-indent:-20000px;
+	float:left;
+	margin:15px 0 0 0;
+}
+#logo:hover {
+	background-position:-170px 0;
+}
+
+#nav-wrap {
+	width:546px;
+	height:121px;
+	float:left;
+	margin:0 0 0 134px;
+	background:url(/modules/scottandkassi/img/nav/nav-divider-borders.png) no-repeat;
+}
+
+#top-nav li {
+	float:left;
+	margin:0 0 0 2px;
+}
+
+#top-nav a {
+	float:left;
+	height:100px;
+	text-indent:-20000px;
+}
+
+#nav-the-wedding {
+	width:129px;
+	background:url(/modules/scottandkassi/img/nav/nav-wedding-button.png) no-repeat;
+	margin:10px 0 0 10px;
+}
+#nav-the-wedding:hover {
+	background-position:-129px 0;
+}
+
+#nav-where {
+	width:114px;
+	background:url(/modules/scottandkassi/img/nav/nav-where-button.png) no-repeat;
+	margin:10px 0 0 20px;
+}
+#nav-where:hover {
+	background-position:-114px 0;
+}
+
+#nav-registry {
+	width:111px;
+	background:url(/modules/scottandkassi/img/nav/nav-registry-button.png) no-repeat;
+	margin:10px 0 0 20px;
+}
+#nav-registry:hover {
+	background-position:-111px 0;
+}
+
+#nav-rsvp {
+	width:102px;
+	background:url(/modules/scottandkassi/img/nav/nav-rsvp-button.png) no-repeat;
+	margin:10px 0 0 20px;
+}
+#nav-rsvp:hover {
+	background-position:-102px 0;
+}
+
+#top {
+	padding:125px 0 0 0;
+}
+
+#banner-wrap {
+	height:364px;
+	background:#84C0B7;
+}
+
+#banner {
+	width:962px;
+	margin:0 auto;
+}
+
+#getting-married-wrap {
+	background:url(/modules/scottandkassi/img/texture-bg.png);
+}
+
+#getting-married-inner {
+	background:url(/modules/scottandkassi/img/landing/header-bottom-border.png) repeat-x;
+}
+
+#getting-married-content {
+	width:759px;
+	margin:0 auto;
+	padding:55px 0 0 0;
+}
+#getting-married-content p {
+	font-size:18px;
+	letter-spacing:2px;
+	line-height:34px;
+}
+
+#getting-married-inner img {
+	margin-bottom:2px;
+}
+
+#wedding {
+	height:125px;
+}
+
+#info-wrap {
+	background:url(/modules/scottandkassi/img/teal-pattern-bg.png);
+	padding:25px 0 35px;
+}
+
+#info-inner {
+	width:918px;
+	margin:0 auto;
+}
+
+#info-wrap h2 {
+	color:#fff;
+	text-transform:uppercase;
+	margin:26px 0 0;
+	font-size:36px;
+	font-family:Georgia;
+	text-shadow:2px 2px 2px #427c87;
+}
+
+#info-wrap h3 {
+	color:#fff;
+	text-transform:uppercase;
+	margin:24px 0 12px;
+	font-size:15px;
+	font-family:Helvetica, Arial;
+	letter-spacing:1.5px;
+	text-shadow:2px 2px 2px #427c87;
+}
+
+#info-wrap h4 {
+	color:#fff;
+	font-style:italic;
+	margin:8px 0 8px;
+	font-size:15px;
+	font-family:Georgia;
+	letter-spacing:1.5px;
+	font-weight:normal;
+	text-shadow:2px 2px 2px #427c87;
+}
+
+#info-wrap p {
+	color:#074747;
+	font-family:Georgia;
+	line-height:16px;
+	margin:24px 0 12px 0;
+	font-weight:bold;
+}
+
+#info-left {
+	float:left;
+	width:405px;
+}
+
+#info-right {
+	margin:0 0 0 105px;
+	float:left;
+	width:405px;
+}
+
+.divider-line {
+	border-top:1px solid #666;
+	margin:8px 0 8px;
+}
+
+#address-wrap {
+	width:445px;
+	margin:30px auto 0;
+}
+#address-wrap img {
+	float:left;
+}
+#address-wrap a {
+	color:#fff;
+	font-weight:normal;
+	font-style:italic;
+	background:#498989;
+	width:358px;
+	float:right;
+	text-align:center;
+	border:1px solid #3f7575;
+	border-radius:2px;
+	-moz-border-radius:2px;
+	-webkit-border-radius:2px;
+	padding:8px 14px;
+	margin:5px 0 0 4px;
+	border:1px solid #3e7675;
+}
+#address-wrap a:hover {
+	background:#074747;
+}
+
+#directions-wrap {
+	background:url(/modules/scottandkassi/img/texture-bg.png);
+	padding:150px 0 125px;
+}
+
+#directions-wrap h2 {
+	color:#d36633;
+	font-family:Helvetica, Arial;
+	text-transform:uppercase;
+	font-size:16px;
+	letter-spacing:1.5px;
+	margin: 0 0 14px 0;
+}
+#stay-left h2 {
+	letter-spacing:1px;
+	font-size:15px;
+}
+
+#directions-inner {
+	width:962px;
+	margin:0 auto;
+}
+
+#find-your-way-header {
+	margin:0 0 80px 0;
+}
+
+#directions-left {
+	float:left;
+	width:432px;
+	height:266px;
+}
+
+#directions-right {
+	float:left;
+	margin:0 0 0 50px;
+	width:415px;
+	
+}
+
+#car-icon {
+	margin-right:22px;
+	padding-top:4px;
+}
+
+#jet-icon {
+	margin-right:4px;
+	padding-top:16px;
+}
+
+.icon-group {
+	
+}
+
+.icon-left {
+	float:left;
+}
+.icon-left2 {
+	float:left;
+	width:110px;
+}
+
+.text-right {
+	float:left;
+	margin:0 0 0 4px;
+	width:330px;
+}
+.text-right p {
+	color:#49423c;
+	font-family:Georgia;
+	font-weight:bold;
+	line-height:18px;
+	font-size:11px;
+}
+.text-right2 {
+	float:left;
+	width:250px;
+}
+
+#stay-header {
+	margin:130px 0 0 0;
+}
+
+#stay-text {
+	width:640px;
+	margin:25px auto 85px;
+	text-align:center;
+	font-style:italic;
+	font-family:Georgia;
+	line-height:20px;
+	font-size:14px;
+	color:#49423c;
+	letter-spacing:1.2px;
+	font-size:13px;
+}
+
+#stay-left {
+	float:left;
+	width:420px;
+}
+
+#stay-right {
+	float:left;
+	margin:0 0 0 85px;
+	width:400px;
+}
+
+#stay-right p {
+	margin:50px 0 0 50px;
+	line-height:24px;
+}
+
+#registry-wrap {
+	background:url(/modules/scottandkassi/img/teal-pattern-bg.png);
+	padding:65px 0 125px;
+}
+
+#registry-inner {
+	width:420px;
+	margin:0 auto;
+	text-align:center;
+}
+
+#registry-links {
+	margin:80px 0 0 0;
+}
+
+#registry-links a {
+	text-indent:-20000px;
+}
+
+#amazon-link {
+	float:left;
+	width:201px;
+	height:111px;
+	background:url(/modules/scottandkassi/img/our-registry/amazon-logo.png) no-repeat;
+}
+#amazon-link:hover {
+	background-position:-201px 0;
+}
+
+#target-link {
+	float:right;
+	width:137px;
+	height:137px;
+	background:url(/modules/scottandkassi/img/our-registry/target-logo.png) no-repeat;
+	margin:-12px 0 0 0;
+}
+#target-link:hover {
+	background-position:-137px 0;
+}
+
+#rsvp-wrap {
+	background:url(/modules/scottandkassi/img/texture-bg.png);
+	padding:0 0 160px;
+}
+
+#rsvp-inner {
+	width:366px;
+	margin:0 auto;
+}
+
+#rsvp-sign {
+	width:364px;
+	margin:0 auto;
+	margin:125px 0 25px 0;
+}
+
+#rsvp-text-wrap p {
+	text-align:center;
+	font-size:13px;
+	font-style:italic;
+	line-height:22px;
+}
+
+#rsvp-form-wrap {
+	width:366px;
+	height:357px;
+	margin:30px auto 0;
+	background:url(/modules/scottandkassi/img/rsvp/rsvp-bg.png) no-repeat;
+	padding:25px 0 35px;
+}
+#rsvp-form-wrap.success {
+	background:url(/modules/scottandkassi/img/rsvp/rsvp-confirm.png) no-repeat;
+}
+#rsvp-form-wrap.success h3, #rsvp-form-wrap.success form {
+	display:none;
+}
+
+#rsvp-wrap h3 {
+	color:#d36633;
+	text-align:center;
+	font-size:16px;
+	font-style:italic;
+	margin:0 0 25px;
+	font-weight:normal;
+	font-family:Georgia;
+	font-size:24px;
+}
+
+.divider-bg {
+	height:2px;
+	overflow:hidden;
+	background:url(/modules/scottandkassi/img/2px-border.png) repeat-x;
+	margin:18px 0 14px;
+}
+
+.orange-button {
+	background:#d77a4e;
+	padding:2px 18px 2px;
+	color:#fff;
+	margin:14px 0;
+	float:left;
+	font-style:italic;
+	font-size:13px;
+	border:1px solid #c96a4c;
+	font-family:Georgia;
+	letter-spacing:1.5px;
+}
+.orange-button:hover {
+	background:#c96a4c;
+}
+
+.location-address {
+	font-style:italic;
+}
+.contact {
+	font-style:italic;
+	margin:10px 0;
+}
+.contact strong {
+	font-weight:bold;
+	font-style:normal;
+}
+.house-icon {
+	padding-top:4px;
+}
+.hampton-icon {
+	padding-top:4px;
+}
+.marriott-icon {
+	padding-top:4px;
+}
+
+#form-submit {
+	float:left;
+	width:317px;
+	height:42px;
+	text-indent:-20000px;
+	background:url(/modules/scottandkassi/img/rsvp/rsvp-button.png) no-repeat;
+	margin:20px 0 0 23px;
+	border:0;
+}
+#form-submit:hover {
+	background-position:-317px;
+}
+#rsvp-form label {
+	display:block;
+	color:#67adac;
+	font-family:Helvetica, Arial;
+	margin-left:23px;
+}
+.text-input {
+	display:block;
+	margin:6px 0 20px;
+	border:3px solid #dfdfdd;
+	width:300px;
+	height:36px;
+	color:#dfdfdd;
+	padding:4px 6px;
+	font-size:15px;
+	font-style:italic;
+	font-family:Georgia;
+	color:#000;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	margin-left:23px;
+	background:#f4f4f4;
+}
+
