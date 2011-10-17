@@ -8,8 +8,6 @@
 
 <script>
 Ext.onReady(function() {
-	console.log('trigger');
-//	Mercury.trigger('initialize:frame');
-//	Mercury.trigger('toggle:interface');
+	top.Mercury.saveURL = '/wes/wow'
 });
 </script>

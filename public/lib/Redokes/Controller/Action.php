@@ -24,7 +24,7 @@ class Redokes_Controller_Action {
 	
 	public $viewPath = false;
 
-	public function __construct($frontController, $action = 'index'){
+	public function __construct($frontController, $action = 'indexAction'){
 		$this->frontController = $frontController;
 		$this->init();
 		$this->action = $action;
@@ -53,6 +53,7 @@ class Redokes_Controller_Action {
 			}
 		}
 		else if($this->action){
+			
 			$this->_catch();
 		}
 		$contents = ob_get_clean();

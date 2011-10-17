@@ -103,7 +103,7 @@ class Redokes_Controller_Front {
 		$this->params = array_merge($this->params, $_GET);
 	}
 	
-	 public function processRoutes() {
+	public function processRoutes() {
     	$router = new Redokes_Controller_Router();
 		$routes = $router->getRoutes();
     	$route = "$this->module/$this->controller/$this->action";

@@ -10,16 +10,15 @@ class Wes_MercuryController extends Redokes_Controller_Action {
 			->addCss('/js/ext-4.0.2a/resources/css/ext-all.css')
 			->addCss('/js/mercury/stylesheets/mercury.bundle.css')
 			->addJs('/js/ext-4.0.2a/ext-all.js')
-//			->addJs('/js/mercury/javascripts/mercury_loader.js?src=/js/mercury&pack=bundled');
-			->addJs('/js/mercury/javascripts/mercury.js');
+			->addJs('/js/mercury/javascripts/mercury_loader.js?src=/js/mercury&pack=bundled');
 	}
 	
 	public function indexAction() {
 		
 	}
 	
-	public function editorAction() {
+	public function testAction() {
 		
 	}
-
+	
 }
