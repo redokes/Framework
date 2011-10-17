@@ -173,13 +173,8 @@ class Redokes_Controller_Front {
      */
     public function getDbAdapter($dbServer = 'default') {
 		if (!isset($this->_dbAdapters[$dbServer])) {
-			// get config
-			$config = array(
-				'host' => 'localhost',
-				'dbname' => 'redokes_framework',
-				'username' => 'root',
-				'password' => ''
-			);
+			$dbConfig = new Db_Model_Config();
+			$config = $dbConfig->getConfig();
 			$this->_dbAdapters[$dbServer] = Zend_Db::factory('Pdo_Mysql', $config);
 			Zend_Registry::set($dbServer, $this->_dbAdapters[$dbServer]);
 			Zend_Db_Table_Abstract::setDefaultAdapter($this->_dbAdapters[$dbServer]);

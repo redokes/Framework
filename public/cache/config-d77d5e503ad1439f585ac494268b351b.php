@@ -1,0 +1,1 @@
+<?php //{"host":"localhost","dbname":"redokes_framework","username":"root","password":""}
