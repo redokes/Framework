@@ -1,27 +1,15 @@
 <?php 
-class Simon_Redirects_IndexController extends Papercut_Controller {
+
+class Redirect_IndexController extends Redokes_Controller_Action {
 	
-	public function init(){
-		Users_Class_User::requireAccess('redirects');
+	public function indexAction() {
+		$this->getView()
+			->setValues(array(
+				'title' => 'Redirect Manager'
+			))
+			->addCss('/js/ext-4.0.2a/resources/css/ext-all.css')
+			->addJs('/js/ext-4.0.2a/ext-all.js')
+			->addJs('/js/redokes/redokes.js');
 	}
 	
-	public function indexAction(){
-		FrontController::getInstance()->getTemplate()->setContent('title', 'Redirects');
-		FrontController::getInstance()->addScript(array(
-			'/simon/redirects/js/Form.js',
-			'/simon/redirects/js/GridBase.js',
-			'/simon/redirects/js/Grid.js',
-			'/simon/redirects/js/Interface.js'
-		));
-		?>
-		<div id="redirects-interface"></div>
-		<script type="text/javascript">
-		Ext.EventManager.on(window, 'load', function(){
-			var redirectsInterface = new Simon.redirects.Interface({
-				renderTo: 'redirects-interface'
-			});
-		});
-		</script>
-		<?php
-	}
 }
