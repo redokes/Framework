@@ -14,7 +14,6 @@ class Redokes_Controller_Front {
 		$this->initSession();
 		$this->initDbAdapter();
 		$this->parseRequest();
-		$this->processRoutes();
 	}
 
 	/**
@@ -116,6 +115,8 @@ class Redokes_Controller_Front {
     }
 
 	public function run() {
+		$this->processRoutes();
+		
 		$moduleName = $this->getModuleName($this->module);
     	$controllerName = $this->getControllerName($this->controller);
     	$actionName = $this->getActionName($this->action);
@@ -205,6 +206,7 @@ class Redokes_Controller_Front {
 			);
 			$cacheManager->setCacheTemplate($name, $cacheOptions);
 		}
+		
 		return $cacheManager->getCache($name);
 	}
 

@@ -3,7 +3,7 @@
 class Index_SetupController extends Redokes_Controller_Action {
 	
 	public function indexAction() {
-		// Need to set up configs
+		// Db config
 		$dbConfig = new Db_Model_Config();
 		$config = array(
 			'host' => 'localhost',

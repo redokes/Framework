@@ -1,14 +1,7 @@
 <?php
 class Redokes_Controller_Router {
-	public $routeCache = 'routeCache.txt';
-	public $routeListFile = 'routeList.txt';
 	public $routes = array();
 	public $routeList = array();
-
-	public function __construct() {
-		$this->routeCache = 'router/' . $this->routeCache;
-		$this->routeListFile = 'router/' . $this->routeListFile;
-	}
 
 	/*
 	 * returns an assoc array of route => new route
@@ -16,7 +9,44 @@ class Redokes_Controller_Router {
 	 */
 
 	public function getRoutes() {
-//		$this->routes = json_decode(FileSystem::readResourceFile($this->routeCache, false), true);
+		$cacheId = 'routes';
+		$cache = Redokes_Controller_Front::getInstance()->getCache();
+//		$cache->remove($cacheId);
+		
+		if (($data = $cache->load($cacheId)) === false) {
+			$routes = array();
+			$rows = $this->fetchRoutes();
+			$numRows = count($rows);
+			for ($i = 0; $i < $numRows; $i++) {
+				$parts = explode('/', $rows[$i]['source']);
+				$numParts = count($parts);
+				if ($numParts < 2) {
+					$parts[1] = 'index';
+				}
+				if ($numParts < 3) {
+					$parts[2] = 'index';
+				}
+				$source = implode('/', $parts);
+				
+				$destination = array();
+				$parts = explode('/', $rows[$i]['destination']);
+				$numParts = count($parts);
+				if ($numParts >= 1) {
+					$destination['module'] = $parts[0];
+					if ($numParts >= 2) {
+						$destination['controller'] = $parts[1];
+						if ($numParts >= 3) {
+							$destination['action'] = $parts[2];
+						}
+					}
+				}
+				$routes[$source] = $destination;
+			}
+			$data = json_encode($routes);
+			$cache->save($data, $cacheId);
+		}
+		$data = json_decode($data, true);
+		$this->routes = $data;
 		return $this->routes;
 	}
 
@@ -24,7 +54,14 @@ class Redokes_Controller_Router {
 	 * read from the route list file to generate the route cache
 	 * writes to route cache file
 	 */
-
+	
+	public function fetchRoutes() {
+		$db = Redokes_Controller_Front::getInstance()->getDbAdapter();
+		$query = "SELECT * FROM routes";
+		$rows = $db->fetchAll($query);
+		return $rows;
+	}
+	
 	private function buildRoutes() {
 		foreach ($this->routeList as $moduleName => $routes) {
 			foreach ($routes as $route => $newRoute) {
