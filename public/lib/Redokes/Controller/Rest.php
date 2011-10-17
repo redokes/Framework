@@ -5,6 +5,7 @@ class Redokes_Controller_Rest extends Redokes_Controller_Ajax {
 	public function __construct($frontController, $action = 'index') {
 		$requestMethod = strtolower($_SERVER['REQUEST_METHOD']);
 		$params = array();
+		
 		switch($requestMethod) {
 			case 'get':
 				$action = 'get';
