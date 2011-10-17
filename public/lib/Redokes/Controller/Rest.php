@@ -8,12 +8,12 @@ class Redokes_Controller_Rest extends Redokes_Controller_Ajax {
 		switch($requestMethod) {
 			case 'get':
 				$action = 'get';
-				$params = $_GET;
+				parse_str(file_get_contents('php://input'), $params);
 				break;
 			
 			case 'post':
 				$action = 'post';
-				$params = $_POST;
+				parse_str(file_get_contents('php://input'), $params);
 				break;
 			
 			case 'put':
@@ -27,10 +27,7 @@ class Redokes_Controller_Rest extends Redokes_Controller_Ajax {
 				break;
 		}
 		
-		if (isset($params[$frontController->controller])) {
-			$data = json_decode($data[$frontController->controller], true);
-			$frontController->params = $data;
-		}
+		$frontController->params = $params;
 		
 		parent::__construct($frontController, $action);
 	}

@@ -8,6 +8,6 @@
 
 <script>
 Ext.onReady(function() {
-	top.Mercury.saveURL = '/wes/wow'
+	top.Mercury.saveURL = '/wes/content'
 });
 </script>
