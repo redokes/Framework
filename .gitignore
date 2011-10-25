@@ -4,4 +4,4 @@
 .settings/
 /nbproject/private/
 /nbproject/*
-
+/public/cache/*

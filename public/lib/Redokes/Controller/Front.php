@@ -14,7 +14,6 @@ class Redokes_Controller_Front {
 		$this->initSession();
 		$this->initDbAdapter();
 		$this->parseRequest();
-		$this->processRoutes();
 	}
 
 	/**
@@ -104,8 +103,7 @@ class Redokes_Controller_Front {
 		$this->params = array_merge($this->params, $_GET);
 	}
 	
-	 public function processRoutes() {
-		return;
+	public function processRoutes() {
     	$router = new Redokes_Controller_Router();
 		$routes = $router->getRoutes();
     	$route = "$this->module/$this->controller/$this->action";
@@ -117,6 +115,8 @@ class Redokes_Controller_Front {
     }
 
 	public function run() {
+		$this->processRoutes();
+		
 		$moduleName = $this->getModuleName($this->module);
     	$controllerName = $this->getControllerName($this->controller);
     	$actionName = $this->getActionName($this->action);
@@ -174,13 +174,8 @@ class Redokes_Controller_Front {
      */
     public function getDbAdapter($dbServer = 'default') {
 		if (!isset($this->_dbAdapters[$dbServer])) {
-			// get config
-			$config = array(
-				'host' => 'localhost',
-				'dbname' => 'redokes_framework',
-				'username' => 'root',
-				'password' => ''
-			);
+			$dbConfig = new Db_Model_Config();
+			$config = $dbConfig->getConfig();
 			$this->_dbAdapters[$dbServer] = Zend_Db::factory('Pdo_Mysql', $config);
 			Zend_Registry::set($dbServer, $this->_dbAdapters[$dbServer]);
 			Zend_Db_Table_Abstract::setDefaultAdapter($this->_dbAdapters[$dbServer]);
@@ -211,6 +206,7 @@ class Redokes_Controller_Front {
 			);
 			$cacheManager->setCacheTemplate($name, $cacheOptions);
 		}
+		
 		return $cacheManager->getCache($name);
 	}
 

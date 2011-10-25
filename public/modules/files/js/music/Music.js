@@ -41,6 +41,7 @@ Ext.define('Modules.files.js.music.Music', {
 		
 		user.getTree().on('itemdblclick', function(view, record, item, index){
 			console.log(record.raw.file);
+			
 			var file = Ext.create('Modules.files.js.file.File', record.raw.file);
 			file.on('complete', function(file, data){
 				this.player.setRawSrc(file.type, data);

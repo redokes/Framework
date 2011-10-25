@@ -1,5 +1,6 @@
-Ext.namespace('Simon.redirect');
-Simon.redirect.Form = Ext.extend(Ext.ux.papercut.Form, {
+Ext.define('Modules.redirect.js.Form', {
+	
+	
 	//Config
 	processingPage: '/redirect/private/',
 	showFailureMessage:false,

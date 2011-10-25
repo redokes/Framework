@@ -1,21 +1,13 @@
-Ext.namespace('Simon.redirect');
-Simon.redirect.Grid = Ext.extend(Ext.ux.papercut.Grid, {
-	title: '',
-	table: 'redirect',
-	primaryKey: 'redirectId',
-	sortField: 'requestString',
-	sortDirection: 'ASC',
-	height:400,
+Ext.define('Modules.redirect.js.Grid', {
+	title: 'Redirects',
 	processingPage: '/redirect/private/',
-	defaultAction: 'grid',
 
-	//Columns to show on grid
 	columns: [{
-		header:Simon.redirect.Language.models.redirect.fields.requestString.title,
-		dataIndex:'requestString'
+		header: 'Request String',
+		dataIndex: 'requestString'
 	},{
-		header:Simon.redirect.Language.models.redirect.fields.redirectUrl.title,
-		dataIndex:'redirectUrl'
+		header: 'Redirect URL',
+		dataIndex: 'redirectUrl'
 	}],
 
 	//Fields to use
@@ -30,11 +22,11 @@ Simon.redirect.Grid = Ext.extend(Ext.ux.papercut.Grid, {
 		type: 'numeric',
 		dataIndex: 'redirectId'
 	},{
-		type: 'string'
-		,dataIndex: 'requestString'
+		type: 'string',
+		dataIndex: 'requestString'
 	},{
-		type: 'string'
-		,dataIndex: 'redirectUrl'
+		type: 'string',
+		dataIndex: 'redirectUrl'
 	}],
 
 	//Actions to perform on the data

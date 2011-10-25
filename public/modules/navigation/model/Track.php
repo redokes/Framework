@@ -2,7 +2,7 @@
 class Navigation_Model_Track extends Redokes_Model_Model {
 	
 	public $tableClassName = 'Navigation_Model_Db_Track';
-	public $item = false;
+	public $itemTable = false;
 	
 	public $requiredStringFields = array(
 		'title' => 'Title'
