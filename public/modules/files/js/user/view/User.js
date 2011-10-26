@@ -34,7 +34,7 @@ Ext.define('Modules.files.js.user.view.User', {
 		this.folderSelect.on('select', function(field, inputEl, event, options){
 			this.fireEvent('select', field, inputEl, event);
 		}, this);
-		this.tree.toolbar.add('->', this.folderSelect);
+		this.tree.toolbar.add(this.folderSelect);
 	}
 	
 });

@@ -19,7 +19,7 @@ Ext.define('Modules.files.js.user.view.List', {
 	init: function(){
 		this.initStore();
 		this.initTemplate();
-		this.initUsers();
+		//this.initUsers();
 	},
 	
 	initStore: function(){
