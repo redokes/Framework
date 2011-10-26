@@ -1,5 +1,8 @@
 Ext.define('Redokes.game.Game', {
 	extend:'Ext.panel.Panel',
+	mixins: {
+		log: 'Redokes.debug.Log'
+	},
 	
 	map:false,
 	player:false,
@@ -9,7 +12,7 @@ Ext.define('Redokes.game.Game', {
 	numTilesWidth:15,
 	numTilesHeight:10,
 	tileSize:32,
-	fps:60,
+	fps:30,
 	frameCount:0,
 	timer:false,
 	socketManager:false,
@@ -147,7 +150,7 @@ Ext.define('Redokes.game.Game', {
 	
 	onInitSocketClient: function(client) {
 		// Send data to server about the player details like name, sprite
-		d('Made socket client ' + client.namespace);
+		this.log('Made socket client ' + client.namespace);
 		this.socket = client;
 	},
 	

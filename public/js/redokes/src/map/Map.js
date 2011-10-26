@@ -1,6 +1,10 @@
 Ext.define('Redokes.map.Map', {
 	extend:Ext.util.Observable,
 	
+	mixins: {
+		log: 'Redokes.debug.Log'
+	},
+	
 	loadedMaps:{},
 	loadedSprites:{},
 	currentMap:false,

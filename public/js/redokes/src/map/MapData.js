@@ -1,5 +1,8 @@
 Ext.define('Redokes.map.MapData', {
 	extend:'Ext.util.Observable',
+	mixins: {
+		log: 'Redokes.debug.Log'
+	},
 	
 	title:false,
 	fileName:false,
@@ -26,7 +29,7 @@ Ext.define('Redokes.map.MapData', {
 	valueFields:['title', 'fileName', 'tileSheet', 'numLayers', 'width', 'height', 'spawnX', 'spawnY', 'spawnLayer', 'music', 'tileSize', 'tileData'],
 
 	constructor: function(config) {
-		d('MapData constructor');
+		this.log('Constructor');
 		Ext.apply(this, config);
 		this.players = {
 			0:this.game.player
@@ -77,11 +80,12 @@ Ext.define('Redokes.map.MapData', {
 	},
 	
 	initMapSocket: function() {
-		d('Init map socket');
+		this.log('Init map socket');
 		if (this.socket) {
 			this.socket.send('player.joinmap');
 		}
 		else {
+			this.log('No map socket so no join map');
 			this.game.socketManager.on('initclient', this.onInitMapSocketClient, this, {single:true});
 			this.game.socketManager.createNamespace(this.title);
 		}
@@ -91,13 +95,13 @@ Ext.define('Redokes.map.MapData', {
 	onInitMapSocketClient: function(client) {
 		this.socket = client;
 		
-		d('Made map socket client ' + client.namespace);
+		this.log('Made map socket client ' + client.namespace);
 		client.on('connect', function(client, args) {
-			d('Socket connect');
+			this.log('Socket connect');
 			
 			client.socket.emit('getRemoteUsers', {}, Ext.bind(function(params) {
-//				console.log('get remote users');
-//				console.log(params.sockets);
+				this.log('get remote users');
+//				this.log(params);
 				this.initRemotePlayers(params.sockets);
 				
 				client.send('player.joinmap');
@@ -105,14 +109,15 @@ Ext.define('Redokes.map.MapData', {
 				this.game.player.socketMovePlayer(this.game.player.currentAnimation.title);
 				
 				client.on('disconnect', function(client, args) {
-//					console.log('Socket disconnect');
-
+					this.log('Socket disconnect');
 				}, this);
 				client.on('otherConnect', function(client, args) {
+					this.log('other connect');
 //					console.log('Other connect');
 //					this.initRemotePlayer(args[0]);
 				}, this);
 				client.on('otherDisconnect', function(client, args) {
+					this.log('Other disconnect')
 					this.removeRemotePlayer({
 						id:args[0]
 					});
@@ -132,8 +137,8 @@ Ext.define('Redokes.map.MapData', {
 				}, this));
 				
 				client.socket.on('player.joinmap', Ext.bind(function(request) {
-//					console.log('player join map');
-//					console.log(request.storeData);
+					this.log('player join map');
+					this.log(request.storeData);
 					this.initRemotePlayer(request.storeData);
 					this.game.player.socketMovePlayer(this.game.player.currentAnimation.title);
 				}, this));
@@ -152,14 +157,14 @@ Ext.define('Redokes.map.MapData', {
 	},
 	
 	initRemotePlayer: function(data) {
-//		console.log('Init remote player ' + data.id);
-//		console.log(data);
+		this.log('Init remote player ' + data.id);
+		this.log(data);
 		this.addRemotePlayer(data);
 	},
 	
 	initRemotePlayers: function(sockets) {
-//		console.log('Init remote players');
-//		console.log(sockets);
+		this.log('Init remote players');
+		this.log(sockets);
 		var numSockets = sockets.length;
 		for (var i = 0; i < numSockets; i++) {
 			this.addRemotePlayer(sockets[i]);
@@ -167,9 +172,10 @@ Ext.define('Redokes.map.MapData', {
 	},
 	
 	addRemotePlayer: function(data) {
-//		console.log('Add remote player ' + data.id);
-//		console.log(data);
+		this.log('Add remote player ' + data.id);
+		this.log(data);
 		if (!this.players[data.id]) {
+			this.log('Making remote player');
 			var remotePlayer = Ext.create('Redokes.sprite.PlayerUser', {
 				img:data.img,
 				width:32,
@@ -182,15 +188,18 @@ Ext.define('Redokes.map.MapData', {
 			});
 			this.players[data.id] = remotePlayer;
 		}
+		else {
+			this.log('Not making remote player');
+		}
 	},
 	
 	removeRemotePlayer: function(data) {
-//		console.log('Remove remote player ' + data.id);
+		this.log('Remove remote player ' + data.id);
 		delete this.players[data.id];
 	},
 	
 	updateRemotePlayer: function(socketId) {
-		d('Update remote player ' + socketId);
+		this.log('Update remote player ' + socketId);
 		
 	}
 	

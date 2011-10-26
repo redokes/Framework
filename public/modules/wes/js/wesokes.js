@@ -12,7 +12,7 @@ else {
 		paths:{
 			Redokes: RedokesPath,
 			Ext: ExtPath,
-			Modules: ModulesPath,
+			Modules: ModulesPath
 		}
 	});
 }
