@@ -41,7 +41,8 @@ Ext.define('Modules.files.js.user.view.List', {
 		this.application.getSocketClient().socket.emit('getRemoteUsers', {}, Ext.bind(function(response){
 			Ext.each(response.sockets, function(socket){
 				this.store.add({
-					name: socket.id
+					name: socket.id,
+					id: socket.id
 				});
 			}, this);
 		}, this));

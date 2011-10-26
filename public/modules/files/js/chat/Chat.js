@@ -1,19 +1,19 @@
-/**
- * Chat module
- * This is a singleton class and connot be directly created.
- * @extends Modules.files.js.module.Abstract
- * @singleton
- */
+
 Ext.define('Modules.files.js.chat.Chat', {
-	extend:'Modules.files.js.module.Abstract',
+	extend: 'Modules.files.js.module.Module',
 	singleton: true,
 	
 	//Config
-	name: 'chat',
-	displayTitle: 'Chat',
-
+	config:{
+		name: 'chat',
+		title: 'Chat',
+		navigationTitle: 'Chat',
+		isMainNavigationItem: true
+	},
+	
 	//Init Functions
 	init: function(){
+		return;
 		this.application.onModuleReady('stream', function(stream){
 			this.initMessagePanel();
 		}, this);
@@ -73,7 +73,6 @@ Ext.define('Modules.files.js.chat.Chat', {
 			module: 'user',
 			actions: {
 				message: function(handler, response){
-					console.log(response);
 					//Share this on the stream
 					var stream = this.application.getModule('stream');
 					if(stream){

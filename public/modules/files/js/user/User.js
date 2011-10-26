@@ -21,6 +21,7 @@ Ext.define('Modules.files.js.user.User', {
 		this.initView();
 		this.initStream();
 		this.initList();
+		this.initFileHandler();
 	},
 	
 	initStore: function(){
@@ -57,6 +58,7 @@ Ext.define('Modules.files.js.user.User', {
 			text: 'My Files',
 			handler: function(){
 				this.application.setActiveItem(this.view);
+				this.view.tree.loadUser();
 			}
 		});
 		this.application.getMenu().addMenuItem(this.menuItem);
@@ -73,13 +75,17 @@ Ext.define('Modules.files.js.user.User', {
 	initView: function(){
 		this.view = Ext.create('Modules.files.js.user.view.User', {
 			scope: this,
-			title: 'User'
+			title: 'User',
+			application: this.application,
+			module: this
 		});
 		this.application.getCenter().add(this.view);
 		
 		this.menu.folder.on('select', function(){
 			this.view.tree.addFileList(this.menu.folder.getFiles());
 		}, this);
+		
+		window.tree = this.view.tree;
 	},
 	
 	initStream: function(){
@@ -111,6 +117,62 @@ Ext.define('Modules.files.js.user.User', {
 			layout: 'fit',
 			items: [this.list]
 		}));
+		
+		this.list.on('itemclick', function(view, record){
+			this.loadUser(record);
+		}, this);
+	},
+	
+	initFileHandler: function(){
+		//Share the file list
+		Ext.create('Redokes.socket.client.Handler', {
+			scope: this,
+			client: this.application.getSocketClient(),
+			module: 'files',
+			actions: {
+				get: function(handler, response){
+					this.application.getSocketClient().send(
+						'files',
+						'receive',
+						{ 
+							socketId:  response.socketId,
+							nodes: this.getTree().nodes
+						}
+					);
+				},
+				receive: function(handler, response){
+					this.getTree().loadRemoteUser(response.data.socketId, response.data.nodes);
+				}
+			}
+		});
+		
+		//Share a file
+		Ext.create('Redokes.socket.client.Handler', {
+			scope: this,
+			client: this.application.getSocketClient(),
+			module: 'file',
+			actions: {
+				get: function(handler, response){
+					//Get the file
+					console.log(response);
+					var nodeId = response.data.nodeId;
+					console.log(this.getTree().getStore().getNodeById(nodeId));
+				},
+				receive: function(handler, response){
+				}
+			}
+		});
+	},
+	
+	//Functions
+	loadUser: function(record){
+		this.application.getSocketClient().send(
+			'files',
+			'get',
+			{ 
+				socketId:  record.get('id')
+			}
+		);
 	},
 	
 	//Helper functions

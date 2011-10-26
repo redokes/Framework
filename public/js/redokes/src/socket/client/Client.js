@@ -68,7 +68,7 @@ Ext.define('Redokes.socket.client.Client', {
 	initListeners: function() {
 		if (this.socket) {
 			this.socket.on('connect', Ext.bind(function(){
-				console.log('connect4d');
+				console.log('connect');
 				this.fireEvent('connect', arguments);
 			}, this));
 			
@@ -99,7 +99,6 @@ Ext.define('Redokes.socket.client.Client', {
 	 * @param {Redokes.socket.client.Handler} handler
      */
 	registerHandler: function(handler){
-		console.log('register handler ' + handler.module);
 		if(this.handlers[handler.module] == null){
 			this.handlers[handler.module] = [];
 		}
@@ -110,7 +109,6 @@ Ext.define('Redokes.socket.client.Client', {
      * Sends a message to the socket
      */
 	send: function(module, action, data) {
-		console.log('send time');
 		this.socket.json.send({
 			module: module,
     		action: action,

@@ -9,6 +9,7 @@ class Redokes_Controller_Router {
 	 */
 
 	public function getRoutes() {
+		return array();
 		$cacheId = 'routes';
 		$cache = Redokes_Controller_Front::getInstance()->getCache();
 //		$cache->remove($cacheId);

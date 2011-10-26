@@ -3,5 +3,8 @@ Ext.define('Modules.files.js.model.User', {
 	fields:[{
 		name:'name',
 		type:'string'
+	},{
+		name: 'id',
+		type: 'string'
 	}]
 });

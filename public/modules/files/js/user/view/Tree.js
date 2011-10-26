@@ -2,7 +2,12 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	extend: 'Ext.tree.Panel',
 	
 	//Config
+	application: null,
+	module: null,
 	rootVisible:false,
+	nodes: [],
+	remote: false,
+	remoteUserId: 0,
 
     initComponent: function() {
 		this.items = [];
@@ -14,7 +19,8 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	init: function(){
 		this.initStore();
 		this.initToolbar();
-		this.initSearch();
+		//this.initSearch();
+		this.initDownload();
 	},
 	
 	initStore: function(){
@@ -37,8 +43,49 @@ Ext.define('Modules.files.js.user.view.Tree', {
 		this.toolbar.add(this.search);
 	},
 	
+	initDownload: function(){
+		this.downloadButton = new Ext.button.Button({
+			scope: this,
+			text: 'Download',
+			disabled: true,
+			handler: function(){
+				if(!this.isRemote()){
+					this.downloadButton.disable();
+					return;
+				}
+				this.downloadFile();
+			}
+		});
+		this.toolbar.add(this.downloadButton);
+		
+		this.on('selectionchange', function(selectionModel, records, options){
+			//Disable if this is local
+			if(!this.isRemote()){
+				this.downloadButton.disable();
+				return;
+			}
+			
+			//If there are no records disable
+			if(!records.length){
+				this.downloadButton.disable();
+				return;
+			}
+			
+			//If the file is a folder disable
+			var record = records[0];
+			if(!record.get('leaf')){
+				this.downloadButton.disable();
+				return;
+			}
+			
+			//Enable
+			this.downloadButton.enable();
+		}, this);
+	},
+	
 	addFileList: function(fileList){
 		var processedList = this.processFileList(fileList);
+		this.nodes.push(processedList);
 		this.store.tree.root.appendChild(processedList);
 	},
 	
@@ -101,6 +148,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 					//Add Config
 					Ext.apply(config, {
 						leaf:true,
+						id: dir[i].record.webkitRelativePath,
 						file: dir[i].record
 					});
 					
@@ -123,5 +171,69 @@ Ext.define('Modules.files.js.user.view.Tree', {
 			}
 		}
 		return children;
+	},
+	
+	convertToObject: function(){
+		//Build the nodes
+		var nodes = [];
+		this.getRootNode().eachChild(function(node){
+			nodes.push(this.convertNode(node));
+		}, this);
+		return nodes;
+	},
+	
+	convertNode: function(node){
+		var objectNode = {};
+		Ext.apply(objectNode, node.data);
+		objectNode.children = [];
+		Ext.each(node.childNodes, function(node){
+			objectNode.children.push(this.convertNode(node));
+		}, this);
+		
+		return objectNode;
+	},
+	
+	loadUser: function(){
+		this.store.getRootNode().removeAll();
+		Ext.each(this.nodes, function(node){
+			this.store.tree.root.appendChild(node);
+		}, this);
+		this.remote = false;
+	},
+	
+	loadRemoteUser: function(id, nodes){
+		this.store.getRootNode().removeAll();
+		Ext.each(nodes, function(node){
+			this.store.tree.root.appendChild(node);
+		}, this);
+		this.remote = true;
+		this.remoteUserId = id;
+	},
+	
+	isRemote: function(){
+		return this.remote;
+	},
+	
+	downloadFile: function(){
+		//Ensure we can download the file
+		var records = this.getSelectionModel().getSelection();
+		if(!records.length){
+			return;
+		}
+		var record = records[0];
+		if(!record.get('leaf')){
+			return;
+		}
+		
+		//Download the file from the remote user
+		console.log(record.getId());
+		this.application.getSocketClient().send(
+			'file',
+			'get',
+			{ 
+				socketId:  this.remoteUserId,
+				nodeId: record.internalId
+			}
+		);
 	}
 });

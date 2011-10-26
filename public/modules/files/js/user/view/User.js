@@ -18,6 +18,9 @@ Ext.define('Modules.files.js.user.view.User', {
 	
 	initTree: function(){
 		this.tree = Ext.create('Modules.files.js.user.view.Tree', {
+			scope: this,
+			application: this.application,
+			module: this.module
 		});
 		this.items.push(this.tree);
 	}

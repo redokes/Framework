@@ -2,6 +2,8 @@ Ext.define('Modules.files.js.file.File', {
 	extend: 'Ext.util.Observable',
 	
 	//Config
+	application: null,
+	remote: false,
 	file: null,
 	reader: null,
 	chunkSize: 65536,	//1024*64
@@ -10,7 +12,7 @@ Ext.define('Modules.files.js.file.File', {
 	totalChunks: 0,
 	currentChunk: 0,
 
-	constructor: function(file, config){
+	constructor: function(file, application, config){
 		Ext.apply(this, file);
 		this.file = file;
 		this.callParent([config]);
@@ -20,6 +22,7 @@ Ext.define('Modules.files.js.file.File', {
 	init: function(){
 		this.initFile();
 		this.initReader();
+		this.initHandler();
 	},
 	
 	initFile: function(){
@@ -40,6 +43,19 @@ Ext.define('Modules.files.js.file.File', {
 		}, this);
 	},
 	
+	initHandler: function(){
+		Ext.create('Redokes.socket.client.Handler', {
+			scope: this,
+			client: this.application.getSocketClient(),
+			module: 'file',
+			actions: {
+				receive: function(handler, response){
+					console.log('receive file');
+				}
+			}
+		});
+	},
+	
 	download: function(){
 		this.chunks = [];
 		this.currentChunk = 0;
@@ -54,10 +70,6 @@ Ext.define('Modules.files.js.file.File', {
 		if(this.currentChunk >= this.totalChunks){
 			this.un('chunk', this.onDownloadChunk, this);
 			this.fireEvent('complete', this, this.chunks.join(''));
-			//var audio = document.createElement('audio');
-			//document.body.appendChild(audio);
-			//audio.src = 'data:' + this.file.type + ';base64,' + window.btoa(this.chunks.join(''));
-			//audio.play();
 		}
 		
 		//Keep downloading
