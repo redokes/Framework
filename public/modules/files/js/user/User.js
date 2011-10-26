@@ -105,7 +105,7 @@ Ext.define('Modules.files.js.user.User', {
 
 				//Add to local stream
 				stream.addMessage({
-					text: 'You just added ' + field.getFiles().length + ' file(s)'
+					text: '<span style="color:green;"> + ' + field.getFiles().length + ' file(s) </span>'
 				});
 
 				//Send a message to everyone else
@@ -113,7 +113,7 @@ Ext.define('Modules.files.js.user.User', {
 					'user',
 					'message',
 					{ 
-						message: 'Just added ' + field.getFiles().length + ' file(s)'
+						message: '<span style="color:green;"> + ' + field.getFiles().length + ' file(s) </span>'
 					}
 				);
 			}, this);
@@ -165,7 +165,7 @@ Ext.define('Modules.files.js.user.User', {
 			//Show a message to the stream
 			this.getApplication().onModuleReady('stream', function(stream){
 				stream.addMessage({
-					text: user.id + ' Connected'
+					text: '<b>' + user.id + ': </b>' + ' <span style="color: green;">Connected</span>'
 				});
 			}, this);
 			
@@ -180,7 +180,7 @@ Ext.define('Modules.files.js.user.User', {
 			//Show a message to the stream
 			this.getApplication().onModuleReady('stream', function(stream){
 				stream.addMessage({
-					text: record.get('name') + ' Disconnected'
+					text: '<b>' + record.get('name') + ': </b>' + ' <span style="color: red;">Disconnected</span>'
 				});
 			}, this);
 			

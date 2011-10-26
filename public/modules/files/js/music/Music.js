@@ -58,18 +58,34 @@ Ext.define('Modules.files.js.music.Music', {
 		}
 		
 		//Download the file from the remote user
-		this.player.playlist.on('itemdblclick', function(view, record, item, index){
+		this.player.playlist.on('itemclick', function(view, record, item, index){
 			var node = record.get('node');
-			console.log(node);
+			var nodeId = node.internalId;
 			if(record.get('remote')){
-				this.getApplication().getSocketClient().send(
-					'file',
-					'get',
-					{ 
-						socketId:  this.remoteUserId,
-						nodeId: node.internalId
-					}
-				);
+				if(this.downloadedFiles[nodeId] != null){
+					var file = this.downloadedFiles[nodeId];
+					
+					//Start playing the file
+					this.player.setRawSrc(file.type, file.content);
+					this.player.play();
+
+					//Share this on the stream
+					this.getApplication().onModuleReady('stream', function(stream){
+						stream.addMessage({
+							text: 'You are listening to ' + file.name 
+						});
+					}, this);
+				}
+				else{
+					this.getApplication().getSocketClient().send(
+						'file',
+						'get',
+						{ 
+							socketId:  this.remoteUserId,
+							nodeId: node.internalId
+						}
+					);
+				}
 			}
 			else{
 				//download local file
@@ -77,6 +93,16 @@ Ext.define('Modules.files.js.music.Music', {
 				file.on('complete', function(file, content){
 					this.player.setRawSrc(file.type, content);
 					this.player.play();
+					
+					//Share this on the stream
+					this.getApplication().onModuleReady(function(stream){
+						if(stream){
+							stream.addMessage({
+								text: 'You are listening to ' +  file.fileName
+							});
+						}
+					}, this);
+					
 				}, this);
 				file.download();
 			}

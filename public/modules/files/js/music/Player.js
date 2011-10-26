@@ -7,10 +7,13 @@ Ext.define('Modules.files.js.music.Player', {
 	lastVolume: 0,
 	isPaused: true,
 	isLoaded: false,
+	layout: 'fit',
+	border: false,
 	
 	initComponent: function(){
 		this.showLog();
 		this.items = this.items || [];
+		this.dockedItems = this.dockedItems || [];
 		this.init();
 		this.callParent(arguments);
 	},
@@ -27,36 +30,40 @@ Ext.define('Modules.files.js.music.Player', {
 			icon: '/modules/files/images/icons/play-16.png',
 			handler: this.play
 		});
-		this.items.push(this.playButton);
 		
 		this.pauseButton = Ext.create('Ext.button.Button', {
 			scope: this,
 			icon: '/modules/files/images/icons/pause-16.png',
 			handler: this.pause
 		});
-		this.items.push(this.pauseButton);
 		
 		this.previousButton = Ext.create('Ext.button.Button', {
 			scope: this,
 			icon: '/modules/files/images/icons/previous-16.png',
 			handler: this.previous
 		});
-		this.items.push(this.previousButton);
 		
 		this.nextButton = Ext.create('Ext.button.Button', {
 			scope: this,
 			icon: '/modules/files/images/icons/next-16.png',
 			handler: this.next
 		});
-		this.items.push(this.nextButton);
 		
 		this.stopButton = Ext.create('Ext.button.Button', {
 			scope: this,
 			icon: '/modules/files/images/icons/stop-16.png',
 			handler: this.stop
 		});
-		this.items.push(this.stopButton);
-		
+		this.toolbar = new Ext.toolbar.Toolbar({
+			items:[
+				this.playButton,
+				this.pauseButton,
+				this.previousButton,
+				this.nextButton,
+				this.stopButton
+			]
+		});
+		this.dockedItems.push(this.toolbar);
 	},
 	
 	initPlaylist: function() {

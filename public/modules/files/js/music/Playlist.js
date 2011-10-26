@@ -6,6 +6,8 @@ Ext.define('Modules.files.js.music.Playlist', {
 	
 	//config
 	itemSelector: '.playlist-item',
+	emptyText: 'Drag Files Here....',
+	deferEmptyText : false,
 	
 	initComponent: function(){
 		this.showLog();

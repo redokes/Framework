@@ -31,7 +31,12 @@ Ext.define('Modules.files.js.chat.Chat', {
 							'message',
 							{ message: this.messageField.getValue() }
 						);
-						//this.addMessage(0, 'Me', this.messageField.getValue());
+						
+						this.getApplication().onModuleReady('stream', function(stream){
+							stream.addMessage({
+								text: "<b>Me: </b>" + this.messageField.getValue()
+							});
+						}, this);
 						this.messageField.setValue('');
                     }
                 }
@@ -71,7 +76,7 @@ Ext.define('Modules.files.js.chat.Chat', {
 					this.getApplication().onModuleReady('stream', function(stream){
 						stream.onViewReady(function(stream){
 							stream.addMessage({
-								text: response.storeData.id + ": " + response.data.message,
+								text: '<b>' + response.storeData.id + ": </b>" + response.data.message,
 								module: this.getModuleName()
 							});
 						}, this);
