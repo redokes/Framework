@@ -22,36 +22,36 @@ Ext.define('Modules.files.js.music.Player', {
 	
 	initButtons: function() {
 		this.playButton = Ext.create('Ext.button.Button', {
-			text: 'Play',
 			scope: this,
+			icon: '/modules/files/images/icons/play-16.png',
 			handler: this.play
 		});
 		this.items.push(this.playButton);
 		
 		this.pauseButton = Ext.create('Ext.button.Button', {
-			text: 'Pause',
 			scope: this,
+			icon: '/modules/files/images/icons/pause-16.png',
 			handler: this.pause
 		});
 		this.items.push(this.pauseButton);
 		
 		this.previousButton = Ext.create('Ext.button.Button', {
-			text: 'Previous',
 			scope: this,
+			icon: '/modules/files/images/icons/previous-16.png',
 			handler: this.previous
 		});
 		this.items.push(this.previousButton);
 		
 		this.nextButton = Ext.create('Ext.button.Button', {
-			text: 'Next',
 			scope: this,
+			icon: '/modules/files/images/icons/next-16.png',
 			handler: this.next
 		});
 		this.items.push(this.nextButton);
 		
 		this.stopButton = Ext.create('Ext.button.Button', {
-			text: 'Stop',
 			scope: this,
+			icon: '/modules/files/images/icons/stop-16.png',
 			handler: this.stop
 		});
 		this.items.push(this.stopButton);
@@ -72,13 +72,23 @@ Ext.define('Modules.files.js.music.Player', {
 	},
 	
 	setRawSrc: function(type, data){
+		this.stop();
 		this.audio.dom.src = 'data:' + type + ';base64,' + window.btoa(data);
+		this.isLoaded = true;
+	},
+	
+	setSrc: function(src){
+		this.stop();
+		this.audio.dom.src = src;
+		this.isLoaded = true;
 	},
 	
 	play: function() {
 		this.log('Play');
 		if (this.isLoaded) {
+			console.log('here');
 			this.audio.dom.play();
+			this.enable();
 			this.isPaused = false;
 		}
 	},
@@ -96,11 +106,11 @@ Ext.define('Modules.files.js.music.Player', {
 		if (this.isLoaded) {
 			if (this.isPaused) {
 				this.isPaused = false;
-				this.audio.dom.pause();
+				this.audio.dom.play();
 			}
 			else {
 				this.isPaused = true;
-				this.audio.dom.play();
+				this.audio.dom.pause();
 			}
 		}
 	},
