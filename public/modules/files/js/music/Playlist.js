@@ -6,6 +6,8 @@ Ext.define('Modules.files.js.music.Playlist', {
 	
 	//config
 	itemSelector: '.playlist-item',
+	overItemCls: 'playlist-hover',
+	trackOver: true,
 	
 	initComponent: function(){
 		this.showLog();
