@@ -54,7 +54,7 @@ Ext.define('Redokes.node.server.Namespace', {
 			 * Let all other users know this user has connected to the namespace
 			 * Send the socket's data store as a parameter
 			 */
-			socket.broadcast.emit('otherConnect', this.getSocketData[socket.id]);
+			socket.broadcast.emit('otherConnect', this.getSocketData(socket.id));
 
 		}.bind(this));
 	},
@@ -136,8 +136,8 @@ Ext.define('Redokes.node.server.Namespace', {
 		 * Adds the socket's store data to the response
 		 */
 		socket.on('message', function(request){
-			this.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
-			this.log(request);
+			//this.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
+			//this.log(request);
 			request.storeData = this.getSocketData(socket.id);
 			
 			/**
@@ -149,7 +149,9 @@ Ext.define('Redokes.node.server.Namespace', {
 				}
 				else {
 					this.log('single socket id');
-					this.io.sockets.sockets[request.data.socketId].emit('message', request);
+					if(this.io.sockets.sockets[request.data.socketId] != null){
+						this.io.sockets.sockets[request.data.socketId].emit('message', request);
+					}
 				}
 			}
 			else {

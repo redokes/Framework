@@ -22,9 +22,10 @@ Ext.define('Modules.files.js.user.User', {
 		//this.initMenu();
 		//this.initMenuItem();
 		//this.initView();
-		//this.initStream();
+		this.initStream();
 		this.initRemoteView();
 		this.initList();
+		this.initUserHandler();
 		this.initFileHandler();
 		this.onViewReady(this.initViewListeners, this);
 	},
@@ -75,7 +76,11 @@ Ext.define('Modules.files.js.user.User', {
 	},
 	
 	initRemoteView: function(){
-		this.remoteView = Ext.create('Modules.files.js.user.view.User');
+		//Create the remote view to hold remote users files
+		this.remoteView = Ext.create('Modules.files.js.user.view.User',{
+			title: 'Remote User',
+			remote: true
+		});
 		this.getApplication().getCenter().add(this.remoteView);
 		
 		//Download the file from the remote user
@@ -106,20 +111,36 @@ Ext.define('Modules.files.js.user.User', {
 			return;
 		}
 		
-		this.menu.folder.on('select', function(){
-			var stream = this.application.getModule('stream');
-			stream.addMessage({
-				text: 'You just added ' + this.menu.folder.getFiles().length + ' file(s)'
-			});
+		//Listen for when the user adds files
+		this.onViewReady(function(){
+			this.getView().on('select', function(field){
+				var stream = this.application.getModule('stream');
+
+				//Add to local stream
+				stream.addMessage({
+					text: 'You just added ' + field.getFiles().length + ' file(s)'
+				});
+
+				//Send a message to everyone else
+				this.getApplication().getSocketClient().send(
+					'user',
+					'message',
+					{ 
+						message: 'Just added ' + field.getFiles().length + ' file(s)'
+					}
+				);
+			}, this);
 		}, this);
 	},
 	
 	initList: function(){
+		
+		//Create the list to hold the users that are currently connected
 		this.list = Ext.create('Modules.files.js.user.view.List', {
-			scope: this,
-			application: this.application,
-			module: this
+			scope: this
 		});
+		
+		//Add a navigation panel to hold the list
 		this.getApplication().getNavigation().add(new Ext.panel.Panel({
 			scope: this,
 			title: 'Users',
@@ -129,9 +150,56 @@ Ext.define('Modules.files.js.user.User', {
 			items: [this.list]
 		}));
 		
+		//Listen for when an item is clicked, and load the users shared files
 		this.list.on('itemclick', function(view, record){
 			this.loadUser(record);
 		}, this);
+		
+	},
+	
+	initUserHandler: function(){
+		//Get the current remote users
+		this.getApplication().getSocketClient().socket.emit('getRemoteUsers', {}, Ext.bind(function(response){
+			Ext.each(response.sockets, function(socket){
+				this.list.store.add({
+					name: socket.id,
+					id: socket.id
+				});
+			}, this);
+		}, this));
+		
+		//Listen for a new user connect
+		this.getApplication().getSocketClient().socket.on('otherConnect', Ext.bind(function(user){
+			
+			//Add the user to the list store
+			this.list.store.add({
+				name: user.id,
+				id: user.id
+			});
+			
+			//Show a message to the stream
+			this.getApplication().onModuleReady('stream', function(stream){
+				stream.addMessage({
+					text: user.id + ' Connected'
+				});
+			}, this);
+			
+		}, this));
+		
+		//Listen for a user disconnect
+		this.getApplication().getSocketClient().socket.on('otherDisconnect', Ext.bind(function(id){
+			//Find the record of the user
+			var record = this.list.store.findRecord('id', id);
+			this.list.store.remove(record);
+			
+			//Show a message to the stream
+			this.getApplication().onModuleReady('stream', function(stream){
+				stream.addMessage({
+					text: record.get('name') + ' Disconnected'
+				});
+			}, this);
+			
+		}, this));
 	},
 	
 	initFileHandler: function(){

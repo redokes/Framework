@@ -86,7 +86,7 @@ Ext.define('Modules.files.js.navigation.Navigation', {
 		
 		//get the sub navigation
 		var menuItem = record.get('menuItem');
-		var subMenuItem = menuItem.add(Ext.create('Ext.button.Button', Ext.apply(config, {
+		var subMenuItem = menuItem.add(Ext.create('Modules.files.js.navigation.Item', Ext.apply(config, {
 			module: module,
 			margin: 2,
 			//ui: '',

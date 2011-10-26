@@ -2,8 +2,6 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	extend: 'Ext.tree.Panel',
 	
 	//Config
-	application: null,
-	module: null,
 	rootVisible:false,
 	nodes: [],
 	remote: false,
@@ -44,42 +42,19 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	},
 	
 	initDownload: function(){
-		this.downloadButton = new Ext.button.Button({
-			scope: this,
-			text: 'Download',
-			disabled: true,
-			handler: function(){
-				if(!this.isRemote()){
-					this.downloadButton.disable();
-					return;
-				}
-				this.downloadFile();
-			}
-		});
-		this.toolbar.add(this.downloadButton);
-		
-		this.on('selectionchange', function(selectionModel, records, options){
-			//Disable if this is local
+		this.on('itemdblclick', function(view, record, item){
+			//return if local
 			if(!this.isRemote()){
-				this.downloadButton.disable();
 				return;
 			}
 			
-			//If there are no records disable
-			if(!records.length){
-				this.downloadButton.disable();
-				return;
-			}
-			
-			//If the file is a folder disable
-			var record = records[0];
 			if(!record.get('leaf')){
-				this.downloadButton.disable();
 				return;
 			}
 			
-			//Enable
-			this.downloadButton.enable();
+			//Download the file
+			this.downloadFile(record);
+			
 		}, this);
 	},
 	
@@ -219,13 +194,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 		return this.remote;
 	},
 	
-	downloadFile: function(){
-		//Ensure we can download the file
-		var records = this.getSelectionModel().getSelection();
-		if(!records.length){
-			return;
-		}
-		var record = records[0];
+	downloadFile: function(record){
 		if(!record.get('leaf')){
 			return;
 		}
