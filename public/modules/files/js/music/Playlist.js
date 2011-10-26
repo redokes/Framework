@@ -8,6 +8,8 @@ Ext.define('Modules.files.js.music.Playlist', {
 	itemSelector: '.playlist-item',
 	emptyText: 'Drag Files Here....',
 	deferEmptyText : false,
+	overItemCls: 'playlist-hover',
+	trackOver: true,
 	
 	initComponent: function(){
 		this.showLog();
