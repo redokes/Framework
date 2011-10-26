@@ -13,7 +13,6 @@ Ext.define('Modules.files.js.user.User', {
 			'stream'
 		]
 	},
-	downloadedFiles: {},
 	
 	//Init Functions
 	init: function(){
@@ -82,18 +81,6 @@ Ext.define('Modules.files.js.user.User', {
 			remote: true
 		});
 		this.getApplication().getCenter().add(this.remoteView);
-		
-		//Download the file from the remote user
-		this.remoteView.tree.on('download', function(tree, record){
-			this.getApplication().getSocketClient().send(
-				'file',
-				'get',
-				{ 
-					socketId:  this.remoteUserId,
-					nodeId: record.internalId
-				}
-			);
-		}, this);
 	},
 	
 	initViewListeners: function(){
@@ -242,13 +229,21 @@ Ext.define('Modules.files.js.user.User', {
 					var nodeId = response.data.nodeId;
 					var file = Ext.create('Modules.files.js.file.File', this.getTree().getStore().getNodeById(nodeId).raw.file);
 					file.on('chunk', function(event, data, options){
+						var fileObject = Ext.apply({}, {
+							name: file.name,
+							size: file.fileSize,
+							type: file.type,
+							totalChunks: file.totalChunks,
+							currentChunk: file.currentChunk
+						});
 						this.getApplication().getSocketClient().send(
 							'file',
 							'chunk',
 							{ 
 								socketId: response.socketId,
 								chunk: data,
-								nodeId: nodeId
+								nodeId: nodeId,
+								file: fileObject
 							}
 						);
 					}, this);
@@ -263,33 +258,6 @@ Ext.define('Modules.files.js.user.User', {
 						);
 					}, this);
 					file.download();
-				},
-				chunk: function(handler, response){
-					var nodeId = response.data.nodeId;
-					if(this.downloadedFiles[nodeId] == null){
-						this.downloadedFiles[nodeId] = [];
-					}
-					this.downloadedFiles[nodeId].push(response.data.chunk);
-					console.log('got chunk');
-				},
-				
-				complete: function(handler, response){
-					console.log('file complete');
-					var nodeId = response.data.nodeId;
-					var audio = document.createElement('audio');
-					document.body.appendChild(audio);
-					audio.src = 'data:audio/mp3;base64,' + window.btoa(this.downloadedFiles[nodeId].join(''));
-					//audio.play();
-					window.webkitRequestFileSystem(
-					  TEMPORARY,        // persistent vs. temporary storage
-					  1024 * 1024,      // size (bytes) of needed space
-					  function(){
-						  console.log('init');
-					  },           // success callback
-					  function(){
-						  console.log('error');
-					  }  // opt. error callback, denial of access
-					);
 				}
 			}
 		});
@@ -309,5 +277,9 @@ Ext.define('Modules.files.js.user.User', {
 	//Helper functions
 	getTree: function(){
 		return this.view.tree;
+	},
+	
+	getRemoteTree: function(){
+		return this.remoteView.tree;
 	}
 });
