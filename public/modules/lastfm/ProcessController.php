@@ -17,4 +17,12 @@ class Lastfm_ProcessController extends Redokes_Controller_Ajax {
 		$this->setParam('response', $response);
 	}
 	
+	public function getEventsAction() {
+		$latitude = $this->frontController->getParam('latitude');
+		$longitude = $this->frontController->getParam('longitude');
+		$lastFm = new Lastfm_Model_Lastfm();
+		$response = $lastFm->getEvents($latitude, $longitude);
+		$this->setParam('response', $response);
+	}
+	
 }
