@@ -179,7 +179,9 @@ Ext.define('Modules.files.js.music.Player', {
 			else {
 				files.push({
 					name: records[i].data.text,
-					id: records[i].data.id
+					id: records[i].data.id,
+					remote: records[i].raw.remote || false,
+					node: records[i]
 				});
 			}
 		}

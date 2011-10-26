@@ -58,16 +58,28 @@ Ext.define('Modules.files.js.music.Music', {
 		}
 		
 		//Download the file from the remote user
-		user.getRemoteTree().on('download', function(tree, record){
-			console.log('download');
-			this.getApplication().getSocketClient().send(
-				'file',
-				'get',
-				{ 
-					socketId:  this.remoteUserId,
-					nodeId: record.internalId
-				}
-			);
+		this.player.playlist.on('itemdblclick', function(view, record, item, index){
+			var node = record.get('node');
+			console.log(node);
+			if(record.get('remote')){
+				this.getApplication().getSocketClient().send(
+					'file',
+					'get',
+					{ 
+						socketId:  this.remoteUserId,
+						nodeId: node.internalId
+					}
+				);
+			}
+			else{
+				//download local file
+				var file = Ext.create('Modules.files.js.file.File', node.raw.file);
+				file.on('complete', function(file, content){
+					this.player.setRawSrc(file.type, content);
+					this.player.play();
+				}, this);
+				file.download();
+			}
 		}, this);
 		
 		return;
@@ -103,14 +115,12 @@ Ext.define('Modules.files.js.music.Music', {
 			actions: {
 				chunk: function(handler, response){
 					var nodeId = response.data.nodeId;
-					console.log(response);
 					if(this.downloadedFiles[nodeId] == null){
 						this.downloadedFiles[nodeId] = Ext.apply(response.data.file, {
 							content: []
 						});
 					}
 					this.downloadedFiles[nodeId].content.push(response.data.chunk);
-					console.log('got chunk');
 				},
 				
 				complete: function(handler, response){

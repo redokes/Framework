@@ -179,7 +179,8 @@ Ext.define('Modules.files.js.user.view.Tree', {
 		Ext.apply(objectNode, {
 			text: node.data.text,
 			leaf: node.data.leaf,
-			id: node.data.id
+			id: node.data.id,
+			remote: true
 		});
 		
 		if(node.raw != null && node.raw.file != null){
