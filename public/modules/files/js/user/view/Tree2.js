@@ -1,5 +1,8 @@
 Ext.define('Modules.files.js.user.view.Tree', {
 	extend: 'Ext.tree.Panel',
+	mixins: {
+		log: 'Redokes.debug.Log'
+	},
 	
 	//Config
 	rootVisible:false,
@@ -8,6 +11,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	remoteUserId: 0,
 
     initComponent: function() {
+		this.showLog();
 		this.items = [];
 		this.dockedItems = [];
 		this.init();
@@ -67,6 +71,50 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	processFileList: function(fileList) {
 		var numFiles = fileList.length;
 		
+		// Loop through file list to build object structure
+		var pathObject = {};
+		for (var i = 0; i < numFiles; i++) {
+			var pathParts = fileList[i].webkitRelativePath.split('/');
+			var fileName = pathParts.pop();
+			
+			// Loop through the path parts and make the directory structure
+			// in the path object
+			if (fileName.substr(0, 1) != '.') {
+				var subPathObject = pathObject;
+				for (var j = 0; j < pathParts.length; j++) {
+					if (subPathObject[pathParts[j]] == null) {
+						subPathObject[pathParts[j]] = {}
+					}
+					subPathObject = subPathObject[pathParts[j]];
+//					var folderName = pathParts[j];
+//					if (subPath[folderName] == null) {
+//						subPath[folderName] = {
+//							record:fileList[i],
+//							isFile:false
+//						};
+//					}
+//					subPath = subPath[folderName];
+				}
+				
+				// Add the file to the directory's file array
+				if (subPathObject['_files'] == null) {
+					subPathObject['_files'] = [];
+				}
+				subPathObject['_files'].push({
+					record:fileList[i]
+				});
+			}
+		}
+		
+		this.log(pathObject);
+		var processedList = {};
+		this.buildNodes2(processedList, pathObject);
+		this.log('Processed = ');
+		this.log(processedList);
+		return processedList;
+		return;
+		
+		
 		if (!numFiles) {
 			return [];
 		}
@@ -90,6 +138,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 		for (var i = 0, pathParts, fileName; i < numFiles; i++) {
 			pathParts = fileList[i].webkitRelativePath.split('/');
 			fileName = pathParts.pop();
+			var subPath = {};
 			for (var j = 0, subPath = paths; j < pathParts.length; j++) {
 				var folderName = pathParts[j];
 				if (subPath[folderName] == null) {
@@ -100,7 +149,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 				}
 				subPath = subPath[folderName];
 			}
-			if(fileName.substr(0,1) != "."){
+			if(fileName != "."){
 				subPath[fileName] = {
 					record:fileList[i],
 					isFile:true
@@ -109,6 +158,80 @@ Ext.define('Modules.files.js.user.view.Tree', {
 		}
 		this.buildNodes(paths[topDir], processedList.children);
 		return processedList;
+	},
+	
+	buildNodes2: function(processedList, pathObject, indent) {
+		indent = indent || 0;
+		var indentStr = '';
+		for (var i = 0; i < indent; i++) {
+			indentStr += ' ';
+		}
+		
+		var isRoot = true;
+		for (var i in processedList) {
+			isRoot = false;
+			break;
+		}
+		
+		if (isRoot) {
+			this.log(indentStr + 'This is root');
+			for (var i in pathObject) {
+				processedList.text = i;
+				break;
+			}
+		}
+		
+		for (var i in pathObject) {
+			this.log(indentStr + 'i = ' + i);
+			if (i == '_files') {
+				this.log(indentStr + 'Stop on files');
+				return;
+			}
+			
+			
+			// Set the text for this tree node
+//			processedList.text = i;
+
+			// Check if this is a leaf (no children)
+			var isLeaf = true;
+			for (var j in pathObject[i]) {
+				isLeaf = false;
+			}
+
+			// Set the leaf property for this node
+			processedList.leaf = isLeaf;
+			if (!isLeaf) {
+
+				// Set the children array for this node
+				processedList.children = [];
+				this.log(indentStr + 'Children for ' + processedList.text);
+				
+				// Add children to array
+				for (var j in pathObject[i]) {
+					this.log(indentStr + 'j = ' + j);
+					if (j == '_files') {
+						// Loop through files and add to children
+						for (var fileIndex = 0; fileIndex < pathObject[i][j].length; fileIndex++) {
+							var file = pathObject[i][j][fileIndex];
+							processedList.children.push({
+								text: file.record.fileName,
+								leaf: true,
+								file: file
+							});
+						}
+					}
+					else {
+						processedList.children.push({
+							text: j
+						});
+						this.log(indentStr + 'Build nodes for ' + j);
+//						this.log(pathObject[i]);
+						this.buildNodes2(processedList.children[processedList.children.length-1], pathObject[i], indent + 2);
+					}
+				}
+
+			}
+		}
 	},
 	
 	buildNodes: function(dir, children) {
@@ -120,7 +243,6 @@ Ext.define('Modules.files.js.user.view.Tree', {
 					text: i
 				};
 				if (dir[i].isFile) {
-					delete dir[i].isFile;
 					//Add Config
 					Ext.apply(config, {
 						leaf:true,
@@ -137,7 +259,6 @@ Ext.define('Modules.files.js.user.view.Tree', {
 					children.push(config);
 				}
 				else {
-					delete dir[i].isFile;
 					children.push(Ext.apply({
 						text:i,
 						leaf:false,
