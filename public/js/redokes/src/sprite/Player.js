@@ -1,5 +1,8 @@
 Ext.define('Redokes.sprite.Player', {
 	extend:'Redokes.sprite.Sprite',
+	mixins: {
+		log: 'Redokes.debug.Log'
+	},
 	
 	playerData:{},
 	doSocketCalls:false,
@@ -68,8 +71,8 @@ Ext.define('Redokes.sprite.Player', {
 //		console.log('socket send player data');
 		
 		//TODO: this is where it is erroring
-		return;
-		
+//		return;
+		this.log('Send player data');
 		this.game.socket.socket.emit('setData', this.playerData, Ext.bind(function(params) {
 //			console.log('call back from set data');
 //			console.log(arguments);

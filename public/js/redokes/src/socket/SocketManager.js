@@ -1,5 +1,9 @@
 Ext.define('Redokes.socket.SocketManager', {
 	extend: 'Ext.util.Observable',
+	mixins: {
+		log: 'Redokes.debug.Log'
+	},
+	
 	config:{
 		url: '',
 		timeout: 3000,
@@ -11,7 +15,7 @@ Ext.define('Redokes.socket.SocketManager', {
 		this.addEvents('initclient');
 		this.namespaces = {};
         this.initConfig(config);
-		this.createNamespace('');
+//		this.createNamespace('');
 		window.sockets = this;
     },
 	
@@ -32,11 +36,14 @@ Ext.define('Redokes.socket.SocketManager', {
 	},
 	
 	initClient: function(name) {
+		this.log('Init cient ' + name);
 		this.namespaces[name] = Ext.create('Redokes.socket.Client', {
 			url:this.url,
 			namespace:name
 		});
+		this.log('Made it here');
 		this.fireEvent('initclient', this.namespaces[name]);
+		this.log('fired');
 	},
 	
 	removeNamespace: function(name) {
