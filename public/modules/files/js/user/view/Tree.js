@@ -100,7 +100,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 				}
 				subPath = subPath[folderName];
 			}
-			if(fileName != "."){
+			if(fileName.substr(0,1) != "."){
 				subPath[fileName] = {
 					record:fileList[i],
 					isFile:true
@@ -120,6 +120,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 					text: i
 				};
 				if (dir[i].isFile) {
+					delete dir[i].isFile;
 					//Add Config
 					Ext.apply(config, {
 						leaf:true,
@@ -136,6 +137,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 					children.push(config);
 				}
 				else {
+					delete dir[i].isFile;
 					children.push(Ext.apply({
 						text:i,
 						leaf:false,
