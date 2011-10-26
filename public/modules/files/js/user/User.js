@@ -145,8 +145,6 @@ Ext.define('Modules.files.js.user.User', {
 			scope: this,
 			title: 'Users',
 			layout: 'fit',
-			frame: true,
-			margin: 2,
 			items: [this.list]
 		}));
 		
@@ -210,6 +208,12 @@ Ext.define('Modules.files.js.user.User', {
 			module: 'files',
 			actions: {
 				get: function(handler, response){
+					//Return if no view yet
+					if(!this.getView()){
+						return;
+					}
+					
+					//Send files to user who requested them
 					this.getApplication().getSocketClient().send(
 						'files',
 						'receive',
@@ -221,7 +225,8 @@ Ext.define('Modules.files.js.user.User', {
 				},
 				receive: function(handler, response){
 					this.getApplication().setActive(this.remoteView);
-					this.remoteView.tree.loadRemoteUser(response.data.socketId, response.data.nodes);
+					this.remoteView.setTitle('Viewing ' + response.storeData.id + ' Files');
+					this.remoteView.tree.loadRemoteUser(response.storeData.id , response.data.nodes);
 				}
 			}
 		});

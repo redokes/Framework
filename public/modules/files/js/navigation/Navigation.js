@@ -48,8 +48,8 @@ Ext.define('Modules.files.js.navigation.Navigation', {
 			title: module.title,
 			layout: 'anchor',
 			border: false,
-			frame: true,
-			margin: 2,
+			//frame: true,
+			//margin: 2,
 			defaults:{
 				anchor: '100%'
 			}
