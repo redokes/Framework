@@ -16,7 +16,7 @@ Ext.define('Redokes.socket.Client', {
 	
 	initSocket: function() {
 		var url = this.url;
-		if (this.namespace.length) {
+		if (this.getNamespace().length) {
 			url += '/' + this.namespace;
 		}
 		

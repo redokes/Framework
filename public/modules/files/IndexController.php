@@ -22,4 +22,10 @@ class Files_IndexController extends Redokes_Controller_Action {
 		$this->getView()
 			->addJs('http://localhost:8080/socket.io/socket.io.js');
 	}
+	
+	public function lastfmAction() {
+		$lastFm = new Lastfm_Model_Lastfm();
+		$response = $lastFm->getArtistInfo('Andrew Bird');
+		show_array($response);
+	}
 }

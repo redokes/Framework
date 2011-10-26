@@ -48,7 +48,6 @@ Ext.define('Redokes.node.server.Namespace', {
 			 * Init all socket listeners
 			 */
 			this.initSocketListeners(socket);
-			this.log('after socket listen init!@!@!@!')
 
 			/**
 			 * Let all other users know this user has connected to the namespace
@@ -148,7 +147,6 @@ Ext.define('Redokes.node.server.Namespace', {
 					this.io.sockets.sockets[request.data.socketId].emit(request.action, request);
 				}
 				else {
-					this.log('single socket id');
 					this.io.sockets.sockets[request.data.socketId].emit('message', request);
 				}
 			}
@@ -157,7 +155,6 @@ Ext.define('Redokes.node.server.Namespace', {
 					socket.broadcast.emit(request.action, request);
 				}
 				else {
-					this.log('emit message');
 					socket.broadcast.emit('message', request);
 				}
 			}
