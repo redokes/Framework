@@ -18,6 +18,7 @@ Ext.define('Modules.files.js.music.Player', {
 	init: function() {
 		this.initButtons();
 		this.initPlaylist();
+		this.initDragDrop();
 	},
 	
 	initButtons: function() {
@@ -62,12 +63,7 @@ Ext.define('Modules.files.js.music.Player', {
 		this.playlist = Ext.create('Modules.files.js.music.Playlist', {
 			title: 'Playlist'
 		});
-		this.playlist.store.add({
-			name: 'Just a test'
-		});
-		this.playlist.store.add({
-			name: 'Just another test'
-		});
+		
 		this.items.push(this.playlist);
 	},
 	
@@ -150,5 +146,44 @@ Ext.define('Modules.files.js.music.Player', {
 			tag: 'audio',
 			controls: true
 		});
+	},
+	
+	initDragDrop: function() {
+		if (!this.rendered) {
+			this.on('afterrender', this.initDragDrop, this);
+			return;
+		}
+		this.dragDrop = Ext.create('Ext.dd.DropTarget', this.getEl(), {
+			ddGroup: 'TreeDD',
+			notifyOver: function() {
+				return this.dropAllowed;
+			},
+			notifyDrop: Ext.bind(function(source, e, data) {
+				var files = this.getDroppedFiles(data.records);
+				this.playlist.addFiles(files);
+			}, this)
+		});
+	},
+	
+	getDroppedFiles: function(records) {
+		var files = [];
+		for (var i = 0; i < records.length; i++) {
+			if (records[i].childNodes && records[i].childNodes.length) {
+				// Combine files with current file list
+				var newFiles = this.getDroppedFiles(records[i].childNodes)
+				var numFiles = newFiles.length;
+				for (var j = 0; j < numFiles; j++) {
+					files.push(newFiles[j]);
+				}
+			}
+			else {
+				files.push({
+					name: records[i].data.text,
+					id: records[i].data.id
+				});
+			}
+		}
+		
+		return files;
 	}
 });

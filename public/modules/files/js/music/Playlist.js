@@ -36,6 +36,10 @@ Ext.define('Modules.files.js.music.Playlist', {
 				'</div>',
 			'</tpl>'
 		);
+	},
+	
+	addFiles: function(records) {
+		this.store.add(records);
 	}
 	
 });
