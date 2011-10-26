@@ -150,7 +150,7 @@ Ext.define('Modules.files.js.module.Module', {
 		Ext.each(this.subNavigationModules, function(module){
 			this.getApplication().onModuleReady(module, function(module){
 				this.getApplication().getNavigation().addSubMenuItem(module, this, {
-					text: this.title
+					text: this.navigationTitle || this.title
 				});
 			}, this);
 		}, this);

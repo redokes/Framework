@@ -2,9 +2,7 @@ Ext.define('Modules.files.js.user.view.User', {
 	extend: 'Ext.panel.Panel',
 	
 	//Config
-	module: false,
-	application: false,
-	layout: 'fit',
+	layout: 'border',
 
     initComponent: function() {
 		this.items = [];
@@ -14,14 +12,29 @@ Ext.define('Modules.files.js.user.view.User', {
 	
 	init: function(){
 		this.initTree();
+		this.initFolderSelect();
 	},
 	
 	initTree: function(){
 		this.tree = Ext.create('Modules.files.js.user.view.Tree', {
 			scope: this,
-			application: this.application,
-			module: this.module
+			region: 'center'
 		});
 		this.items.push(this.tree);
+	},
+	
+	initFolderSelect: function(){
+		this.folderSelect = Ext.create('Modules.files.js.form.field.Folder', {
+			scope: this,
+			width: 60
+		});
+		
+		//Chain events
+		//this.fireEvent('select', this, this.fileInputEl, e);
+		this.folderSelect.on('select', function(field, inputEl, event, options){
+			this.fireEvent('select', field, inputEl, event);
+		}, this);
+		this.tree.toolbar.add('->', this.folderSelect);
 	}
+	
 });

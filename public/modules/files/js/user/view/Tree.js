@@ -85,7 +85,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	
 	addFileList: function(fileList){
 		var processedList = this.processFileList(fileList);
-		this.nodes.push(processedList);
+		this.nodes.push(Ext.apply({}, processedList));
 		this.store.tree.root.appendChild(processedList);
 	},
 	
@@ -184,7 +184,12 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	
 	convertNode: function(node){
 		var objectNode = {};
-		Ext.apply(objectNode, node.data);
+		Ext.apply(objectNode, {
+			text: node.data.text,
+			leaf: node.data.leaf,
+			id: node.data.id
+		});
+		
 		objectNode.children = [];
 		Ext.each(node.childNodes, function(node){
 			objectNode.children.push(this.convertNode(node));
@@ -225,15 +230,6 @@ Ext.define('Modules.files.js.user.view.Tree', {
 			return;
 		}
 		
-		//Download the file from the remote user
-		console.log(record.getId());
-		this.application.getSocketClient().send(
-			'file',
-			'get',
-			{ 
-				socketId:  this.remoteUserId,
-				nodeId: record.internalId
-			}
-		);
+		this.fireEvent('download', this, record);
 	}
 });

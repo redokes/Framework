@@ -15,7 +15,6 @@ Ext.define('Modules.files.js.form.field.Folder', {
         }).on('change', me.onFileChange, me);
 		
 		me.fileInputEl.on('change', function(e) {
-			console.log('change');
 			this.lastEvent = e;
 			this.fireEvent('select', this, this.fileInputEl, e);
 		}, this);

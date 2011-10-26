@@ -8,7 +8,9 @@ Ext.define('Modules.files.js.Application', {
 	
 	//Requires
 	requires:[
-		'Modules.files.js.chat.Chat'
+		'Modules.files.js.chat.Chat',
+		'Modules.files.js.stream.Stream',
+		'Modules.files.js.user.User',
 	],
 	
 	///////////////////////////////////////////////////
@@ -19,8 +21,11 @@ Ext.define('Modules.files.js.Application', {
 	 * @cfg {Array} modules an array of module class names to load with this application
 	 */
 	modules:[
-		'Modules.files.js.chat.Chat'
+		'Modules.files.js.chat.Chat',
+		'Modules.files.js.stream.Stream',
+		'Modules.files.js.user.User'
 	],
+	
 	layout: 'border',
 	_modules: {},
 	
@@ -79,6 +84,9 @@ Ext.define('Modules.files.js.Application', {
 		//Show the tasks
 		this.on('afterrender', function(){
 			//this.initLocation();
+			this.onModuleReady('stream', function(stream){
+				stream.show();
+			}, this);
 		}, this);
 	},
 	
@@ -166,7 +174,7 @@ Ext.define('Modules.files.js.Application', {
 	
 	initWest: function(){
 		this.west = Ext.create('Modules.files.js.navigation.Navigation', this, {
-			width: 300,
+			width: 200,
 			region: 'west'
 		});
 		this.items.push(this.west);

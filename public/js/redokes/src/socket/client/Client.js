@@ -68,7 +68,6 @@ Ext.define('Redokes.socket.client.Client', {
 	initListeners: function() {
 		if (this.socket) {
 			this.socket.on('connect', Ext.bind(function(){
-				console.log('connect');
 				this.fireEvent('connect', arguments);
 			}, this));
 			

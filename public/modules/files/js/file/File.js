@@ -2,7 +2,6 @@ Ext.define('Modules.files.js.file.File', {
 	extend: 'Ext.util.Observable',
 	
 	//Config
-	application: null,
 	remote: false,
 	file: null,
 	reader: null,
@@ -12,7 +11,7 @@ Ext.define('Modules.files.js.file.File', {
 	totalChunks: 0,
 	currentChunk: 0,
 
-	constructor: function(file, application, config){
+	constructor: function(file, config){
 		Ext.apply(this, file);
 		this.file = file;
 		this.callParent([config]);
@@ -22,7 +21,7 @@ Ext.define('Modules.files.js.file.File', {
 	init: function(){
 		this.initFile();
 		this.initReader();
-		this.initHandler();
+		//this.initHandler();
 	},
 	
 	initFile: function(){
@@ -38,7 +37,7 @@ Ext.define('Modules.files.js.file.File', {
 		this.reader = new FileReader();
 		this.reader.onloadend = Ext.bind(function(e) {
 			if (e.target.readyState == FileReader.DONE) { // DONE == 2
-				this.fireEvent('chunk', e);
+				this.fireEvent('chunk', e, e.target.result);
 			}
 		}, this);
 	},
@@ -63,8 +62,8 @@ Ext.define('Modules.files.js.file.File', {
 		this.downloadChunk(this.currentChunk);
 	},
 	
-	onDownloadChunk: function(event, options){
-		this.chunks[this.currentChunk] = event.target.result;
+	onDownloadChunk: function(event, data, options){
+		this.chunks[this.currentChunk] = data;
 		this.currentChunk++;
 		//Check if we are finished
 		if(this.currentChunk >= this.totalChunks){

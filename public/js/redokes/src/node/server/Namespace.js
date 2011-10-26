@@ -11,6 +11,7 @@ Ext.define('Redokes.node.server.Namespace', {
 	},
 	
 	constructor: function(config) {
+		this.showLog();
 		this.initConfig(config);
 		this.log('Constructor');
 		this.init();
@@ -136,7 +137,7 @@ Ext.define('Redokes.node.server.Namespace', {
 		 */
 		socket.on('message', function(request){
 			this.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
-//			this.log(request);
+			this.log(request);
 			request.storeData = this.getSocketData(socket.id);
 			
 			/**
@@ -147,6 +148,7 @@ Ext.define('Redokes.node.server.Namespace', {
 					this.io.sockets.sockets[request.data.socketId].emit(request.action, request);
 				}
 				else {
+					this.log('single socket id');
 					this.io.sockets.sockets[request.data.socketId].emit('message', request);
 				}
 			}
@@ -155,6 +157,7 @@ Ext.define('Redokes.node.server.Namespace', {
 					socket.broadcast.emit(request.action, request);
 				}
 				else {
+					this.log('emit message');
 					socket.broadcast.emit('message', request);
 				}
 			}

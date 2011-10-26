@@ -48,6 +48,8 @@ Ext.define('Modules.files.js.navigation.Navigation', {
 			title: module.title,
 			layout: 'anchor',
 			border: false,
+			frame: true,
+			margin: 2,
 			defaults:{
 				anchor: '100%'
 			}
@@ -86,6 +88,7 @@ Ext.define('Modules.files.js.navigation.Navigation', {
 		var menuItem = record.get('menuItem');
 		var subMenuItem = menuItem.add(Ext.create('Ext.button.Button', Ext.apply(config, {
 			module: module,
+			margin: 2,
 			//ui: '',
 			enableToggle: true,
 			toggleGroup: 'application-sub-navigation',

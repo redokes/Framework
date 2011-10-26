@@ -1,4 +1,3 @@
-
 Ext.define('Modules.files.js.chat.Chat', {
 	extend: 'Modules.files.js.module.Module',
 	singleton: true,
@@ -6,17 +5,12 @@ Ext.define('Modules.files.js.chat.Chat', {
 	//Config
 	config:{
 		name: 'chat',
-		title: 'Chat',
-		navigationTitle: 'Chat',
-		isMainNavigationItem: true
+		title: 'Chat'
 	},
 	
 	//Init Functions
 	init: function(){
-		return;
-		this.application.onModuleReady('stream', function(stream){
-			this.initMessagePanel();
-		}, this);
+		this.initMessagePanel();
 		this.initMessageHandler();
 	},
 	
@@ -46,7 +40,7 @@ Ext.define('Modules.files.js.chat.Chat', {
 		
 		//on key up, send a request to the server that says the user is typing or not typing
     	this.messageField.on('keyup', function(){
-    		this.application.getSocketClient().send(
+    		this.getApplication().getSocketClient().send(
 				'user',
 				'typing',
 				{
@@ -63,7 +57,7 @@ Ext.define('Modules.files.js.chat.Chat', {
 			bodyCls: 'message-footer',
     	    items: [this.messageField]
     	});
-		this.application.getCenter().dockedItems.add(this.messagePanel);
+		this.getApplication().getCenter().addDocked(this.messagePanel);
 	},
 	
 	initMessageHandler: function(){
@@ -74,12 +68,14 @@ Ext.define('Modules.files.js.chat.Chat', {
 			actions: {
 				message: function(handler, response){
 					//Share this on the stream
-					var stream = this.application.getModule('stream');
-					if(stream){
-						stream.addMessage({
-							text: response.storeData.id + ": " + response.data.message
-						});
-					}
+					this.getApplication().onModuleReady('stream', function(stream){
+						stream.onViewReady(function(stream){
+							stream.addMessage({
+								text: response.storeData.id + ": " + response.data.message,
+								module: this.getModuleName()
+							});
+						}, this);
+					}, this);
 				},
 				typing: function(handler, response){
 					return;

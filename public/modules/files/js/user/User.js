@@ -1,27 +1,32 @@
-/**
- * User module
- * This is a singleton class and connot be directly created.
- * @extends Modules.files.js.module.Abstract
- * @singleton
- */
 Ext.define('Modules.files.js.user.User', {
-	extend:'Modules.files.js.module.Abstract',
+	extend: 'Modules.files.js.module.Module',
 	singleton: true,
 	
 	//Config
-	name: 'user',
-	displayTitle: 'User',
-
+	config:{
+		name: 'user',
+		title: 'Users',
+		navigationTitle: 'My Files',
+		viewClass: 'Modules.files.js.user.view.User',
+		isSubNavigationItem: true,
+		subNavigationModules:[
+			'stream'
+		]
+	},
+	downloadedFiles: {},
+	
 	//Init Functions
 	init: function(){
-		this.initStore();
-		this.initUser();
-		this.initMenu();
-		this.initMenuItem();
-		this.initView();
-		this.initStream();
+		//this.initStore();
+		//this.initUser();
+		//this.initMenu();
+		//this.initMenuItem();
+		//this.initView();
+		//this.initStream();
+		this.initRemoteView();
 		this.initList();
 		this.initFileHandler();
+		this.onViewReady(this.initViewListeners, this);
 	},
 	
 	initStore: function(){
@@ -52,27 +57,8 @@ Ext.define('Modules.files.js.user.User', {
 		});
 	},
 	
-	initMenuItem: function(){
-		this.menuItem = new Ext.menu.Item({
-			scope: this,
-			text: 'My Files',
-			handler: function(){
-				this.application.setActiveItem(this.view);
-				this.view.tree.loadUser();
-			}
-		});
-		this.application.getMenu().addMenuItem(this.menuItem);
-	},
-	
-	initMenu: function(){
-		this.menu = Ext.create('Modules.files.js.user.Menu', {
-			scope: this,
-			title: 'Shared Folders'
-		});
-		this.application.getAccordion().add(this.menu);
-	},
-	
 	initView: function(){
+		return this.callParent(arguments);
 		this.view = Ext.create('Modules.files.js.user.view.User', {
 			scope: this,
 			title: 'User',
@@ -86,6 +72,29 @@ Ext.define('Modules.files.js.user.User', {
 		}, this);
 		
 		window.tree = this.view.tree;
+	},
+	
+	initRemoteView: function(){
+		this.remoteView = Ext.create('Modules.files.js.user.view.User');
+		this.getApplication().getCenter().add(this.remoteView);
+		
+		//Download the file from the remote user
+		this.remoteView.tree.on('download', function(tree, record){
+			this.getApplication().getSocketClient().send(
+				'file',
+				'get',
+				{ 
+					socketId:  this.remoteUserId,
+					nodeId: record.internalId
+				}
+			);
+		}, this);
+	},
+	
+	initViewListeners: function(){
+		this.getView().on('select', function(field){
+			this.getView().tree.addFileList(field.getFiles());
+		}, this);
 	},
 	
 	initStream: function(){
@@ -111,10 +120,12 @@ Ext.define('Modules.files.js.user.User', {
 			application: this.application,
 			module: this
 		});
-		this.application.getAccordion().add(new Ext.panel.Panel({
+		this.getApplication().getNavigation().add(new Ext.panel.Panel({
 			scope: this,
 			title: 'Users',
 			layout: 'fit',
+			frame: true,
+			margin: 2,
 			items: [this.list]
 		}));
 		
@@ -131,17 +142,18 @@ Ext.define('Modules.files.js.user.User', {
 			module: 'files',
 			actions: {
 				get: function(handler, response){
-					this.application.getSocketClient().send(
+					this.getApplication().getSocketClient().send(
 						'files',
 						'receive',
 						{ 
 							socketId:  response.socketId,
-							nodes: this.getTree().nodes
+							nodes: this.getView().tree.convertToObject()
 						}
 					);
 				},
 				receive: function(handler, response){
-					this.getTree().loadRemoteUser(response.data.socketId, response.data.nodes);
+					this.getApplication().setActive(this.remoteView);
+					this.remoteView.tree.loadRemoteUser(response.data.socketId, response.data.nodes);
 				}
 			}
 		});
@@ -154,11 +166,57 @@ Ext.define('Modules.files.js.user.User', {
 			actions: {
 				get: function(handler, response){
 					//Get the file
-					console.log(response);
 					var nodeId = response.data.nodeId;
-					console.log(this.getTree().getStore().getNodeById(nodeId));
+					var file = Ext.create('Modules.files.js.file.File', this.getTree().getStore().getNodeById(nodeId).raw.file);
+					file.on('chunk', function(event, data, options){
+						this.getApplication().getSocketClient().send(
+							'file',
+							'chunk',
+							{ 
+								socketId: response.socketId,
+								chunk: data,
+								nodeId: nodeId
+							}
+						);
+					}, this);
+					file.on('complete', function(){
+						this.getApplication().getSocketClient().send(
+							'file',
+							'complete',
+							{ 
+								socketId: response.socketId,
+								nodeId: nodeId
+							}
+						);
+					}, this);
+					file.download();
 				},
-				receive: function(handler, response){
+				chunk: function(handler, response){
+					var nodeId = response.data.nodeId;
+					if(this.downloadedFiles[nodeId] == null){
+						this.downloadedFiles[nodeId] = [];
+					}
+					this.downloadedFiles[nodeId].push(response.data.chunk);
+					console.log('got chunk');
+				},
+				
+				complete: function(handler, response){
+					console.log('file complete');
+					var nodeId = response.data.nodeId;
+					var audio = document.createElement('audio');
+					document.body.appendChild(audio);
+					audio.src = 'data:audio/mp3;base64,' + window.btoa(this.downloadedFiles[nodeId].join(''));
+					//audio.play();
+					window.webkitRequestFileSystem(
+					  TEMPORARY,        // persistent vs. temporary storage
+					  1024 * 1024,      // size (bytes) of needed space
+					  function(){
+						  console.log('init');
+					  },           // success callback
+					  function(){
+						  console.log('error');
+					  }  // opt. error callback, denial of access
+					);
 				}
 			}
 		});
