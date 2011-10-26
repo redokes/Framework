@@ -1,6 +1,9 @@
 Ext.define('Modules.files.js.music.Player', {
-	extend:'Ext.panel.Panel',
-
+	extend:'Ext.toolbar.Toolbar',
+	
+	lastVolume: 0,
+	isPaused: true,
+	
 	initComponent: function(){
 		this.items = [];
 		this.callParent(arguments);
@@ -12,6 +15,40 @@ Ext.define('Modules.files.js.music.Player', {
 	
 	play: function(){
 		this.audio.dom.play();
+		this.isPaused = false;
+	},
+	
+	stop: function() {
+		this.audio.dom.pause();
+		this.audio.dom.seek(0);
+	},
+	
+	pause: function() {
+		if (this.isPaused) {
+			this.isPaused = false;
+			this.audio.dom.pause();
+		}
+		else {
+			this.isPaused = true;
+			this.audio.dom.play();
+		}
+	},
+	
+	setVolume: function(volume) {
+		this.audio.dom.volume = volume;
+	},
+	
+	mute: function() {
+		this.oldVolume = this.audio.dom.volume;
+		this.audio.dom.volume = 0;
+	},
+	
+	unmute: function() {
+		this.audio.dom.volume = this.oldVolume;
+	},
+	
+	seek: function(seconds) {
+		this.audio.dom.currentTime = seconds;
 	},
 	
 	//Init Functions
