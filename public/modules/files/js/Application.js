@@ -172,6 +172,12 @@ Ext.define('Modules.files.js.Application', {
 	},
 	
 	initEast: function(){
+		this.east = Ext.create('Ext.panel.Panel', {
+			layout: 'fit',
+			width: 200,
+			region: 'east'
+		});
+		this.items.push(this.east);
 	},
 	
 	initWest: function(){

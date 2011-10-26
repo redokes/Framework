@@ -1,6 +1,12 @@
 Ext.define('Modules.files.js.user.view.Tree', {
 	extend: 'Ext.tree.Panel',
-	
+	viewConfig: {
+		plugins: {
+			ptype: 'treeviewdragdrop',
+			enableDrop: false
+		}
+	},
+	 
 	//Config
 	rootVisible:false,
 	nodes: [],
@@ -100,7 +106,11 @@ Ext.define('Modules.files.js.user.view.Tree', {
 				}
 				subPath = subPath[folderName];
 			}
-			if(fileName.substr(0,1) != "."){
+			
+			// Check extension
+			var fileNameParts = fileName.split('.');
+			var extension = fileNameParts[fileNameParts.length-1];
+			if (fileName.substr(0,1) != '.' && extension == 'mp3') {
 				subPath[fileName] = {
 					record:fileList[i],
 					isFile:true
