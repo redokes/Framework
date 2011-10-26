@@ -6,7 +6,8 @@ Ext.define('Modules.files.js.navigation.Navigation', {
 	
 	//Config
 	layout: {
-		type: 'accordion'
+		type: 'accordion',
+		multi: true
 	},
 	unstyled: true,
 	

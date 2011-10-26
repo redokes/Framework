@@ -95,7 +95,7 @@ Ext.define('Modules.files.js.music.Music', {
 					this.player.play();
 					
 					//Share this on the stream
-					this.getApplication().onModuleReady(function(stream){
+					this.getApplication().onModuleReady('stream', function(stream){
 						if(stream){
 							stream.addMessage({
 								text: 'You are listening to ' +  file.fileName
