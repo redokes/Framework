@@ -11,6 +11,7 @@ Ext.define('Modules.files.js.Application', {
 		'Modules.files.js.chat.Chat',
 		'Modules.files.js.stream.Stream',
 		'Modules.files.js.user.User',
+		'Modules.files.js.music.Music'
 	],
 	
 	///////////////////////////////////////////////////
@@ -23,7 +24,8 @@ Ext.define('Modules.files.js.Application', {
 	modules:[
 		'Modules.files.js.chat.Chat',
 		'Modules.files.js.stream.Stream',
-		'Modules.files.js.user.User'
+		'Modules.files.js.user.User',
+		'Modules.files.js.music.Music'
 	],
 	
 	layout: 'border',
@@ -183,7 +185,8 @@ Ext.define('Modules.files.js.Application', {
 	initCenter: function(){
 		this.center = new Ext.panel.Panel({
 			region: 'center',
-			layout: 'card'
+			layout: 'card',
+			autoScroll: true
 		});
 		this.items.push(this.center);
 	},

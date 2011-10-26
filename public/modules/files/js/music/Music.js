@@ -1,29 +1,29 @@
-/**
- * Music module
- * This is a singleton class and connot be directly created.
- * @extends Modules.files.js.module.Abstract
- * @singleton
- */
 Ext.define('Modules.files.js.music.Music', {
-	extend:'Modules.files.js.module.Abstract',
+	extend: 'Modules.files.js.module.Module',
 	singleton: true,
 	
 	//Config
-	name: 'music',
-	displayTitle: 'Music',
-
+	config:{
+		name: 'music',
+		title: 'Playlist'
+	},
+	
 	//Init Functions
 	init: function(){
 		this.initPlayer();
-		this.initTree();
+		//this.initTree();
 	},
 	
 	initPlayer: function(){
 		this.player = Ext.create('Modules.files.js.music.Player', {
 			scope: this,
-			title: 'Music'
+			dock: 'right',
+			vertical: true
 		}, this);
-		this.application.getAccordion().add(this.player);
+		
+		this.getApplication().getCenter().addDocked(this.player);
+		
+		//this.application.getAccordion().add(this.player);
 		//this.audio = document.createElement('audio');
 		//document.body.appendChild(this.audio);
 		//audio.src = 'data:' + this.file.type + ';base64,' + window.btoa(this.chunks.join(''));

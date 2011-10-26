@@ -36,6 +36,6 @@ Ext.define('Modules.files.js.stream.view.Stream', {
 	},
 	
 	addMessage: function(record){
-		this.store.add(record);
+		return this.store.add(record);
 	}
 });
