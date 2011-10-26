@@ -211,6 +211,7 @@ Ext.define('Modules.files.js.user.User', {
 					);
 				},
 				receive: function(handler, response){
+					console.log(response.data.nodes);
 					this.getApplication().setActive(this.remoteView);
 					this.remoteView.setTitle('Viewing ' + response.storeData.id + ' Files');
 					this.remoteView.tree.loadRemoteUser(response.storeData.id , response.data.nodes);

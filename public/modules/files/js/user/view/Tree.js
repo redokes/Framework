@@ -125,7 +125,12 @@ Ext.define('Modules.files.js.user.view.Tree', {
 					Ext.apply(config, {
 						leaf:true,
 						id: dir[i].record.webkitRelativePath,
-						file: dir[i].record
+						file: dir[i].record,
+						fileObject: {
+							name: dir[i].record.fileName,
+							size: dir[i].record.size,
+							type: dir[i].record.type
+						}
 					});
 					
 					//Check File type
@@ -166,6 +171,16 @@ Ext.define('Modules.files.js.user.view.Tree', {
 			leaf: node.data.leaf,
 			id: node.data.id
 		});
+		
+		if(node.raw != null && node.raw.file != null){
+			Ext.apply(objectNode, {
+				file:{
+					name: node.raw.file.fileName,
+					size: node.raw.file.fileSize,
+					type: node.raw.file.type
+				}
+			});
+		}
 		
 		objectNode.children = [];
 		Ext.each(node.childNodes, function(node){
