@@ -1,5 +1,5 @@
 Ext.define('Modules.files.js.music.Player', {
-	extend:'Ext.toolbar.Toolbar',
+	extend:'Ext.panel.Panel',
 	mixins: {
 		log: 'Redokes.debug.Log'
 	},
@@ -11,8 +11,13 @@ Ext.define('Modules.files.js.music.Player', {
 	initComponent: function(){
 		this.showLog();
 		this.items = this.items || [];
-		this.initButtons();
+		this.init();
 		this.callParent(arguments);
+	},
+	
+	init: function() {
+		this.initButtons();
+		this.initPlaylist();
 	},
 	
 	initButtons: function() {
@@ -51,6 +56,19 @@ Ext.define('Modules.files.js.music.Player', {
 		});
 		this.items.push(this.stopButton);
 		
+	},
+	
+	initPlaylist: function() {
+		this.playlist = Ext.create('Modules.files.js.music.Playlist', {
+			title: 'Playlist'
+		});
+		this.playlist.store.add({
+			name: 'Just a test'
+		});
+		this.playlist.store.add({
+			name: 'Just another test'
+		});
+		this.items.push(this.playlist);
 	},
 	
 	setRawSrc: function(type, data){

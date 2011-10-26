@@ -17,8 +17,7 @@ Ext.define('Modules.files.js.music.Music', {
 	initPlayer: function(){
 		this.player = Ext.create('Modules.files.js.music.Player', {
 			scope: this,
-			dock: 'right',
-			vertical: true
+			dock: 'right'
 		}, this);
 		
 		this.getApplication().getCenter().addDocked(this.player);
