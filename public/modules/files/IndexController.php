@@ -11,7 +11,7 @@ class Files_IndexController extends Redokes_Controller_Action {
 			->addCss('/modules/files/css/files.css')
 			->addJs('/js/ext-4.0.2a/ext-all-debug.js')
 			->addJs('/js/redokes/redokes.js')
-			->addJs('http://localhost:8080/socket.io/socket.io.js')
+			->addJs('http://' . $_SERVER['HTTP_HOST'] . ':8080/socket.io/socket.io.js')
 			->addJs('/modules/files/js/MD5.js');
 	}
 	
