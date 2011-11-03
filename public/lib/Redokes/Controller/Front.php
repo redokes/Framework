@@ -126,13 +126,22 @@ class Redokes_Controller_Front {
 		$errorControllerClassName = $moduleName . '_ErrorController';
 		
 		if (class_exists($controllerClassName, true)) {
-			$controllerClass = new $controllerClassName($this, $actionName);
+			try {
+				$controllerClass = new $controllerClassName($this, $actionName);
+			}
+			catch(Exception $e) {
+				Redokes_Debug::output('Error', true);
+				Redokes_Debug::log('Error', true);
+			}
 		}
 		else if (class_exists($errorControllerClassName, true)) {
 			$controllerClass = new $errorControllerClassName($this, $actionName);
 		}
 		else {
-			echo "Redokes Error Time. Could not find $controllerClassName or $errorControllerClassName";
+			// TODO: make an error module and redirect to the error's 404 action
+			// or else just fire a 404 error here and depend on a module to listen for it like
+			// an error module
+			Redokes_Debug::output("Redokes Error Time. Could not find $controllerClassName or $errorControllerClassName", true);
 		}
 
 	}

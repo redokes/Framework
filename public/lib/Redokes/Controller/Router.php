@@ -9,10 +9,9 @@ class Redokes_Controller_Router {
 	 */
 
 	public function getRoutes() {
-		return array();
 		$cacheId = 'routes';
 		$cache = Redokes_Controller_Front::getInstance()->getCache();
-//		$cache->remove($cacheId);
+		$cache->remove($cacheId);
 		
 		if (($data = $cache->load($cacheId)) === false) {
 			$routes = array();
@@ -57,10 +56,15 @@ class Redokes_Controller_Router {
 	 */
 	
 	public function fetchRoutes() {
-		$db = Redokes_Controller_Front::getInstance()->getDbAdapter();
-		$query = "SELECT * FROM routes";
-		$rows = $db->fetchAll($query);
-		return $rows;
+		try {
+			$db = Redokes_Controller_Front::getInstance()->getDbAdapter();
+			$query = "SELECT * FROM routes";
+			$rows = $db->fetchAll($query);
+			return $rows;
+		}
+		catch(Zend_Db_Adapter_Exception $e) {
+			return array();
+		}
 	}
 	
 	private function buildRoutes() {

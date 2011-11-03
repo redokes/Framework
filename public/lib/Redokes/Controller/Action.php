@@ -24,7 +24,7 @@ class Redokes_Controller_Action {
 	
 	public $viewPath = false;
 
-	public function __construct($frontController, $action = 'indexAction'){
+	public function __construct($frontController, $action = 'indexAction') {
 		$this->frontController = $frontController;
 		$this->init();
 		$this->action = $action;
@@ -82,8 +82,12 @@ class Redokes_Controller_Action {
 				$module = $this->frontController->module;
 			}
 			
-			$this->viewPath = MODULE_PATH . "$module/view/$controller/$action.php";
+			$this->setViewPath(MODULE_PATH . "$module/view/$controller/$action.php");
 		}
+	}
+	
+	public function setViewPath($path) {
+		$this->viewPath = $path;
 	}
 	
 	public function init() {}
@@ -114,20 +118,18 @@ class Redokes_Controller_Action {
 	 * Catches a call to an undefined action
 	 */
 	public function _catch(){
-		echo "catch in main action controller";
+		// TODO: fire a 404 error event or redirect to some error module to handle this
+		Redokes_Debug::output('Catch ' . $this->action, true);
 		die();
-		return;
-		$this->frontController->displayError("caught $this->action default will be to throw error");
 	}
 
 	public function _forward($module, $controller, $action){
-		echo "forward in main action controller";
-		die();
-		return;
 		$this->frontController->module = $module;
 		$this->frontController->controller = $controller;
 		$this->frontController->action = $action;
 		$this->frontController->run();
 	}
+	
+	public function indexAction() {}
 
 }
