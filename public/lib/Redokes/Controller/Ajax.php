@@ -8,13 +8,6 @@ class Redokes_Controller_Ajax extends Redokes_Controller_Action {
 	private $_redirect = '';
 	private $_sendPlainText = false;
 
-//	public function __construct($frontController, $action = 'index') {
-//		parent::__construct($frontController, $action);
-//		$this->frontController->setNoRender();
-//		$this->frontController->useAjaxTemplate();
-//		$this->sendHeaders();
-//	}
-
 	public function sendPlainText() {
 		$this->_sendPlainText = true;
 	}

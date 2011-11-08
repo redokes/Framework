@@ -19,8 +19,10 @@ Ext.define('Redokes.game.Game', {
 	frame:false,
 	border:false,
 	
+	hasSocket: false,
+	
 	initComponent: function() {
-		d('Game constructor');
+		this.log('Constructor');
 		this.addEvents('mapload', 'receiveChat');
 		this.init();
 		this.callParent(arguments);
@@ -54,32 +56,35 @@ Ext.define('Redokes.game.Game', {
 			this.initFPS();
 			this.initAudio();
 			this.initPlayer();
-			this.initMap();
+			this.initMapManager();
 		}, this);
 	},
 	
 	initSocketManager: function() {
-		d('Init Socket Manager');
-		this.socketManager = Ext.create('Redokes.socket.SocketManager', {
-			game:this,
-			url:'http://localhost:8080'
-		});
-		this.socketManager.on('initclient', this.onInitSocketClient, this);
-		this.socketManager.createNamespace('');
-		window.sm = this.socketManager;
+		this.log('Init Socket Manager');
+		if (window.io != null) {
+			this.socketManager = Ext.create('Redokes.socket.SocketManager', {
+				game:this,
+				url:'http://localhost:8080'
+			});
+			this.socketManager.on('initclient', this.onInitSocketClient, this);
+			this.socketManager.createNamespace('');
+			window.sm = this.socketManager;
+			this.hasSocket = true;
+		}
 	},
 	
-	initMap: function() {
-		this.map = Ext.create('Redokes.map.Map', {
-			game:this
+	initMapManager: function() {
+		this.mapManager = Ext.create('Redokes.map.Manager', {
+			game: this
 		});
-		this.map.on('mapload', function() {
+		this.mapManager.on('mapload', function() {
 			this.fireEvent('mapload');
 		}, this);
 		
-		this.map.on('mapload', this.initGameLoop, this, {single:true});
+		this.mapManager.on('mapload', this.initGameLoop, this, {single:true});
 		
-//		this.map.loadMap('Wes');
+//		this.mapManager.loadMap('Wes');
 	},
 	
 	gameLoop: function() {
@@ -141,7 +146,7 @@ Ext.define('Redokes.game.Game', {
 			width:32,
 			height:48,
 			context:this.context,
-			doSocketCalls:true
+			doSocketCalls: this.hasSocket
 		});
 
 		// Set up the events to control the player

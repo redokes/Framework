@@ -1,27 +1,25 @@
-Ext.define('Redokes.map.Map', {
+Ext.define('Redokes.map.Manager', {
 	extend: 'Ext.util.Observable',
 	mixins: {
 		log: 'Redokes.debug.Log'
 	},
 	
-	loadedMaps:{},
-	loadedSprites:{},
-	currentMap:false,
-	width:0,
-	height:0,
-	tileSize:0,
-	translateX:0,
-	translateY:0,
-	following:false,
-	loadMapCoords:false,
+	loadedMaps: {},
+	currentMap: false,
+	forceLoad: false,
+	game: false,
 	
 	constructor: function(params) {
-		d('Map constructor');
+		this.log('Constructor');
+		this.loadedMaps = {};
 		Ext.apply(this, params);
-		this.context = this.game.context;
-		this.tileSize = this.game.tileSize;
-		this.addEvents('mapload');
 		
+		if (!this.game) {
+			this.log('Map manager has no reference to game');
+			return;
+		}
+		
+		this.addEvents('mapload');
 		this.init();
 	},
 	
@@ -55,14 +53,13 @@ Ext.define('Redokes.map.Map', {
 		}, this);
 	},
 
-	loadMap: function(mapName, loadMapCoords) {
-		d('Map.loadMap ' + mapName);
+	loadMap: function(mapName) {
+		this.log('Load map: ' + mapName);
 		
+		// Make sure there is a map name
 		if (!mapName.length) {
 			return;
 		}
-		
-		this.loadMapCoords = loadMapCoords;
 		
 		// Remove the player from the map socket
 		if (this.currentMap) {
@@ -70,33 +67,21 @@ Ext.define('Redokes.map.Map', {
 		}
 		
 		// Check if this map has already had its resources loaded
-		if (this.loadedMaps[mapName]) {
+		if (this.loadedMaps[mapName] || this.forceLoad) {
 			this.processMap(mapName);
 		}
 		else {
 			// Create the map instance
-			var map = Ext.create('Redokes.map.data.' + mapName, {
-				game:this.game
+			var map = Ext.create('Redokes.map.Map', {
+				mapName: mapName,
+				game: this.game
 			});
 			
-			// Set the map as loaded
-			this.loadedMaps[mapName] = map;
-			
-			// Check if this sprite sheet has been loaded
-			if (this.loadedSprites[map.tileSheet]) {
-				this.processMap(mapName);
-			}
-			else {
-				// Load map resources
-				var img = Ext.get(new Image());
-				img.on('load', function() {
-					this.processMap(mapName);
-				}, this);
-				img.dom.src = map.tileSheet;
-				
-				// Set the sprite sheet as loaded
-				this.loadedSprites[map.tileSheet] = img.dom;
-			}
+			// Listen for the map to load so we can mark it as loaded
+			map.on('load', function(params) {
+				// Set the map as loaded
+				this.loadedMaps[mapName] = params.map;
+			}, this, {map: map});
 		}
 	},
 
