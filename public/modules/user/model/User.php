@@ -84,7 +84,7 @@ class User_Model_User extends Redokes_Model_Model {
 			$this->addError("Please choose a different email address. Email is already in use");
 		}
 
-//		if (!valid_email($this->row['email'])) {
+//		if (!valid_email($this->row->email)) {
 //			$this->addError("Please enter a valid email address");
 //		}
 
@@ -102,10 +102,10 @@ class User_Model_User extends Redokes_Model_Model {
 		return $this->errors;
 		
 		// don't let a non papercut user edit a papercut user
-//		if ($this->row['userId']) {
+//		if ($this->row->userId) {
 //
 //			// check if edited user has papercut access
-//			if (User_Class_User::hasAccess('papercut', 0, $this->row['userId'])) {
+//			if (User_Class_User::hasAccess('papercut', 0, $this->row->userId)) {
 //
 //				// check if the user doing the editing has papercut access
 //				if (!User_Class_User::hasAccess('papercut')) {
@@ -115,7 +115,7 @@ class User_Model_User extends Redokes_Model_Model {
 //		}
 
 		// make sure email is unique
-		$query = "SELECT COUNT(*) total FROM user WHERE email = '{$this->row['email']}' AND userId <> '{$this->row['userId']}'";
+		$query = "SELECT COUNT(*) total FROM user WHERE email = '{$this->row->email}' AND userId <> '{$this->row->userId}'";
 		$rows = $db->fetchAll($query);
 		$numRows = count($rows);
 		if ($numRows) {
@@ -125,17 +125,17 @@ class User_Model_User extends Redokes_Model_Model {
 		}
 		
 		// check length
-		if (!valid_email($this->row['email'])) {
+		if (!valid_email($this->row->email)) {
 			$this->addError("Please enter a valid email address");
 		}
 
-		if (!$this->row['userId']) {
+		if (!$this->row->userId) {
 			// make sure passwords match
-			if ($this->row['password'] != $this->cpassword) {
+			if ($this->row->password != $this->cpassword) {
 				$this->addError("Please retype your password.");
 			}
 
-			if (strlen($this->row['password']) < 5) {
+			if (strlen($this->row->password) < 5) {
 				$this->addError("Password must be atleast 5 characters.");
 			}
 		}
@@ -170,31 +170,24 @@ class User_Model_User extends Redokes_Model_Model {
 		$db = FrontController::getInstance()->getDbAdapter('sharedb');
 
 		// remove access relation
-		User_Class_UserAccess::clearUserAccess($this->row['userId']);
+		User_Class_UserAccess::clearUserAccess($this->row->userId);
 
 		// remove group relation
-		User_Class_UserXGroup::clearGroups($this->row['userId']);
+		User_Class_UserXGroup::clearGroups($this->row->userId);
 
 		// remove addresses
-		$db->delete('user_address', 'userId = ' . $db->quote($this->row['userId']));
+		$db->delete('user_address', 'userId = ' . $db->quote($this->row->userId));
 
 		parent::delete($doAudit);
 	}
 
-	public static function hasAccess($title, $primaryKey = 0, $userId = 0) {
-		//$db = FrontController::getInstance()->getDbAdapter();
-
-		return true;
-		// sanitize data
-		$primaryKey = intval($primaryKey);
-		$title = trim($db->quote($title), "'");
+	public function hasAccess($title, $primaryKey = 0, $userId = 0) {
 		if (!$userId) {
 			$userId = self::getMyId();
 		}
-
+		
 		// get all access ids
 		$accessToCheck = array(
-			'papercut',
 			'admin',
 			$title
 		);
@@ -209,70 +202,30 @@ class User_Model_User extends Redokes_Model_Model {
 		// if checking for admin access
 		if ($title == 'admin') {
 			$accessToCheck = array(
-				'papercut',
 				'admin'
 			);
 		}
-
-		// if checking for papercut access
-		if ($title == 'papercut') {
-			$accessToCheck = array(
-				'papercut'
-			);
-		}
-
-		$accessTitlesFound = array();
-		$accessSql = array_to_sql($accessToCheck);
-		$accessIds = array();
-		$query = "SELECT * FROM site_access WHERE title IN ($accessSql)";
-		$rows = $db->fetchAll($query);
+		
+		$access = new User_Model_Access();
+		$rows = $access->findAccess($accessToCheck);
 		$numRows = count($rows);
-
+		$accessIds = array();
+		
+		
 		for ($i = 0; $i < $numRows; $i++) {
 			$accessIds[] = $rows[$i]['accessId'];
-			$accessTitlesFound[] = strtolower($rows[$i]['title']);
 		}
-
-		// commented this block for now..
-		// access levels probably dont need to be created ever
-		// on the access check.. just the access create
-		//Make sure all access levels exist
-		/*
-		  foreach ($accessToCheck as $accessTitle){
-		  if(!in_array(strtolower($accessTitle), $accessTitlesFound)){
-		  //Create this access level and add it to accessIds array
-		  $access = new User_Class_Access();
-		  $access->loadRow($accessTitle, 'title');
-		  if(!$access->row[$access->primaryKey]){
-		  $access->setRow(array(
-		  'title' => $accessTitle
-		  ,'display' => ucfirst($accessTitle)
-		  ));
-		  $access->process();
-		  }
-		  $accessTitlesFound[] = strtolower($accessTitle);
-		  $accessIds[] = $access->row[$access->primaryKey];
-		  }
-		  }
-		 */
-
-
+		
 		if (count($accessIds)) {
-			$accessIdsSql = implode(',', $accessIds);
-
-			// check for permission
-			$query = "SELECT COUNT(*) num FROM site_users_x_access WHERE userId = $userId AND primaryKey IN(0, $primaryKey) AND accessId IN ($accessIdsSql)";
-			$rows = $db->fetchAll($query);
-			$numRows = count($rows);
-
-			// user has direct user permission so don't need group lookup
-			if ($numRows) {
-				if ($rows[0]['num']) {
-					return true;
-				}
+			$userToAccess = new \User_Model_UserToAccess();
+			$row = $userToAccess->checkPermission($userId, $accessIds, $primaryKey);
+			if ($row->num) {
+				return true;
 			}
 		}
-
+		
+		return false;
+		
 		// look up users groups and permissions for the groups
 		// get group ids
 		$query = "SELECT groupId FROM site_users_x_groups WHERE userId = $userId";
@@ -376,13 +329,13 @@ class User_Model_User extends Redokes_Model_Model {
 		if ($userInvite->row['userInviteId'] && $userInvite->row['tsExpire'] >= time()) {
 			$this->loadRow($userInvite->row['email'], 'email');
 			
-			$this->row['confirmed'] = 1;
+			$this->row->confirmed = 1;
 			$this->update(false);
 
 			// add site access
 			$userSite = new Site_Class_UserSite();
 			$userSite->setRow(array(
-				'userId' => $this->row['userId'],
+				'userId' => $this->row->userId,
 				'siteId' => $site->row['siteId']
 			));
 			$userSite->process();
@@ -404,7 +357,7 @@ class User_Model_User extends Redokes_Model_Model {
 		$inviteUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/user/index/confirm/' . $hash;
 		$content = 'You have request to create an account on ' . $siteUrl . '<br />';
 		$content .= '<a href="'.$inviteUrl.'">Click here to set up your account</a>';
-		$email->sendEmailTemplate($this->row['email'], $subject, $content);
+		$email->sendEmailTemplate($this->row->email, $subject, $content);
 	}
 
 	public function sendInvite($isInvite = true) {

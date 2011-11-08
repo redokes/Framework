@@ -38,5 +38,9 @@ function show_array($array) {
 	echo '</pre>';
 }
 
+function array_to_sql($arr) {
+	return "'" . implode("','", $arr) . "'";
+}
+
 $frontController = Redokes_Controller_Front::getInstance();
 $frontController->run();

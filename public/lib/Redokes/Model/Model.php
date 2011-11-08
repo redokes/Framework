@@ -121,7 +121,7 @@ class Redokes_Model_Model {
 	
 	public function loadRow($value, $field = false) {
 		$select = $this->table->select();
-		//$this->table->getAdapter()->quote($v)
+		
 		// Check if value is an array
 		if (is_array($value)) {
 			foreach ($value as $k => $v) {
@@ -134,7 +134,11 @@ class Redokes_Model_Model {
 			}
 			$select->where("`$field` = ?", $value);
 		}
-		$this->row = $this->table->fetchRow($select);
+		$row = $this->table->fetchRow($select);
+		if ($row) {
+			$this->row = $row;
+		}
+		
 	}
 
 	public function loadPost($post = false) {

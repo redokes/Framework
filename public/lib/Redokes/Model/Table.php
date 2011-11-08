@@ -9,5 +9,9 @@ class Redokes_Model_Table extends Zend_Db_Table_Abstract {
 	public function getCols() {
 		return $this->_cols;
 	}
+	
+	public function getTableName() {
+		return $this->_name;
+	}
 
 }
