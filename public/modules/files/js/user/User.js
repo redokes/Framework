@@ -5,41 +5,62 @@ Ext.define('Modules.files.js.user.User', {
 	//Config
 	config:{
 		name: 'user',
-		title: 'Users',
-		navigationTitle: 'My Files',
-		viewClass: 'Modules.files.js.user.view.User',
-		isSubNavigationItem: true,
-		subNavigationModules:[
-			'stream'
-		]
+		title: ''
 	},
+	
+	socketId: null,
 	
 	//Init Functions
 	init: function(){
-		//this.initStore();
-		//this.initUser();
-		//this.initMenu();
-		//this.initMenuItem();
-		//this.initView();
+		this.initStore();
+		/*
+		this.getApplication().getSocketClient().on('connect', function(socket){
+			this.socketId = socket.socket.sessionid;
+		}, this);
+		*/
 		this.initStream();
-		this.initRemoteView();
-		this.initList();
-		this.initUserHandler();
+		//this.initList();
+		//this.initUserHandler();
 		this.initFileHandler();
 		this.onViewReady(this.initViewListeners, this);
+	},
+	
+	initView: function(){
+		//Create the view if it hasnt already been created
+		if(!this.creatingView){
+			this.creatingView = true;
+
+			//Load the view class
+			this.view = Ext.create('Modules.files.js.user.view.User', {
+				dock: 'right',
+				width: 200
+			});
+			
+			//Fire the init view event
+			this.fireEvent('initview', this, this.getView());
+
+			//Add the view to the applications center
+			this.getApplication().getCenter().addDocked(this.view);
+
+			//Set creating view to false
+			this.creatingView = false;
+		}
 	},
 	
 	initStore: function(){
 		this.store = Ext.create('Ext.data.Store', {
 			scope: this,
 			fields:[
-				'name'
+				'file'
 			],
 			proxy: {
 				type: 'localstorage',
-				id  : 'files-users'
+				id  : 'file-store'
 			}
 		});
+		this.store.on('load', function(){
+			console.log(arguments);
+		}, this);
 		this.store.load();
 	},
 	
@@ -57,34 +78,15 @@ Ext.define('Modules.files.js.user.User', {
 		});
 	},
 	
-	initView: function(){
-		return this.callParent(arguments);
-		this.view = Ext.create('Modules.files.js.user.view.User', {
-			scope: this,
-			title: 'User',
-			application: this.application,
-			module: this
-		});
-		this.application.getCenter().add(this.view);
-		
-		this.menu.folder.on('select', function(){
-			this.view.tree.addFileList(this.menu.folder.getFiles());
-		}, this);
-		
-		window.tree = this.view.tree;
-	},
-	
-	initRemoteView: function(){
-		//Create the remote view to hold remote users files
-		this.remoteView = Ext.create('Modules.files.js.user.view.User',{
-			title: 'Remote User',
-			remote: true
-		});
-		this.getApplication().getCenter().add(this.remoteView);
-	},
-	
 	initViewListeners: function(){
 		this.getView().on('select', function(field){
+			var fileList = field.getFiles();
+			Ext.each(fileList, function(file){
+				this.store.add({
+					file: file
+				})
+			}, this);
+			this.store.sync();
 			this.getView().tree.addFileList(field.getFiles());
 		}, this);
 	},
@@ -109,6 +111,7 @@ Ext.define('Modules.files.js.user.User', {
 				});
 
 				//Send a message to everyone else
+				/*
 				this.getApplication().getSocketClient().send(
 					'user',
 					'message',
@@ -116,6 +119,7 @@ Ext.define('Modules.files.js.user.User', {
 						message: '<span style="color:green;"> + ' + field.getFiles().length + ' file(s) </span>'
 					}
 				);
+				*/
 			}, this);
 		}, this);
 	},
@@ -128,7 +132,7 @@ Ext.define('Modules.files.js.user.User', {
 		});
 		
 		//Add a navigation panel to hold the list
-		this.getApplication().getNavigation().add(new Ext.panel.Panel({
+		this.getApplication().getCenter().add(new Ext.panel.Panel({
 			scope: this,
 			title: 'Users',
 			layout: 'fit',
@@ -226,9 +230,14 @@ Ext.define('Modules.files.js.user.User', {
 			module: 'file',
 			actions: {
 				get: function(handler, response){
+					console.log('on get file');
+					console.log(response.data);
+					
 					//Get the file
-					var nodeId = response.data.nodeId;
-					var file = Ext.create('Modules.files.js.file.File', this.getTree().getStore().getNodeById(nodeId).raw.file);
+					var fileId = response.data.fileId;
+					var file = Ext.create('Modules.files.js.file.File', this.getTree().getStore().getNodeById(fileId).raw.file, {
+						startByte: response.data.start
+					});
 					file.on('chunk', function(event, data, options){
 						var fileObject = Ext.apply({}, {
 							name: file.name,
@@ -240,22 +249,18 @@ Ext.define('Modules.files.js.user.User', {
 						this.getApplication().getSocketClient().send(
 							'file',
 							'chunk',
-							{ 
-								socketId: response.socketId,
+							Ext.apply({}, {
 								chunk: data,
-								nodeId: nodeId,
-								file: fileObject
-							}
+								chunkSize: file.chunkSize,
+								currentChunk: file.currentChunk
+							}, response.data)
 						);
 					}, this);
 					file.on('complete', function(){
 						this.getApplication().getSocketClient().send(
 							'file',
 							'complete',
-							{ 
-								socketId: response.socketId,
-								nodeId: nodeId
-							}
+							response.data
 						);
 					}, this);
 					file.download();

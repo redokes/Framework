@@ -11,6 +11,7 @@ Ext.define('Modules.files.js.user.view.User', {
 	},
 	
 	init: function(){
+		console.log('init user');
 		this.initTree();
 		this.initFolderSelect();
 	},

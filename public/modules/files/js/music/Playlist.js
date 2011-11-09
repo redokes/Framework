@@ -5,11 +5,12 @@ Ext.define('Modules.files.js.music.Playlist', {
 	},
 	
 	//config
-	itemSelector: '.playlist-item',
-	emptyText: 'Drag Files Here....',
-	deferEmptyText : false,
-	overItemCls: 'playlist-hover',
+	itemSelector: '.view-item',
+	emptyText: '<div class="playlist-empty-text">Drop files here....</div>',
+	deferEmptyText: false,
+	overItemCls: 'view-hover',
 	trackOver: true,
+	autoScroll: true,
 	
 	initComponent: function(){
 		this.showLog();
@@ -22,6 +23,7 @@ Ext.define('Modules.files.js.music.Playlist', {
 		this.initStore();
 		this.initTpl();
 		this.initListeners();
+		this.initDragDrop();
 	},
 	
 	initStore: function() {
@@ -41,7 +43,7 @@ Ext.define('Modules.files.js.music.Playlist', {
 	initTpl: function() {
 		this.tpl = Ext.create('Ext.XTemplate', 
 			'<tpl for=".">',
-				'<div class="playlist-item">',
+				'<div class="view-item">',
 				  '<span>{name}</span>',
 				'</div>',
 			'</tpl>'
@@ -68,6 +70,51 @@ Ext.define('Modules.files.js.music.Playlist', {
 			}, this);
 			file.download();
 		}, this);
+		
+		this.on('afterrender', function(){
+			this.refresh();
+		}, this);
+	},
+	
+	initDragDrop: function() {
+		if (!this.rendered) {
+			this.on('afterrender', this.initDragDrop, this);
+			return;
+		}
+		this.dragDrop = Ext.create('Ext.dd.DropTarget', this.getEl(), {
+			ddGroup: 'TreeDD',
+			notifyOver: function() {
+				return this.dropAllowed;
+			},
+			notifyDrop: Ext.bind(function(source, e, data) {
+				var files = this.getDroppedFiles(data.records);
+				this.addFiles(files);
+			}, this)
+		});
+	},
+	
+	getDroppedFiles: function(records) {
+		var files = [];
+		for (var i = 0; i < records.length; i++) {
+			if (records[i].childNodes && records[i].childNodes.length) {
+				// Combine files with current file list
+				var newFiles = this.getDroppedFiles(records[i].childNodes)
+				var numFiles = newFiles.length;
+				for (var j = 0; j < numFiles; j++) {
+					files.push(newFiles[j]);
+				}
+			}
+			else {
+				files.push({
+					name: records[i].data.text,
+					id: records[i].data.id,
+					remote: records[i].raw.remote || false,
+					node: records[i]
+				});
+			}
+		}
+		
+		return files;
 	},
 	
 	addFiles: function(records) {

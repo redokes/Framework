@@ -6,6 +6,14 @@ Ext.define('Modules.files.js.user.view.Tree', {
 			enableDrop: false
 		}
 	},
+	
+	statics:{
+		currentId: 0,
+		generateId: function(){
+			this.currentId++;
+			return this.currentId;
+		}
+	},
 	 
 	//Config
 	rootVisible:false,
@@ -134,9 +142,11 @@ Ext.define('Modules.files.js.user.view.Tree', {
 					//Add Config
 					Ext.apply(config, {
 						leaf:true,
-						id: dir[i].record.webkitRelativePath,
+						//id: dir[i].record.webkitRelativePath,
+						id: this.self.generateId(),
 						file: dir[i].record,
 						fileObject: {
+							path: dir[i].record.webkitRelativePath,
 							name: dir[i].record.fileName,
 							size: dir[i].record.size,
 							type: dir[i].record.type

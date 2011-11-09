@@ -7,12 +7,11 @@ class Files_IndexController extends Redokes_Controller_Action {
 			->setValues(array(
 				'title' => 'File Test'
 			))
-			->addCss('/js/ext-4.0.2a/resources/css/ext-all.css')
+			->addCss('/js/ext-4.0.2a/resources/css/files-theme.css')
 			->addCss('/modules/files/css/files.css')
 			->addJs('/js/ext-4.0.2a/ext-all-debug.js')
-			->addJs('/js/redokes/redokes.js')
-			->addJs('http://localhost:8080/socket.io/socket.io.js')
-			->addJs('/modules/files/js/MD5.js');
+			->addJs('/js/redokes/redokes.js');
+			//->addJs('http://localhost:8080/socket.io/socket.io.js');
 	}
 	
 	public function indexAction() {

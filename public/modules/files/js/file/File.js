@@ -5,13 +5,16 @@ Ext.define('Modules.files.js.file.File', {
 	remote: false,
 	file: null,
 	reader: null,
-	chunkSize: 65536,	//1024*64
+	startByte: 0,
+	chunkSize: 131072,	//1024*128
 	chunks: [],
 	chunkOffsets: [],
 	totalChunks: 0,
 	currentChunk: 0,
+	tags: {},
 
 	constructor: function(file, config){
+		this.tags = {};
 		Ext.apply(this, file);
 		this.file = file;
 		this.callParent([config]);
@@ -21,14 +24,15 @@ Ext.define('Modules.files.js.file.File', {
 	init: function(){
 		this.initFile();
 		this.initReader();
-		//this.initHandler();
+		this.initTags();
 	},
 	
 	initFile: function(){
+		this.startByte = parseInt(this.startByte);
 		this.chunks = [];
 		this.chunkOffsets = [];
-		this.totalChunks = Math.ceil(this.file.size / this.chunkSize);
-		for(var i = 0; i <= this.file.size; i += this.chunkSize){
+		this.totalChunks = Math.ceil((this.file.size - this.startByte) / this.chunkSize);
+		for(var i = this.startByte; i <= this.file.size; i += this.chunkSize){
 			this.chunkOffsets.push(i);
 		}
 	},
@@ -42,17 +46,17 @@ Ext.define('Modules.files.js.file.File', {
 		}, this);
 	},
 	
-	initHandler: function(){
-		Ext.create('Redokes.socket.client.Handler', {
-			scope: this,
-			client: this.application.getSocketClient(),
-			module: 'file',
-			actions: {
-				receive: function(handler, response){
-					console.log('receive file');
-				}
+	initTags: function(){
+		var tagSize = 128;
+		var blob = this.file.webkitSlice(this.file.size - tagSize, this.file.size);
+		var reader = new FileReader();
+		reader.onloadend = Ext.bind(function(e) {
+			if (e.target.readyState == FileReader.DONE) { // DONE == 2
+				Ext.apply(this.tags, this.readTags(e.target.result));
+				this.fireEvent('tags', this, this.tags);
 			}
-		});
+		}, this);
+		reader.readAsBinaryString(blob);
 	},
 	
 	download: function(){
@@ -81,5 +85,49 @@ Ext.define('Modules.files.js.file.File', {
 	downloadChunk: function(chunkIndex){
 		var blob = this.file.webkitSlice(this.chunkOffsets[chunkIndex], this.chunkOffsets[chunkIndex] + this.chunkSize);
 		this.reader.readAsBinaryString(blob);
+	},
+	
+	readTags: function(tags) {
+		//var offset = data.getLength() - 128;
+
+		var offset = 0;
+
+		var header = tags.substr(offset, 3);
+		if (header == "TAG") {
+			var title = tags.substr(offset + 3, 30).replace(/\0/g, "");
+			var artist = tags.substr(offset + 33, 30).replace(/\0/g, "");
+			var album = tags.substr(offset + 63, 30).replace(/\0/g, "");
+			var year = tags.substr(offset + 93, 4).replace(/\0/g, "");
+
+			var trackFlag = tags.charAt(offset + 97 + 28);
+			if (trackFlag == 0) {
+				var comment = tags.substr(offset + 97, 28).replace(/\0/g, "");
+				var track = tags.charAt(offset + 97 + 29);
+			} else {
+				var comment = "";
+				var track = 0;
+			}
+
+			/*
+			var genreIdx = data.getByteAt(offset + 97 + 30);
+			if (genreIdx < 255) {
+				var genre = ID3.genres[genreIdx];
+			} else {
+				var genre = "";
+			}
+			*/
+
+			return {
+				title : title,
+				artist : artist,
+				album : album,
+				year : year,
+				comment : comment,
+				track : track,
+				genre : null
+			}
+		} else {
+			return {};
+		}
 	}
 });

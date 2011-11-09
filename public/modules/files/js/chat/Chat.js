@@ -10,8 +10,8 @@ Ext.define('Modules.files.js.chat.Chat', {
 	
 	//Init Functions
 	init: function(){
-		this.initMessagePanel();
-		this.initMessageHandler();
+		//this.initMessagePanel();
+		//this.initMessageHandler();
 	},
 	
 	initMessagePanel: function(){

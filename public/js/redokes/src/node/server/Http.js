@@ -17,16 +17,42 @@ Ext.define('Redokes.node.server.Http', {
 	constructor: function(config) {
 		this.initConfig(config);
 		this.initHttpServer();
+		return this.callParent(arguments);
 	},
 	
 	initHttpServer: function() {
-		this.httpServer = this.http.createServer(function(req, res){
-			res.writeHead(200, {'Content-Type': 'text/html'});
-			// read index.html and send it to the client
-			//var output = fs.readFileSync('./index.php', 'utf8');
-			res.end('nodejs');
-		});
+		this.httpServer = this.http.createServer(function(request, response){
+			var requestObject = require('url').parse(request.url, true);
+			//console.log(requestObject);
+			var path = requestObject.pathname.replace(/^\//, "").replace(/\/$/, "");
+			var parts = path.split('/');
+			
+			//Total Rig for now
+			if(parts[0] == 'file'){
+				console.log('------File-------');
+				console.log(request.headers);
+			}
+
+			//Handle the post params
+			if (request.method == 'POST') {
+				var body = '';
+				request.on('data', function (data) {
+					body += data;
+				}.bind(this));
+				request.on('end', function () {
+					var post = this.qs.parse(body.replace( /\+/g, ' ' ));
+					this.onRequest(request, response, path, post);
+				}.bind(this));
+			}
+			else{
+				this.onRequest(request, response, path, {});
+			}
+		}.bind(this));
 		this.httpServer.listen(this.port);
-	}
+	},
 	
+	onRequest: function(request, response, path, data){
+		console.log('on request');
+		this.fireEvent('request', request, response, path, data);
+	}
 });

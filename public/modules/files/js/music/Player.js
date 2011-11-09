@@ -1,69 +1,56 @@
 Ext.define('Modules.files.js.music.Player', {
-	extend:'Ext.panel.Panel',
+	extend:'Ext.Component',
 	mixins: {
 		log: 'Redokes.debug.Log'
 	},
 	
-	lastVolume: 0,
-	isPaused: true,
+	//Render Template
+	renderTpl:
+        '<div class="audio-player {cls}">' +
+			'<audio preload="false"></audio>' +
+			'<div class="play-pause play"></div>' +
+			'<div class="progress-container">' +
+				'<div class="loader" style="">' +
+					'<div class="progress" style=""></div>' +
+				'</div>' +
+			'</div>' +
+			'<div class="time"></div>' + 
+			'<div class="previous"></div>' + 
+			'<div class="next"></div>' +
+			'<div class="clear"></div>' +
+		'</div>',
+	
+	//Elements to get after render
+	renderSelectors: {
+        audio: 'audio',
+        playPauseEl: '.play-pause',
+        progressContainerEl: '.progress-container',
+        loaderEl: '.progress-container .loader',
+        progressEl: '.progress-container .progress',
+        timeEl: '.time',
+        previousEl: '.previous',
+        nextEl: '.next'
+    },
+	
+	//Properties
 	isLoaded: false,
-	layout: 'fit',
-	border: false,
+	isPlaying: false,
+	isPaused: false,
 	
-	initComponent: function(){
-		this.showLog();
-		this.items = this.items || [];
-		this.dockedItems = this.dockedItems || [];
-		this.init();
+	onRender: function(){
 		this.callParent(arguments);
+		this.initAudio();
+		this.initPlayPause();
 	},
 	
-	init: function() {
-		this.initButtons();
-		this.initPlaylist();
-		this.initDragDrop();
+	initAudio: function(){
+		this.audio.on('progress', this.onProgress, this);
+		this.audio.on('timeupdate', this.onTimeUpdate, this);
+		this.progressContainerEl.on('click', this.onProgressClick, this);
 	},
 	
-	initButtons: function() {
-		this.playButton = Ext.create('Ext.button.Button', {
-			scope: this,
-			icon: '/modules/files/images/icons/play-16.png',
-			handler: this.play
-		});
-		
-		this.pauseButton = Ext.create('Ext.button.Button', {
-			scope: this,
-			icon: '/modules/files/images/icons/pause-16.png',
-			handler: this.pause
-		});
-		
-		this.previousButton = Ext.create('Ext.button.Button', {
-			scope: this,
-			icon: '/modules/files/images/icons/previous-16.png',
-			handler: this.previous
-		});
-		
-		this.nextButton = Ext.create('Ext.button.Button', {
-			scope: this,
-			icon: '/modules/files/images/icons/next-16.png',
-			handler: this.next
-		});
-		
-		this.stopButton = Ext.create('Ext.button.Button', {
-			scope: this,
-			icon: '/modules/files/images/icons/stop-16.png',
-			handler: this.stop
-		});
-		this.toolbar = new Ext.toolbar.Toolbar({
-			items:[
-				this.playButton,
-				this.pauseButton,
-				this.previousButton,
-				this.nextButton,
-				this.stopButton
-			]
-		});
-		this.dockedItems.push(this.toolbar);
+	initPlayPause: function(){
+		this.playPauseEl.on('click', this.onPlayPauseClick, this);
 	},
 	
 	initPlaylist: function() {
@@ -76,46 +63,52 @@ Ext.define('Modules.files.js.music.Player', {
 	
 	setRawSrc: function(type, data){
 		this.stop();
+		this.audio.dom.src = '';
 		this.audio.dom.src = 'data:' + type + ';base64,' + window.btoa(data);
 		this.isLoaded = true;
 	},
 	
 	setSrc: function(src){
 		this.stop();
+		this.audio.dom.src = '';
 		this.audio.dom.src = src;
 		this.isLoaded = true;
 	},
 	
 	play: function() {
-		this.log('Play');
-		if (this.isLoaded) {
-			console.log('here');
-			this.audio.dom.play();
-			this.enable();
-			this.isPaused = false;
+		if(!this.isLoaded || this.isPlaying){
+			return;
 		}
+		
+		this.log('Play');
+		this.audio.dom.play();
+		this.playPauseEl.removeCls('play');
+		this.playPauseEl.addCls('pause');
+		this.isPlaying = true;
+		this.isPaused = false;
 	},
 	
 	stop: function() {
-		this.log('Stop');
-		if (this.isLoaded) {
-			this.audio.dom.pause();
-			this.seek(0);
+		if(!this.isLoaded || !this.isPlaying){
+			return;
 		}
+		
+		this.log('Stop');
+		this.seek(0);
+		this.audio.dom.pause();
 	},
 	
 	pause: function() {
-		this.log('Pause');
-		if (this.isLoaded) {
-			if (this.isPaused) {
-				this.isPaused = false;
-				this.audio.dom.play();
-			}
-			else {
-				this.isPaused = true;
-				this.audio.dom.pause();
-			}
+		if(!this.isLoaded || !this.isPlaying || this.isPaused){
+			return;
 		}
+		
+		this.log('Pause');
+		this.playPauseEl.removeCls('pause');
+		this.playPauseEl.addCls('play');
+		this.audio.dom.pause();
+		this.isPaused = true;
+		this.isPlaying = false;
 	},
 	
 	previous: function() {
@@ -146,53 +139,47 @@ Ext.define('Modules.files.js.music.Player', {
 		}
 	},
 	
-	//Init Functions
-	onRender: function(){
-		this.callParent(arguments);
-		this.audio = Ext.getBody().createChild({
-			tag: 'audio',
-			controls: true
-		});
+	//Events
+	onProgress: function(){
+		var loaded = parseInt(((this.audio.dom.buffered.end(0) / this.audio.dom.duration) * 100), 10);
+		this.loaderEl.setWidth(loaded + "%");
 	},
 	
-	initDragDrop: function() {
-		if (!this.rendered) {
-			this.on('afterrender', this.initDragDrop, this);
+	onTimeUpdate: function(){
+		var currentTime = parseInt(this.audio.dom.currentTime, 10);
+		var totalTime = parseInt(this.audio.dom.duration, 10);
+		var totalMinutes = Math.floor(totalTime/60, 10);
+		var totalSeconds = totalTime - totalMinutes * 60;
+		var currentMinutes = Math.floor(currentTime/60, 10);
+		var currentSeconds = currentTime - currentMinutes * 60;
+		
+		var percentage = (this.audio.dom.currentTime / this.audio.dom.duration) * 100;
+		
+		//Update the progress
+		this.progressEl.setWidth(percentage + "%");
+		
+		//Update the text
+		//this.timeEl.update(currentMinutes + ':' + (currentSeconds > 9 ? totalSeconds : '0' + currentSeconds) + '/' + totalMinutes + ':' + (totalSeconds > 9 ? totalSeconds : '0' + totalSeconds));
+	},
+	
+	onProgressClick: function(event){
+		var eventX = event.getX();
+		var elX = this.progressEl.getX();
+		var elWidth = this.progressContainerEl.getWidth(true);
+		var duration = ((eventX - elX) / elWidth) * this.audio.dom.duration;
+		this.audio.dom.currentTime = duration;
+	},
+	
+	onPlayPauseClick: function(){
+		if(!this.isLoaded){
 			return;
 		}
-		this.dragDrop = Ext.create('Ext.dd.DropTarget', this.getEl(), {
-			ddGroup: 'TreeDD',
-			notifyOver: function() {
-				return this.dropAllowed;
-			},
-			notifyDrop: Ext.bind(function(source, e, data) {
-				var files = this.getDroppedFiles(data.records);
-				this.playlist.addFiles(files);
-			}, this)
-		});
-	},
-	
-	getDroppedFiles: function(records) {
-		var files = [];
-		for (var i = 0; i < records.length; i++) {
-			if (records[i].childNodes && records[i].childNodes.length) {
-				// Combine files with current file list
-				var newFiles = this.getDroppedFiles(records[i].childNodes)
-				var numFiles = newFiles.length;
-				for (var j = 0; j < numFiles; j++) {
-					files.push(newFiles[j]);
-				}
-			}
-			else {
-				files.push({
-					name: records[i].data.text,
-					id: records[i].data.id,
-					remote: records[i].raw.remote || false,
-					node: records[i]
-				});
-			}
-		}
 		
-		return files;
+		if(this.isPlaying){
+			this.pause();
+		}
+		else{
+			this.play();
+		}
 	}
 });

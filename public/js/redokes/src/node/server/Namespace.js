@@ -15,6 +15,7 @@ Ext.define('Redokes.node.server.Namespace', {
 		this.initConfig(config);
 		this.log('Constructor');
 		this.init();
+		return this.callParent(arguments);
 	},
 	
 	init: function() {
@@ -82,6 +83,8 @@ Ext.define('Redokes.node.server.Namespace', {
 			}
 			socket.broadcast.emit('setData', this.getSocketData(socket.id));
 		}.bind(this));
+		
+		
 
 		/**
 		 * Sends an object containing an array of socket ids
@@ -135,31 +138,7 @@ Ext.define('Redokes.node.server.Namespace', {
 		 * Adds the socket's store data to the response
 		 */
 		socket.on('message', function(request){
-			//this.log(socket.namespace.name + ' ' + 'Message from ' + socket.id);
-			//this.log(request);
-			request.storeData = this.getSocketData(socket.id);
-			
-			/**
-			 * Check if this is a message for one person or if it needs to be broadcasted
-			 */
-			if (request.data && request.data.socketId) {
-				if (request.module == null) {
-					this.io.sockets.sockets[request.data.socketId].emit(request.action, request);
-				}
-				else {
-					if(this.io.sockets.sockets[request.data.socketId] != null){
-						this.io.sockets.sockets[request.data.socketId].emit('message', request);
-					}
-				}
-			}
-			else {
-				if (request.module == null) {
-					socket.broadcast.emit(request.action, request);
-				}
-				else {
-					socket.broadcast.emit('message', request);
-				}
-			}
+			this.emitRequest(request, socket);
 		}.bind(this));
 
 		/**
@@ -172,6 +151,42 @@ Ext.define('Redokes.node.server.Namespace', {
 		}.bind(this));
 	},
 	
+	emitRequest: function(request, socket){
+		//Get the store data of the socket
+		request.storeData = this.getSocketData(socket.id);
+
+		//Fire the before message event
+		if(this.fireEvent('beforemessage', this, request, socket) === false){
+			return;
+		}
+
+		//Emit the message
+		/**
+		 * Check if this is a message for one person or if it needs to be broadcasted
+		 */
+		if (request.data && request.data.socketId) {
+			if (request.module == null) {
+				this.io.sockets.sockets[request.data.socketId].emit(request.action, request);
+			}
+			else {
+				if(this.io.sockets.sockets[request.data.socketId] != null){
+					this.io.sockets.sockets[request.data.socketId].emit('message', request);
+				}
+			}
+		}
+		else {
+			if (request.module == null) {
+				socket.broadcast.emit(request.action, request);
+			}
+			else {
+				socket.broadcast.emit('message', request);
+			}
+		}
+
+		//Fire  the message event
+		this.fireEvent('message', this, request, socket);
+	},
+	
 	/**
 	 * Returns an object containing the store data for a given socket id
 	 * @param {String} id
@@ -180,5 +195,9 @@ Ext.define('Redokes.node.server.Namespace', {
 		var socketData = this.io.sockets.sockets[id].store.data;
 		socketData.id = id;
 		return socketData;
+	},
+	
+	getSocket: function(id){
+		return this.io.sockets.sockets[id];
 	}
 });

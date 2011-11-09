@@ -14,6 +14,7 @@ Ext.define('Modules.files.js.music.Music', {
 	init: function(){
 		this.initStore();
 		this.initPlayer();
+		this.initPlaylist();
 		this.initFileHandler();
 		this.initTree();
 	},
@@ -35,17 +36,20 @@ Ext.define('Modules.files.js.music.Music', {
 	
 	initPlayer: function(){
 		this.player = Ext.create('Modules.files.js.music.Player', {
-			scope: this,
-			dock: 'right'
+			scope: this
 		}, this);
-		
-		this.getApplication().getEast().add(this.player);
-		
-		//this.application.getAccordion().add(this.player);
-		//this.audio = document.createElement('audio');
-		//document.body.appendChild(this.audio);
-		//audio.src = 'data:' + this.file.type + ';base64,' + window.btoa(this.chunks.join(''));
-		//audio.play();
+		this.getApplication().getNorth().add(this.player);
+	},
+	
+	initPlaylist: function(){
+		this.playlist = Ext.create('Modules.files.js.music.Playlist', {
+			
+		});
+		this.getApplication().getCenter().add(new Ext.panel.Panel({
+			layout: 'fit',
+			title: 'Playlist',
+			items:[this.playlist]
+		}));
 	},
 	
 	initTree: function(){
@@ -58,34 +62,30 @@ Ext.define('Modules.files.js.music.Music', {
 		}
 		
 		//Download the file from the remote user
-		this.player.playlist.on('itemclick', function(view, record, item, index){
+		this.playlist.on('itemclick', function(view, record, item, index){
 			var node = record.get('node');
 			var nodeId = node.internalId;
+			var file = node.raw.file;
 			if(record.get('remote')){
-				if(this.downloadedFiles[nodeId] != null){
-					var file = this.downloadedFiles[nodeId];
-					
-					//Start playing the file
-					this.player.setRawSrc(file.type, file.content);
-					this.player.play();
+				//Create the file request
+				var fileRequest = {
+					fileId: nodeId,
+					userSocketId: user.socketId,
+					socketId: user.getRemoteTree().remoteUserId,
+					size: node.raw.file.size
+				};
+				var url = 'http://127.0.0.1:8080/file/' + encodeURI(Ext.encode(fileRequest));
+				
+				//Start playing the file
+				this.player.setSrc(url);
+				this.player.play();
 
-					//Share this on the stream
-					this.getApplication().onModuleReady('stream', function(stream){
-						stream.addMessage({
-							text: 'You are listening to ' + file.name 
-						});
-					}, this);
-				}
-				else{
-					this.getApplication().getSocketClient().send(
-						'file',
-						'get',
-						{ 
-							socketId:  this.remoteUserId,
-							nodeId: node.internalId
-						}
-					);
-				}
+				//Share this on the stream
+				this.getApplication().onModuleReady('stream', function(stream){
+					stream.addMessage({
+						text: 'You are listening to ' + file.name 
+					});
+				}, this);
 			}
 			else{
 				//download local file
@@ -132,7 +132,7 @@ Ext.define('Modules.files.js.music.Music', {
 	},
 	
 	initFileHandler: function(){
-		
+		return;
 		//Share a file
 		Ext.create('Redokes.socket.client.Handler', {
 			scope: this,

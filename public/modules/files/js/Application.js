@@ -78,7 +78,7 @@ Ext.define('Modules.files.js.Application', {
 		this.initCenter();
 		
 		//Init the socket client
-		this.initSocketClient();
+		//this.initSocketClient();
 		
 		//Init the modules
 		this.initModules();
@@ -164,7 +164,12 @@ Ext.define('Modules.files.js.Application', {
 	},
 	
 	initNorth: function(){
-		
+		this.north = new Ext.panel.Panel({
+			region: 'north',
+			unstyled: true,
+			border: false
+		});
+		this.items.push(this.north);
 	},
 	
 	initSouth: function(){
@@ -172,15 +177,22 @@ Ext.define('Modules.files.js.Application', {
 	},
 	
 	initEast: function(){
+		return;
 		this.east = Ext.create('Ext.panel.Panel', {
+			width: 250,
+			split: true,
+			collapsible: true,
+			titleCollapse: true,
+			header: false,
+			region: 'east',
 			layout: 'fit',
-			width: 200,
-			region: 'east'
+			border: false
 		});
 		this.items.push(this.east);
 	},
 	
 	initWest: function(){
+		return;
 		this.west = Ext.create('Modules.files.js.navigation.Navigation', this, {
 			width: 200,
 			region: 'west'
@@ -189,9 +201,9 @@ Ext.define('Modules.files.js.Application', {
 	},
 	
 	initCenter: function(){
-		this.center = new Ext.panel.Panel({
+		this.center = new Ext.tab.Panel({
 			region: 'center',
-			layout: 'card',
+			tabPosition: 'bottom',
 			autoScroll: true
 		});
 		this.items.push(this.center);
@@ -260,7 +272,7 @@ Ext.define('Modules.files.js.Application', {
 	 * @return {Ext.component.Compnent} item
      */
 	getActive: function(){
-		return this.getCenter().getLayout().getActiveItem();
+		return this.getCenter().getActiveTab();
 	},
 	
 	/**
@@ -324,7 +336,7 @@ Ext.define('Modules.files.js.Application', {
 	 * @param {Ext.component.Component} item
      */
 	setActive: function(item){
-		this.getCenter().getLayout().setActiveItem(item);
+		this.getCenter().setActiveTab(item);
 	},
 	
 	//////////////////////////////////////////////////////////////////////

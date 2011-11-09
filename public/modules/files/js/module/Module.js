@@ -28,6 +28,17 @@ Ext.define('Modules.files.js.module.Module', {
 		 * @cfg {String} viewClass class to create when the view is created.
 		 */
 		viewClass: null,
+		
+		/**
+		 * @cfg {String} viewRegion what region to add the view to
+		 *  
+		 *  - center
+		 *  - east
+		 *  - west
+		 *  - north
+		 *  - south
+		 */
+		viewRegion: 'center',
 
 		/**
 		 * @cfg {Boolean} isMainNavigationItem Should this module be automatically added to the Applications main navigation
@@ -72,6 +83,11 @@ Ext.define('Modules.files.js.module.Module', {
 	 */
 	view: null,
 	
+	/**
+	 * @type {Boolean}
+	 * True if the module is in the process of creating the view
+	 */
+	creatingView: false,
 	
 	/**
 	 * @type Ext.panel.Panel
@@ -128,8 +144,9 @@ Ext.define('Modules.files.js.module.Module', {
 	//Init Functions
 	init: function(){},
 	baseInit: function(){
-		this.initNavigation();
-		this.initSubNavigation();
+		//this.initNavigation();
+		//this.initSubNavigation();
+		this.initView();
 	},
 	
 	initNavigation: function(){
@@ -163,27 +180,35 @@ Ext.define('Modules.files.js.module.Module', {
 		}
 		
 		//Create the view if it hasnt already been created
-		if(this.view == null){
-			this.getApplication().getCenter().setLoading(true);
+		if(this.view == null && !this.creatingView){
+			this.creatingView = true;
+			var region = this.viewRegion.charAt(0).toUpperCase() + this.viewRegion.slice(1);
+			var regionPanel = this.getApplication()['get' + region]();
+			regionPanel.setLoading(true);
 			
 			//Load the view class
 			Ext.require(this.viewClass, function(){
 				//create the view and add to center
-				this.view = Ext.create(this.viewClass);
+				this.view = Ext.create(this.viewClass, {
+					title: this.title
+				});
 				
 				//Fire the init view event
 				this.fireEvent('initview', this, this.getView());
 				
 				//Add the view to the applications center
-				this.getApplication().getCenter().add(this.getView());
-				this.getApplication().getCenter().setLoading(false);
+				regionPanel.add(this.getView());
+				regionPanel.setLoading(false);
+				
+				//Set creating view to false
+				this.creatingView = false;
 				
 				//Set the view active
 				this.setViewActive();
 				
 			}, this);
 		}
-		else{
+		else if(!this.creatingView){
 			this.setViewActive();
 		}
 	},
@@ -225,6 +250,11 @@ Ext.define('Modules.files.js.module.Module', {
 	},
 	
 	setViewActive: function(){
+		//Check if this view is in the center region
+		if(this.viewRegion !== 'center'){
+			return;
+		}
+		
 		//Add history to the application
 		this.getApplication().addHistory(this.getModuleName());
 		

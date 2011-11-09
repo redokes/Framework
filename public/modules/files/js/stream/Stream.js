@@ -10,9 +10,7 @@ Ext.define('Modules.files.js.stream.Stream', {
 	//Config
 	config:{
 		name: 'stream',
-		title: 'Dashboard',
-		navigationTitle: 'Stream',
-		isMainNavigationItem: true,
+		title: 'Stream',
 		viewClass: 'Modules.files.js.stream.view.Stream'
 	},
 	
