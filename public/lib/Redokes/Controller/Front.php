@@ -130,8 +130,8 @@ class Redokes_Controller_Front {
 				$controllerClass = new $controllerClassName($this, $actionName);
 			}
 			catch(Exception $e) {
-				Redokes_Debug::output('Error', true);
-				Redokes_Debug::log('Error', true);
+				Redokes_Debug::output($e->getMessage(), true);
+				Redokes_Debug::log($e->getMessage(), true);
 			}
 		}
 		else if (class_exists($errorControllerClassName, true)) {

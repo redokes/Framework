@@ -182,39 +182,46 @@ class User_Model_User extends Redokes_Model_Model {
 	}
 
 	public function hasAccess($title, $primaryKey = 0, $userId = 0) {
+		// Default to the logged in user if a user isn't specified
 		if (!$userId) {
 			$userId = self::getMyId();
 		}
 		
-		// get all access ids
+		// Build list of access titles to look up ids for
 		$accessToCheck = array(
 			'admin',
 			$title
 		);
 
-		// add admin title to list (adding "herp" if looking for "herp.derp")
+		// Add sub-module admin title to list (add "herp" to list if
+		// looking up "herp.derp")
 		$adminTitle = reset(explode('.', $title));
 		if (strtolower($adminTitle) != strtolower($title)) {
 			$accessToCheck[] = $adminTitle;
 		}
 
-
-		// if checking for admin access
+		// If checking for admin access, only look up admin
 		if ($title == 'admin') {
 			$accessToCheck = array(
 				'admin'
 			);
 		}
 		
+		// Create the access model
 		$access = new User_Model_Access();
+		
+		// Get an array of rows containing access ids
 		$rows = $access->findAccess($accessToCheck);
 		$numRows = count($rows);
-		$accessIds = array();
 		
+		// Build array of access ids
+		$accessIds = array();
 		for ($i = 0; $i < $numRows; $i++) {
 			$accessIds[] = $rows[$i]['accessId'];
 		}
 		
+		// If any access records were found, check if the user has access
+		// to any of them
 		if (count($accessIds)) {
 			$userToAccess = new \User_Model_UserToAccess();
 			$row = $userToAccess->checkPermission($userId, $accessIds, $primaryKey);
@@ -223,11 +230,14 @@ class User_Model_User extends Redokes_Model_Model {
 			}
 		}
 		
-		// look up users groups and permissions for the groups
-		// get group ids
+		// User does not have access at this point
+		// Look up the user's groups and permissions for the groups
+		// Get the group ids
 		$groupIds = $this->getGroupIds();
 		$numGroupIds = count($groupIds);
 		for ($i = 0; $i < $numGroupIds; $i++) {
+			
+			// Check access for this group
 			$groupToAccess = new \User_Model_GroupToAccess();
 			$row = $groupToAccess->checkPermission($groupIds[$i], $accessIds, $primaryKey);
 			if ($row->num) {
@@ -235,6 +245,7 @@ class User_Model_User extends Redokes_Model_Model {
 			}
 		}
 		
+		// User does not have access so return false
 		return false;
 	}
 	

@@ -5,12 +5,23 @@ class User_Model_Access extends Redokes_Model_Model {
 	public $requiredStringFields = array(
 		'title' => 'Title'
 	);
+	public $uniqueFields = array(
+		'title' => 'Title'
+	);
 
 	public function clearUsers($primaryKey = 0) {
 		User_Model_UserToAccess::clearAccess($this->row->accessId, $primaryKey);
 	}
-
+	
+	public function checkRow() {
+		if (!intval($this->row->accessId) && strlen($this->row->title)) {
+			$this->save();
+		}
+	}
+	
 	public function addUsers($userIds = array(), $primaryKey = 0) {
+		$this->checkRow();
+		
 		if(!is_array($userIds)){
 			$userIds = array($userIds);
 		}

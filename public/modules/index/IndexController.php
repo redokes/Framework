@@ -6,8 +6,6 @@ class Index_IndexController extends Redokes_Controller_Action {
 		$this->getView()->setValues(array(
 			'title' => 'Index'
 		));
-		
-		
 	}
 	
 }

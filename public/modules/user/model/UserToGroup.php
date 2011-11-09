@@ -16,6 +16,7 @@ class User_Model_UserToGroup extends Redokes_Model_Model {
 	}
 
 	public function getGroupIds($userId) {
+		$userId = intval($userId);
 		$groupIds = array();
 		$select = $this->table->select()
 				->from($this->table->getTableName(), 'groupId')
