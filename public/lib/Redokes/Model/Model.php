@@ -49,6 +49,15 @@ class Redokes_Model_Model {
 	 */
 	
 	public $requiredNumberFields = array();
+	
+	/**
+	 * Field names that should be unique for this model. When updating or
+	 * inserting, a check will be done to make sure there is no other record
+	 * with the same value as this field name
+	 * @var array fieldName => displayName such as 'title' => 'Title'
+	 */
+	public $uniqueFields = array();
+	
 	/**
 	 * Fields to use with the search harvester.
 	 * @var array
@@ -103,12 +112,7 @@ class Redokes_Model_Model {
 	 * @var array
 	 */
 	public $listeners = array();
-	/**
-	 * just until all forms use ext errors by default
-	 * @var Boolean
-	 */
-	public $isExt = false;
-
+	
 	public function __construct($id = false) {
 		$this->table = new $this->tableClassName;
 		if ($id) {
@@ -156,7 +160,7 @@ class Redokes_Model_Model {
 		
 		// look for checkboxes
 		for ($i = 0; $i < count($this->checkboxes); $i++) {
-			$this->row[$this->checkboxes[$i]] = 0;
+			$this->row->{$this->checkboxes[$i]} = 0;
 			if (isset($post[$this->checkboxes[$i]])) {
 				$this->row->{$this->checkboxes[$i]} = 1;
 			}
@@ -312,7 +316,7 @@ class Redokes_Model_Model {
 		//Run the insert Code
 		$db = $this->_getDbAdapter();
 		$db->insert($this->table, $this->getSetData());
-		$this->row[$this->primaryKey] = $db->lastInsertId();
+		$this->row->{$this->primaryKey} = $db->lastInsertId();
 
 		if ($doAudit) {
 			$this->audit('Add');
@@ -340,7 +344,7 @@ class Redokes_Model_Model {
 
 		//Run the update code
 		$db = $this->_getDbAdapter();
-		$db->update($this->table, $this->getSetData(), "$this->primaryKey = " . $db->quote($this->row[$this->primaryKey]));
+		$db->update($this->table, $this->getSetData(), "$this->primaryKey = " . $db->quote($this->row->{$this->primaryKey}));
 		if ($doAudit) {
 			$this->audit('Update');
 		}
@@ -391,42 +395,19 @@ class Redokes_Model_Model {
 	}
 
 	public function validate() {
-//		$this->errors = array();
-
+		
+		// Check any required fields that should be strings
 		foreach ($this->requiredStringFields as $key => $value) {
-			if (isset($this->row[$key])) {
-				if (!strlen($this->row[$key])) {
-					if (!$this->isExt) {
-						$this->errors[] = "$value is required";
-					}
-					else {
-						$this->errors[] = array(
-							'id' => $key,
-							'msg' => "$value is required"
-						);
-					}
+			if (isset($this->row->$key)) {
+				if (!strlen($this->row->$key)) {
+					$this->errors[] = array(
+						'id' => $key,
+						'msg' => "$value is required"
+					);
 				}
 			}
 			else if (isset($this->$key)) {
 				if (!strlen($this->$key)) {
-					if (!$this->isExt) {
-						$this->errors[] = "$value is required";
-					}
-					else {
-						$this->errors[] = array(
-							'id' => $key,
-							'msg' => "$value is required"
-						);
-					}
-				}
-			}
-		}
-		foreach ($this->requiredNumberFields as $key => $value) {
-			if (!$this->row[$key]) {
-				if (!$this->isExt) {
-					$this->errors[] = "$value is required";
-				}
-				else {
 					$this->errors[] = array(
 						'id' => $key,
 						'msg' => "$value is required"
@@ -434,6 +415,37 @@ class Redokes_Model_Model {
 				}
 			}
 		}
+		
+		// Check any required fields that should be numbers
+		foreach ($this->requiredNumberFields as $key => $value) {
+			if (!$this->row->$key) {
+				$this->errors[] = array(
+					'id' => $key,
+					'msg' => "$value is required"
+				);
+			}
+		}
+		
+		// Check unique fields
+		$primaryField = $this->table->getPrimary();
+		$primaryKey = $this->row->$primaryField;
+		if (empty($primaryKey)) {
+			$primaryKey = 0;
+		}
+		foreach ($this->uniqueFields as $key => $value) {
+			$select = $this->table->select()
+				->from($this->table->getTableName(), 'COUNT(*) num')
+				->where("$key = ?", $this->row->$key)
+				->where("$primaryField <> ?", $primaryKey);
+			$row = $this->table->fetchRow($select);
+			if ($row->num) {
+				$this->errors[] = array(
+					'id' => $key,
+					'msg' => "$key must be unique"
+				);
+			}
+		}
+		
 		$this->_validated = true;
 		return $this->errors;
 	}
@@ -448,7 +460,7 @@ class Redokes_Model_Model {
 		$str = '';
 		foreach ($this->harvestFields as $fieldName => $count) {
 			for ($i = 0; $i < $count; $i++) {
-				$str .= ' ' . $this->row[$fieldName] . ' ';
+				$str .= ' ' . $this->row->$fieldName . ' ';
 			}
 		}
 		return $str;
@@ -456,8 +468,8 @@ class Redokes_Model_Model {
 
 	public function getHarvestInfo() {
 		$title = '';
-		if (isset($this->row['title'])) {
-			$title = $this->row['title'];
+		if (isset($this->row->title)) {
+			$title = $this->row->title;
 		}
 		return array(
 			'title' => $title,
@@ -497,7 +509,7 @@ class Redokes_Model_Model {
 			'description' => $description,
 			'dbTable' => $this->table,
 			'primaryField' => $this->primaryKey,
-			'primaryKey' => $this->row[$this->primaryKey]
+			'primaryKey' => $this->row->$this->primaryKey
 		));
 		$audit->process(false);
 	}
@@ -540,7 +552,7 @@ class Redokes_Model_Model {
 	}
 
 	public function getHash() {
-		return sha1($this->_salt . $this->row[$this->primaryKey]);
+		return sha1($this->_salt . $this->row->{$this->primaryKey});
 	}
 
 	public function salt($str) {

@@ -211,7 +211,6 @@ class User_Model_User extends Redokes_Model_Model {
 		$numRows = count($rows);
 		$accessIds = array();
 		
-		
 		for ($i = 0; $i < $numRows; $i++) {
 			$accessIds[] = $rows[$i]['accessId'];
 		}
@@ -224,32 +223,24 @@ class User_Model_User extends Redokes_Model_Model {
 			}
 		}
 		
-		return false;
-		
 		// look up users groups and permissions for the groups
 		// get group ids
-		$query = "SELECT groupId FROM site_users_x_groups WHERE userId = $userId";
-		$rows = $db->fetchAll($query);
-		$numRows = count($rows);
-		if ($numRows) {
-			$groupIds = array();
-			for ($i = 0; $i < $numRows; $i++) {
-				$groupIds[] = $rows[$i]['groupId'];
-			}
-			$groupIdsSql = implode(',', $groupIds);
-
-			// check group permissions
-			$query = "SELECT COUNT(*) num FROM site_users_groups_x_access WHERE groupId IN($groupIdsSql) AND primaryKey IN(0, $primaryKey) AND accessId IN ($accessIdsSql)";
-			$rows = $db->fetchAll($query);
-			$numRows = count($rows);
-			if ($numRows) {
-				if ($rows[0]['num']) {
-					return true;
-				}
+		$groupIds = $this->getGroupIds();
+		$numGroupIds = count($groupIds);
+		for ($i = 0; $i < $numGroupIds; $i++) {
+			$groupToAccess = new \User_Model_GroupToAccess();
+			$row = $groupToAccess->checkPermission($groupIds[$i], $accessIds, $primaryKey);
+			if ($row->num) {
+				return true;
 			}
 		}
-
+		
 		return false;
+	}
+	
+	public function getGroupIds() {
+		$userToGroup = new \User_Model_UserToGroup();
+		return $userToGroup->getGroupIds($this->row->userId);
 	}
 
 	public function compareNewPassword($pw) {
@@ -322,12 +313,12 @@ class User_Model_User extends Redokes_Model_Model {
 		$site = FrontController::getInstance()->getSite();
 		$userInvite->loadRow(array(
 			'confirmationHash' => $hash,
-			'siteId' => $site->row['siteId']
+			'siteId' => $site->row->siteId
 		));
 
 		// if this is a valid invite for this site
-		if ($userInvite->row['userInviteId'] && $userInvite->row['tsExpire'] >= time()) {
-			$this->loadRow($userInvite->row['email'], 'email');
+		if ($userInvite->row->userInviteId && $userInvite->row->tsExpire >= time()) {
+			$this->loadRow($userInvite->row->email, 'email');
 			
 			$this->row->confirmed = 1;
 			$this->update(false);
@@ -336,7 +327,7 @@ class User_Model_User extends Redokes_Model_Model {
 			$userSite = new Site_Class_UserSite();
 			$userSite->setRow(array(
 				'userId' => $this->row->userId,
-				'siteId' => $site->row['siteId']
+				'siteId' => $site->row->siteId
 			));
 			$userSite->process();
 
