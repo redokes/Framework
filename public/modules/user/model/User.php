@@ -84,7 +84,7 @@ class User_Model_User extends Redokes_Model_Model {
 			$this->addError("Please choose a different email address. Email is already in use");
 		}
 
-//		if (!valid_email($this->row['email'])) {
+//		if (!valid_email($this->row->email)) {
 //			$this->addError("Please enter a valid email address");
 //		}
 
@@ -102,10 +102,10 @@ class User_Model_User extends Redokes_Model_Model {
 		return $this->errors;
 		
 		// don't let a non papercut user edit a papercut user
-//		if ($this->row['userId']) {
+//		if ($this->row->userId) {
 //
 //			// check if edited user has papercut access
-//			if (User_Class_User::hasAccess('papercut', 0, $this->row['userId'])) {
+//			if (User_Class_User::hasAccess('papercut', 0, $this->row->userId)) {
 //
 //				// check if the user doing the editing has papercut access
 //				if (!User_Class_User::hasAccess('papercut')) {
@@ -115,7 +115,7 @@ class User_Model_User extends Redokes_Model_Model {
 //		}
 
 		// make sure email is unique
-		$query = "SELECT COUNT(*) total FROM user WHERE email = '{$this->row['email']}' AND userId <> '{$this->row['userId']}'";
+		$query = "SELECT COUNT(*) total FROM user WHERE email = '{$this->row->email}' AND userId <> '{$this->row->userId}'";
 		$rows = $db->fetchAll($query);
 		$numRows = count($rows);
 		if ($numRows) {
@@ -125,17 +125,17 @@ class User_Model_User extends Redokes_Model_Model {
 		}
 		
 		// check length
-		if (!valid_email($this->row['email'])) {
+		if (!valid_email($this->row->email)) {
 			$this->addError("Please enter a valid email address");
 		}
 
-		if (!$this->row['userId']) {
+		if (!$this->row->userId) {
 			// make sure passwords match
-			if ($this->row['password'] != $this->cpassword) {
+			if ($this->row->password != $this->cpassword) {
 				$this->addError("Please retype your password.");
 			}
 
-			if (strlen($this->row['password']) < 5) {
+			if (strlen($this->row->password) < 5) {
 				$this->addError("Password must be atleast 5 characters.");
 			}
 		}
@@ -170,133 +170,88 @@ class User_Model_User extends Redokes_Model_Model {
 		$db = FrontController::getInstance()->getDbAdapter('sharedb');
 
 		// remove access relation
-		User_Class_UserAccess::clearUserAccess($this->row['userId']);
+		User_Class_UserAccess::clearUserAccess($this->row->userId);
 
 		// remove group relation
-		User_Class_UserXGroup::clearGroups($this->row['userId']);
+		User_Class_UserXGroup::clearGroups($this->row->userId);
 
 		// remove addresses
-		$db->delete('user_address', 'userId = ' . $db->quote($this->row['userId']));
+		$db->delete('user_address', 'userId = ' . $db->quote($this->row->userId));
 
 		parent::delete($doAudit);
 	}
 
-	public static function hasAccess($title, $primaryKey = 0, $userId = 0) {
-		//$db = FrontController::getInstance()->getDbAdapter();
-
-		return true;
-		// sanitize data
-		$primaryKey = intval($primaryKey);
-		$title = trim($db->quote($title), "'");
+	public function hasAccess($title, $primaryKey = 0, $userId = 0) {
+		// Default to the logged in user if a user isn't specified
 		if (!$userId) {
 			$userId = self::getMyId();
 		}
-
-		// get all access ids
+		
+		// Build list of access titles to look up ids for
 		$accessToCheck = array(
-			'papercut',
 			'admin',
 			$title
 		);
 
-		// add admin title to list (adding "herp" if looking for "herp.derp")
+		// Add sub-module admin title to list (add "herp" to list if
+		// looking up "herp.derp")
 		$adminTitle = reset(explode('.', $title));
 		if (strtolower($adminTitle) != strtolower($title)) {
 			$accessToCheck[] = $adminTitle;
 		}
 
-
-		// if checking for admin access
+		// If checking for admin access, only look up admin
 		if ($title == 'admin') {
 			$accessToCheck = array(
-				'papercut',
 				'admin'
 			);
 		}
-
-		// if checking for papercut access
-		if ($title == 'papercut') {
-			$accessToCheck = array(
-				'papercut'
-			);
-		}
-
-		$accessTitlesFound = array();
-		$accessSql = array_to_sql($accessToCheck);
-		$accessIds = array();
-		$query = "SELECT * FROM site_access WHERE title IN ($accessSql)";
-		$rows = $db->fetchAll($query);
+		
+		// Create the access model
+		$access = new User_Model_Access();
+		
+		// Get an array of rows containing access ids
+		$rows = $access->findAccess($accessToCheck);
 		$numRows = count($rows);
-
+		
+		// Build array of access ids
+		$accessIds = array();
 		for ($i = 0; $i < $numRows; $i++) {
 			$accessIds[] = $rows[$i]['accessId'];
-			$accessTitlesFound[] = strtolower($rows[$i]['title']);
 		}
-
-		// commented this block for now..
-		// access levels probably dont need to be created ever
-		// on the access check.. just the access create
-		//Make sure all access levels exist
-		/*
-		  foreach ($accessToCheck as $accessTitle){
-		  if(!in_array(strtolower($accessTitle), $accessTitlesFound)){
-		  //Create this access level and add it to accessIds array
-		  $access = new User_Class_Access();
-		  $access->loadRow($accessTitle, 'title');
-		  if(!$access->row[$access->primaryKey]){
-		  $access->setRow(array(
-		  'title' => $accessTitle
-		  ,'display' => ucfirst($accessTitle)
-		  ));
-		  $access->process();
-		  }
-		  $accessTitlesFound[] = strtolower($accessTitle);
-		  $accessIds[] = $access->row[$access->primaryKey];
-		  }
-		  }
-		 */
-
-
+		
+		// If any access records were found, check if the user has access
+		// to any of them
 		if (count($accessIds)) {
-			$accessIdsSql = implode(',', $accessIds);
-
-			// check for permission
-			$query = "SELECT COUNT(*) num FROM site_users_x_access WHERE userId = $userId AND primaryKey IN(0, $primaryKey) AND accessId IN ($accessIdsSql)";
-			$rows = $db->fetchAll($query);
-			$numRows = count($rows);
-
-			// user has direct user permission so don't need group lookup
-			if ($numRows) {
-				if ($rows[0]['num']) {
-					return true;
-				}
+			$userToAccess = new \User_Model_UserToAccess();
+			$row = $userToAccess->checkPermission($userId, $accessIds, $primaryKey);
+			if ($row->num) {
+				return true;
 			}
 		}
-
-		// look up users groups and permissions for the groups
-		// get group ids
-		$query = "SELECT groupId FROM site_users_x_groups WHERE userId = $userId";
-		$rows = $db->fetchAll($query);
-		$numRows = count($rows);
-		if ($numRows) {
-			$groupIds = array();
-			for ($i = 0; $i < $numRows; $i++) {
-				$groupIds[] = $rows[$i]['groupId'];
-			}
-			$groupIdsSql = implode(',', $groupIds);
-
-			// check group permissions
-			$query = "SELECT COUNT(*) num FROM site_users_groups_x_access WHERE groupId IN($groupIdsSql) AND primaryKey IN(0, $primaryKey) AND accessId IN ($accessIdsSql)";
-			$rows = $db->fetchAll($query);
-			$numRows = count($rows);
-			if ($numRows) {
-				if ($rows[0]['num']) {
-					return true;
-				}
+		
+		// User does not have access at this point
+		// Look up the user's groups and permissions for the groups
+		// Get the group ids
+		$groupIds = $this->getGroupIds();
+		$numGroupIds = count($groupIds);
+		for ($i = 0; $i < $numGroupIds; $i++) {
+			
+			// Check access for this group
+			$groupToAccess = new \User_Model_GroupToAccess();
+			$row = $groupToAccess->checkPermission($groupIds[$i], $accessIds, $primaryKey);
+			if ($row->num) {
+				return true;
 			}
 		}
-
+		
+		// User does not have access so return false
 		return false;
+	}
+	
+	public function getGroupIds() {
+		$userToGroup = new \User_Model_UserToGroup();
+		return $userToGroup->getGroupIds($this->row->userId);
 	}
 
 	public function compareNewPassword($pw) {
@@ -369,21 +324,21 @@ class User_Model_User extends Redokes_Model_Model {
 		$site = FrontController::getInstance()->getSite();
 		$userInvite->loadRow(array(
 			'confirmationHash' => $hash,
-			'siteId' => $site->row['siteId']
+			'siteId' => $site->row->siteId
 		));
 
 		// if this is a valid invite for this site
-		if ($userInvite->row['userInviteId'] && $userInvite->row['tsExpire'] >= time()) {
-			$this->loadRow($userInvite->row['email'], 'email');
+		if ($userInvite->row->userInviteId && $userInvite->row->tsExpire >= time()) {
+			$this->loadRow($userInvite->row->email, 'email');
 			
-			$this->row['confirmed'] = 1;
+			$this->row->confirmed = 1;
 			$this->update(false);
 
 			// add site access
 			$userSite = new Site_Class_UserSite();
 			$userSite->setRow(array(
-				'userId' => $this->row['userId'],
-				'siteId' => $site->row['siteId']
+				'userId' => $this->row->userId,
+				'siteId' => $site->row->siteId
 			));
 			$userSite->process();
 
@@ -404,7 +359,7 @@ class User_Model_User extends Redokes_Model_Model {
 		$inviteUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/user/index/confirm/' . $hash;
 		$content = 'You have request to create an account on ' . $siteUrl . '<br />';
 		$content .= '<a href="'.$inviteUrl.'">Click here to set up your account</a>';
-		$email->sendEmailTemplate($this->row['email'], $subject, $content);
+		$email->sendEmailTemplate($this->row->email, $subject, $content);
 	}
 
 	public function sendInvite($isInvite = true) {

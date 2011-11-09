@@ -158,7 +158,7 @@ Ext.define('Modules.files.js.Application', {
 	
 	initSocketClient: function() {
 		this.socketClient = Ext.create('Redokes.socket.client.Client', {
-			url:'http://localhost',
+			url:'http://' + location.hostname,
 			port: '8080'
 		});
 	},
