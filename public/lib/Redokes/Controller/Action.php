@@ -113,6 +113,11 @@ class Redokes_Controller_Action {
 		}
 		return $this->view;
 	}
+	
+	public function redirect($url) {
+		header('Location: ' . $url);
+		die();
+	}
 
 	/**
 	 * Catches a call to an undefined action

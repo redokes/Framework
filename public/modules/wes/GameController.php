@@ -2,6 +2,13 @@
 
 class Wes_GameController extends Redokes_Controller_Action {
 	
+	public function init() {
+		$user = new User_Model_User();
+		if (!$user->hasAccess('admin')) {
+			$this->redirect('/');
+		}
+	}
+	
 	public $screensDir = '/modules/wes/img/sprites/maps/screens';
 	
 	public function indexAction() {
