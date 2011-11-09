@@ -1,0 +1,34 @@
+div.template-thumb {
+	padding: 8px;
+	margin: 8px;
+	width: 116px;
+	cursor: pointer;
+	border-radius: 10px;
+	float: left;
+}
+
+.template-thumb-hover {
+	background: #eee;
+}
+
+.template-thumb-selected {
+	background: #ccc;
+}
+
+.template-thumb-title {
+	text-align: center;
+	padding-top: 4px;
+	font-weight: bold;
+}
+
+.template-thumb-wrap img {
+	width: 100px;
+	border: 1px solid #eee;
+	border-radius: 10px;
+}
+
+.template-thumb-wrap {
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+}
