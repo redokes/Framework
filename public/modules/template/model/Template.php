@@ -13,12 +13,26 @@ class Template_Model_Template extends Redokes_Model_Model {
 		'png',
 		'jpg',
 		'jpeg',
-		'gif'
+		'gif',
+		'zip'
 	);
+	
+	public function getPublicTemplatesDir() {
+		return '/modules/template/templates/';
+	}
+	
+	public function getPrivateTemplatesDir() {
+		return MODULE_PATH . 'template/templates/';
+	}
 	
 	public function getPrivateDir() {
 		return MODULE_PATH . 'template/templates/' . $this->row->hash . '/';
 	}
+	
+	public function getUrl() {
+		return MODULE_PATH . 'template/templates/' . $this->row->hash . '/index.html';
+	}
+	
 	
 	public function afterInsert() {
 		$dir = $this->getPrivateDir();
@@ -32,6 +46,8 @@ class Template_Model_Template extends Redokes_Model_Model {
 			$contents = file_get_contents($path);
 			$indexFile = $this->getPrivateDir() . 'index.html';
 			file_put_contents($indexFile, $contents);
+			
+			$this->createThumb();
 		}
 	}
 	
@@ -43,8 +59,32 @@ class Template_Model_Template extends Redokes_Model_Model {
 				$contents = file_get_contents($path);
 				$resourceFile = $this->getPrivateDir() . $originalName;
 				file_put_contents($resourceFile, $contents);
+				
+				// Check if this is a zip file
+				if ($extension == 'zip') {
+					// Extract zip contents
+					$zip = new ZipArchive();
+					$zip->open($resourceFile);
+					$zip->extractTo($this->getPrivateDir());
+					$zip->close();
+					
+					// Delete zip file
+					unlink($resourceFile);
+					
+					// Delete __MACOSX
+					$dir = $this->getPrivateDir() . '__MACOSX';
+					if (is_dir($dir)) {
+						// TODO: remove recursively files and dir
+						Redokes_FileSystem::unlinkRecursive($dir);
+					}
+				}
 			}
 		}
+	}
+	
+	public function createThumb() {
+		$thumbFile = $this->getPrivateDir() . 'thumb.png';
+		exec("phantomjs /sites/rasterize.js {$this->getUrl()} $thumbFile");
 	}
 	
 }

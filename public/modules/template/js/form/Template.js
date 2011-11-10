@@ -5,6 +5,7 @@ Ext.define('Modules.template.js.form.Template', {
 	record: null,
 	bodyPadding: '10px',
 	url: '/template/template/submit',
+	layout: 'hbox',
 	
 	initComponent: function() {
 		this.items = this.items || [];
@@ -13,6 +14,8 @@ Ext.define('Modules.template.js.form.Template', {
 	},
 	
 	init: function() {
+		this.initColumns();
+		this.initThumb();
 		this.initTitleField();
 		this.initHiddenField();
 		
@@ -25,19 +28,46 @@ Ext.define('Modules.template.js.form.Template', {
 		this.initListeners();
 	},
 	
+	initColumns: function() {
+		this.leftColumn = Ext.create('Ext.panel.Panel', {
+			border: 0,
+			frame: false,
+			width: 120
+		})
+		this.rightColumn = Ext.create('Ext.panel.Panel', {
+			border: 0,
+			frame: false,
+			flex: 1
+		})
+		this.items.push(this.leftColumn, this.rightColumn);
+	},
+	
+	initThumb: function() {
+		var src = false;
+		if (this.record) {
+			src = this.record.get('thumb');
+		}
+		this.thumb = Ext.create('Ext.Img', {
+			src: src,
+			width: 100,
+			height: 100
+		});
+		this.leftColumn.add(this.thumb);
+	},
+	
 	initTitleField: function() {
 		this.titleField = Ext.create('Ext.form.field.Text', {
 			fieldLabel: 'Title',
 			name: 'title'
 		});
-		this.items.push(this.titleField);
+		this.rightColumn.add(this.titleField);
 	},
 	
 	initHiddenField: function() {
-		this.titleField = Ext.create('Ext.form.field.Hidden', {
+		this.hiddenField = Ext.create('Ext.form.field.Hidden', {
 			name: 'templateId'
 		});
-		this.items.push(this.titleField);
+		this.rightColumn.add(this.hiddenField);
 	},
 	
 	initTemplateFile: function() {
@@ -45,7 +75,7 @@ Ext.define('Modules.template.js.form.Template', {
 			fieldLabel: 'File',
 			name: 'file'
 		});
-		this.items.push(this.templateFile);
+		this.rightColumn.add(this.templateFile);
 	},
 	
 	initResourceFile: function() {
@@ -53,7 +83,7 @@ Ext.define('Modules.template.js.form.Template', {
 			fieldLabel: 'Resources',
 			name: 'resource'
 		});
-		this.items.push(this.resourceFile);
+		this.rightColumn.add(this.resourceFile);
 	},
 	
 	initButtons: function(){

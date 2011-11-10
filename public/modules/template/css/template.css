@@ -23,12 +23,12 @@ div.template-thumb {
 
 .template-thumb-wrap img {
 	width: 100px;
-	border: 1px solid #eee;
-	border-radius: 10px;
 }
 
 .template-thumb-wrap {
 	width: 100px;
 	height: 100px;
 	overflow: hidden;
+	border: 1px solid #eee;
+	border-radius: 10px;
 }
