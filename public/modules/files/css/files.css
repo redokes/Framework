@@ -65,6 +65,10 @@ div::-webkit-scrollbar-track {
 	box-shadow: none !important;
 }
 
+.x-proxy{
+	box-shadow: 0 0 5px #888;
+}
+
 /******************************************
 * Icons
 ******************************************/
@@ -91,6 +95,7 @@ div::-webkit-scrollbar-track {
 }
 
 .view-item{
+	position: relative;
 	padding: 10px;
 	color: #333;
 	background: #f2f2f2; /* Old browsers */
@@ -134,7 +139,7 @@ div::-webkit-scrollbar-track {
 	background-image: url(../images/icons/drop-256.png);
 	background-position: center;
 	background-repeat: no-repeat;
-	padding-top: 270px;
+	padding: 270px 10px 10px 10px;
 	text-align: center;
 	color: #333;
 }

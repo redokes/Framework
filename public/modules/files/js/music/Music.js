@@ -42,7 +42,7 @@ Ext.define('Modules.files.js.music.Music', {
 	},
 	
 	initPlaylist: function(){
-		this.playlist = Ext.create('Modules.files.js.music.Playlist', {
+		this.playlist = Ext.create('Modules.files.js.music.playlist.Playlist', {
 			
 		});
 		this.getApplication().getCenter().add(new Ext.panel.Panel({
@@ -62,7 +62,11 @@ Ext.define('Modules.files.js.music.Music', {
 		}
 		
 		//Download the file from the remote user
-		this.playlist.on('itemclick', function(view, record, item, index){
+		this.playlist.on('itemdblclick', function(view, record, item, index, event){
+			//Cancel the event
+			event.preventDefault();
+			event.stopEvent();
+			
 			var node = record.get('node');
 			var nodeId = node.internalId;
 			var file = node.raw.file;
