@@ -63,13 +63,24 @@ Ext.define('Modules.files.js.music.Music', {
 		
 		//Download the file from the remote user
 		this.playlist.on('itemdblclick', function(view, record, item, index, event){
+			
 			//Cancel the event
 			event.preventDefault();
 			event.stopEvent();
 			
-			var node = record.get('node');
-			var nodeId = node.internalId;
-			var file = node.raw.file;
+			//Setup the variables
+			//var node = record.get('node');
+			//var nodeId = node.internalId;
+			
+			//Play the local file
+			var file = Ext.create('Modules.files.js.file.File', record.get('file'));
+			file.getURL(function(url){
+				this.player.setSrc(url);
+				this.player.play();
+			}, this);
+			
+			return;
+			
 			if(record.get('remote')){
 				//Create the file request
 				var fileRequest = {
@@ -92,46 +103,19 @@ Ext.define('Modules.files.js.music.Music', {
 				}, this);
 			}
 			else{
-				//download local file
-				var file = Ext.create('Modules.files.js.file.File', node.raw.file);
-				file.on('complete', function(file, content){
-					this.player.setRawSrc(file.type, content);
-					this.player.play();
-					
-					//Share this on the stream
-					this.getApplication().onModuleReady('stream', function(stream){
-						if(stream){
-							stream.addMessage({
-								text: 'You are listening to ' +  file.fileName
-							});
-						}
-					}, this);
-					
-				}, this);
-				file.download();
+				
 			}
 		}, this);
 		
-		return;
-		
-		user.getTree().on('itemdblclick', function(view, record, item, index){
-			console.log(record.raw.file);
-			
-			var file = Ext.create('Modules.files.js.file.File', record.raw.file);
-			file.on('complete', function(file, data){
-				this.player.setRawSrc(file.type, data);
-				this.player.play();
-				
-				//Share this on the stream
-				var stream = this.application.getModule('stream');
-				if(stream){
-					stream.addMessage({
-						text: 'You are listening to ' + file.fileName
-					});
-				}
-				
+		//isten for when something is added to the user tree
+		user.getTree().audioStore.on('add', function(store, records, index){
+			Ext.each(records, function(record){
+				var file = Ext.create('Modules.files.js.file.File', record.get('file'));
+				file.getTags(function(file, tags, options){
+					options.record.set(tags);
+					options.record.commit();
+				}, this, {record: record});
 			}, this);
-			file.download();
 		}, this);
 	},
 	

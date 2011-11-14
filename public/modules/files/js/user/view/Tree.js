@@ -1,5 +1,10 @@
 Ext.define('Modules.files.js.user.view.Tree', {
 	extend: 'Ext.tree.Panel',
+	
+	requires:[
+		'Modules.files.js.model.Audio'
+	],
+	
 	viewConfig: {
 		plugins: {
 			ptype: 'treeviewdragdrop',
@@ -30,6 +35,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	
 	init: function(){
 		this.initStore();
+		this.initAudioStore();
 		this.initToolbar();
 		//this.initSearch();
 		this.initDownload();
@@ -37,6 +43,12 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	
 	initStore: function(){
 		this.store = Ext.create('Ext.data.TreeStore');
+	},
+	
+	initAudioStore: function(){
+		this.audioStore = Ext.create('Ext.data.Store', {
+			model: 'Modules.files.js.model.Audio'
+		});
 	},
 	
 	initToolbar: function(){
@@ -75,7 +87,7 @@ Ext.define('Modules.files.js.user.view.Tree', {
 	addFileList: function(fileList){
 		var processedList = this.processFileList(fileList);
 		this.nodes.push(Ext.apply({}, processedList));
-		this.store.tree.root.appendChild(processedList);
+		var node = this.store.tree.root.appendChild(processedList);
 	},
 	
 	processFileList: function(fileList) {
@@ -139,12 +151,24 @@ Ext.define('Modules.files.js.user.view.Tree', {
 				};
 				if (dir[i].isFile) {
 					delete dir[i].isFile;
+					
+					//Create the audio record
+					var audioRecord = Ext.create('Modules.files.js.model.Audio', {
+						file: dir[i].record,
+						path: dir[i].record.webkitRelativePath,
+						name: dir[i].record.fileName,
+						size: dir[i].record.size,
+						type: dir[i].record.type
+					});
+					this.audioStore.add(audioRecord);
+					
 					//Add Config
 					Ext.apply(config, {
 						leaf:true,
 						//id: dir[i].record.webkitRelativePath,
 						id: this.self.generateId(),
 						file: dir[i].record,
+						record: audioRecord,
 						fileObject: {
 							path: dir[i].record.webkitRelativePath,
 							name: dir[i].record.fileName,

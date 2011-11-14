@@ -64,7 +64,8 @@ Ext.define('Modules.files.js.music.Player', {
 	setRawSrc: function(type, data){
 		this.stop();
 		this.audio.dom.src = '';
-		this.audio.dom.src = 'data:' + type + ';base64,' + window.btoa(data);
+		//this.audio.dom.src = 'data:' + type + ';base64,' + window.btoa(data);
+		this.audio.dom.src = data;
 		this.isLoaded = true;
 	},
 	
@@ -96,6 +97,8 @@ Ext.define('Modules.files.js.music.Player', {
 		this.log('Stop');
 		this.seek(0);
 		this.audio.dom.pause();
+		this.isPlaying = false;
+		this.isPaused = false;
 	},
 	
 	pause: function() {

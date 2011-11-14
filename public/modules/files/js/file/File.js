@@ -24,7 +24,6 @@ Ext.define('Modules.files.js.file.File', {
 	init: function(){
 		this.initFile();
 		this.initReader();
-		this.initTags();
 	},
 	
 	initFile: function(){
@@ -46,14 +45,18 @@ Ext.define('Modules.files.js.file.File', {
 		}, this);
 	},
 	
-	initTags: function(){
+	getTags: function(callback, scope, options){
+		if(scope == null){
+			scope = this;
+		}
+		var me = this;
 		var tagSize = 128;
 		var blob = this.file.webkitSlice(this.file.size - tagSize, this.file.size);
 		var reader = new FileReader();
 		reader.onloadend = Ext.bind(function(e) {
 			if (e.target.readyState == FileReader.DONE) { // DONE == 2
 				Ext.apply(this.tags, this.readTags(e.target.result));
-				this.fireEvent('tags', this, this.tags);
+				Ext.bind(callback, scope)(this, this.tags, options);
 			}
 		}, this);
 		reader.readAsBinaryString(blob);
@@ -129,5 +132,54 @@ Ext.define('Modules.files.js.file.File', {
 		} else {
 			return {};
 		}
+	},
+	
+	getURL: function(callback, scope){
+		var me = this;
+		if(scope == null){
+			scope = this;
+		}
+		window.webkitRequestFileSystem(window.TEMPORARY, (1024*1024) * 50, function(fs) {
+			// Capture current iteration's file in local scope for the getFile() callback.
+			fs.root.getFile('temp.mp3', {
+				create: true
+			}, function(fileEntry) {
+				fileEntry.createWriter(function(fileWriter) {
+					fileWriter.onwriteend = function(){
+						fileWriter.onwriteend = function(){
+							Ext.bind(callback, scope)(fileEntry.toURL());
+						}
+						fileWriter.write(me.file);
+					};
+					fileWriter.truncate(0);
+				}, me.fileSystemErrorHandler);
+			}, me.fileSystemErrorHandler);
+		}, me.fileSystemErrorHandler);
+	},
+	
+	fileSystemErrorHandler: function(e){
+		var msg = '';
+
+		switch (e.code) {
+		case FileError.QUOTA_EXCEEDED_ERR:
+			msg = 'QUOTA_EXCEEDED_ERR';
+			break;
+		case FileError.NOT_FOUND_ERR:
+			msg = 'NOT_FOUND_ERR';
+			break;
+		case FileError.SECURITY_ERR:
+			msg = 'SECURITY_ERR';
+			break;
+		case FileError.INVALID_MODIFICATION_ERR:
+			msg = 'INVALID_MODIFICATION_ERR';
+			break;
+		case FileError.INVALID_STATE_ERR:
+			msg = 'INVALID_STATE_ERR';
+			break;
+		default:
+			msg = 'Unknown Error';
+			break;
+		};
+		console.log('Error: ' + msg);
 	}
 });

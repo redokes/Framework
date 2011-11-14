@@ -4,6 +4,10 @@ Ext.define('Modules.files.js.music.playlist.Playlist', {
 		log: 'Redokes.debug.Log'
 	},
 	
+	requires:[
+		'Modules.files.js.model.Audio'
+	],
+	
 	//config
 	itemSelector: '.view-item',
 	emptyText: '<div class="playlist-empty-text">Drop files here....</div>',
@@ -28,15 +32,7 @@ Ext.define('Modules.files.js.music.playlist.Playlist', {
 	
 	initStore: function() {
 		this.store = Ext.create('Ext.data.Store', {
-			fields: [
-				'id',
-				'content',
-				'name',
-				'size',
-				'type',
-				'remote',
-				'node'
-			]
+			model: 'Modules.files.js.model.Audio'
 		});
 	},
 	
@@ -44,7 +40,7 @@ Ext.define('Modules.files.js.music.playlist.Playlist', {
 		this.tpl = Ext.create('Ext.XTemplate', 
 			'<tpl for=".">',
 				'<div class="view-item x-unselectable">',
-				  '<span>{name}</span>',
+				  '<span>{artist} - {title}</span>',
 				'</div>',
 			'</tpl>'
 		);
@@ -111,12 +107,7 @@ Ext.define('Modules.files.js.music.playlist.Playlist', {
 				}
 			}
 			else {
-				files.push({
-					name: records[i].data.text,
-					id: records[i].data.id,
-					remote: records[i].raw.remote || false,
-					node: records[i]
-				});
+				files.push(records[i].raw.record);
 			}
 		}
 		

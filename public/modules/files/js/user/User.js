@@ -81,12 +81,6 @@ Ext.define('Modules.files.js.user.User', {
 	initViewListeners: function(){
 		this.getView().on('select', function(field){
 			var fileList = field.getFiles();
-			Ext.each(fileList, function(file){
-				this.store.add({
-					file: file
-				})
-			}, this);
-			this.store.sync();
 			this.getView().tree.addFileList(field.getFiles());
 		}, this);
 	},
