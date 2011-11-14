@@ -144,6 +144,21 @@ div::-webkit-scrollbar-track {
 	color: #333;
 }
 
+/******************************************
+* Audio Playlist
+******************************************/
+.playlist-item .icon{
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 16px;
+	height: 16px;
+}
+
+.playlist-item.playing .icon{
+	background-image:url(../images/icons/icon_eq.gif);
+	background-repeat: no-repeat;
+}
 
 /******************************************
 * Audio Player
@@ -177,8 +192,28 @@ div::-webkit-scrollbar-track {
 	background-image: url(../images/icons/pause-32.png);
 }
 
+.audio-player .text{
+	position: absolute;
+	top: 10px;
+	left: 50px;
+	color: #333;
+	font-size: 12px;
+	font-weight: bold;
+	text-shadow: 0 1px #aaaaaa;
+}
+
+.audio-player .time{
+	position: absolute;
+	top: 12px;
+	right: 10px;
+	color: #333;
+	font-size: 24px;
+	font-weight: bold;
+	text-shadow: 0 1px #aaaaaa;
+}
+
 .audio-player .progress-container{
-	padding: 20px 50px 0px 50px;
+	padding: 30px 90px 0px 50px;
 }
 
 .audio-player .progress-container .loader{

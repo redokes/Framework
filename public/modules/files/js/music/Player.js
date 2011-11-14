@@ -14,6 +14,7 @@ Ext.define('Modules.files.js.music.Player', {
 					'<div class="progress" style=""></div>' +
 				'</div>' +
 			'</div>' +
+			'<div class="text"></div>' +
 			'<div class="time"></div>' + 
 			'<div class="previous"></div>' + 
 			'<div class="next"></div>' +
@@ -27,6 +28,7 @@ Ext.define('Modules.files.js.music.Player', {
         progressContainerEl: '.progress-container',
         loaderEl: '.progress-container .loader',
         progressEl: '.progress-container .progress',
+        textEl: '.text',
         timeEl: '.time',
         previousEl: '.previous',
         nextEl: '.next'
@@ -46,6 +48,7 @@ Ext.define('Modules.files.js.music.Player', {
 	initAudio: function(){
 		this.audio.on('progress', this.onProgress, this);
 		this.audio.on('timeupdate', this.onTimeUpdate, this);
+		this.audio.on('ended', this.onEnded, this);
 		this.progressContainerEl.on('click', this.onProgressClick, this);
 	},
 	
@@ -59,6 +62,10 @@ Ext.define('Modules.files.js.music.Player', {
 		});
 		
 		this.items.push(this.playlist);
+	},
+	
+	setText: function(tags){
+		this.textEl.update(tags.artist + ' - ' + tags.title);
 	},
 	
 	setRawSrc: function(type, data){
@@ -76,7 +83,21 @@ Ext.define('Modules.files.js.music.Player', {
 		this.isLoaded = true;
 	},
 	
-	play: function() {
+	play: function(record) {
+		if(record != null){
+			this.stop();
+			var file = Ext.create('Modules.files.js.file.File', record.get('file'));
+			file.getTags(function(file, tags, options){
+				file.getURL(function(url){
+					this.setSrc(url);
+					this.setText(tags);
+					this.play();
+				}, this);
+			}, this);
+			return;
+		}
+		
+		//Make sure we are loaded and not already playing
 		if(!this.isLoaded || this.isPlaying){
 			return;
 		}
@@ -155,6 +176,8 @@ Ext.define('Modules.files.js.music.Player', {
 		var totalSeconds = totalTime - totalMinutes * 60;
 		var currentMinutes = Math.floor(currentTime/60, 10);
 		var currentSeconds = currentTime - currentMinutes * 60;
+		var remainingMinutes = Math.floor((totalTime - currentTime)/60, 10);
+		var remainingSeconds = (totalTime-currentTime) - remainingMinutes * 60;
 		
 		var percentage = (this.audio.dom.currentTime / this.audio.dom.duration) * 100;
 		
@@ -162,7 +185,11 @@ Ext.define('Modules.files.js.music.Player', {
 		this.progressEl.setWidth(percentage + "%");
 		
 		//Update the text
-		//this.timeEl.update(currentMinutes + ':' + (currentSeconds > 9 ? totalSeconds : '0' + currentSeconds) + '/' + totalMinutes + ':' + (totalSeconds > 9 ? totalSeconds : '0' + totalSeconds));
+		this.timeEl.update("-" + remainingMinutes + ':' + (remainingSeconds > 9 ? remainingSeconds : '0' + remainingSeconds));
+	},
+	
+	onEnded: function(){
+		this.fireEvent('complete', this);
 	},
 	
 	onProgressClick: function(event){

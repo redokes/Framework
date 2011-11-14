@@ -43,12 +43,15 @@ Ext.define('Modules.files.js.music.Music', {
 	
 	initPlaylist: function(){
 		this.playlist = Ext.create('Modules.files.js.music.playlist.Playlist', {
-			
+			player: this.player
 		});
 		this.getApplication().getCenter().add(new Ext.panel.Panel({
 			layout: 'fit',
 			title: 'Playlist',
-			items:[this.playlist]
+			items:[this.playlist],
+			lbar: Ext.create('Modules.files.js.music.playlist.Toolbar', {
+				playlist: this.playlist
+			})
 		}));
 	},
 	
@@ -63,7 +66,7 @@ Ext.define('Modules.files.js.music.Music', {
 		
 		//Download the file from the remote user
 		this.playlist.on('itemdblclick', function(view, record, item, index, event){
-			
+			return;
 			//Cancel the event
 			event.preventDefault();
 			event.stopEvent();
@@ -74,12 +77,9 @@ Ext.define('Modules.files.js.music.Music', {
 			
 			//Play the local file
 			var file = Ext.create('Modules.files.js.file.File', record.get('file'));
-			file.getURL(function(url){
-				this.player.setSrc(url);
-				this.player.play();
-			}, this);
+			this.player.setFile(file);
 			
-			return;
+			
 			
 			if(record.get('remote')){
 				//Create the file request

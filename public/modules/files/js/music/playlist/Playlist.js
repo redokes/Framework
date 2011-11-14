@@ -9,10 +9,12 @@ Ext.define('Modules.files.js.music.playlist.Playlist', {
 	],
 	
 	//config
+	player: null,
 	itemSelector: '.view-item',
 	emptyText: '<div class="playlist-empty-text">Drop files here....</div>',
 	deferEmptyText: false,
 	overItemCls: 'view-hover',
+	playingCls: 'playing',
 	trackOver: true,
 	autoScroll: true,
 	
@@ -28,6 +30,8 @@ Ext.define('Modules.files.js.music.playlist.Playlist', {
 		this.initTpl();
 		this.initListeners();
 		this.initDragDrop();
+		this.initPlayer();
+		this.initToolbar();
 	},
 	
 	initStore: function() {
@@ -39,32 +43,23 @@ Ext.define('Modules.files.js.music.playlist.Playlist', {
 	initTpl: function() {
 		this.tpl = Ext.create('Ext.XTemplate', 
 			'<tpl for=".">',
-				'<div class="view-item x-unselectable">',
+				'<div class="playlist-item view-item x-unselectable">',
 				  '<span>{artist} - {title}</span>',
+				  '<div class="icon"></div>',
 				'</div>',
 			'</tpl>'
 		);
 	},
 	
 	initListeners: function(){
-		this.on('itemdblclick', function(view, record, item, index){
-			return;
+		this.on('itemdblclick', function(view, record, item, index, event){
+			//Cancel the event
+			event.preventDefault();
+			event.stopEvent();
 			
-			var file = Ext.create('Modules.files.js.file.File', record.raw.file);
-			file.on('complete', function(file, data){
-				this.player.setRawSrc(file.type, data);
-				this.player.play();
-				
-				//Share this on the stream
-				var stream = this.application.getModule('stream');
-				if(stream){
-					stream.addMessage({
-						text: 'You are listening to ' + file.fileName
-					});
-				}
-				
-			}, this);
-			file.download();
+			//Play the file if a player is attached
+			this.play(record);
+			
 		}, this);
 		
 		this.on('afterrender', function(){
@@ -95,6 +90,25 @@ Ext.define('Modules.files.js.music.playlist.Playlist', {
 		});
 	},
 	
+	initPlayer: function(){
+		if(this.player == null){
+			return
+		}
+		
+		//Listen for the complete event
+		this.player.on('complete', function(){
+			this.next();
+		}, this);
+	},
+	
+	initToolbar: function(){
+		this.lbar = new Ext.toolbar.Toolbar({
+			items: [{
+				text: 'test'
+			}]
+		});
+	},
+	
 	getDroppedFiles: function(records) {
 		var files = [];
 		for (var i = 0; i < records.length; i++) {
@@ -112,6 +126,33 @@ Ext.define('Modules.files.js.music.playlist.Playlist', {
 		}
 		
 		return files;
+	},
+	
+	play: function(record){
+		if(this.player == null){
+			return
+		}
+		
+		//If there is a currentlyPlaying remove the class
+		if(this.currentlyPlaying != null){
+			Ext.get(this.getNode(this.currentlyPlaying)).removeCls(this.playingCls);
+		}
+		
+		this.currentlyPlaying = record;
+		this.player.play(record);
+		this.select(record);
+		Ext.get(this.getNode(this.currentlyPlaying)).addCls(this.playingCls);
+	},
+	
+	next: function(){
+		var record = this.store.getAt(this.store.indexOf(this.currentlyPlaying) + 1);
+		if(record != null){
+			this.play(record);
+		}
+	},
+	
+	clear: function(){
+		this.store.removeAll();
 	},
 	
 	addFiles: function(records) {

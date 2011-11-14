@@ -12,7 +12,7 @@ Ext.define('Modules.files.js.user.User', {
 	
 	//Init Functions
 	init: function(){
-		this.initStore();
+		//this.initStore();
 		/*
 		this.getApplication().getSocketClient().on('connect', function(socket){
 			this.socketId = socket.socket.sessionid;
