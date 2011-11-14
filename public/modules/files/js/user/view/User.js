@@ -11,6 +11,7 @@ Ext.define('Modules.files.js.user.view.User', {
 	},
 	
 	init: function(){
+		console.log('init user');
 		this.initTree();
 		this.initFolderSelect();
 	},
@@ -26,7 +27,8 @@ Ext.define('Modules.files.js.user.view.User', {
 	initFolderSelect: function(){
 		this.folderSelect = Ext.create('Modules.files.js.form.field.Folder', {
 			scope: this,
-			width: 60
+			width: 60,
+			buttonText: 'Add Library'
 		});
 		
 		//Chain events

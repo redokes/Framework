@@ -7,7 +7,7 @@ Ext.define('Modules.files.js.stream.view.Stream', {
 	],
 
 	//Config
-    itemSelector: 'div.stream-item',
+    itemSelector: 'div.view-item',
 
     initComponent: function() {
 		this.items = [];
@@ -30,7 +30,7 @@ Ext.define('Modules.files.js.stream.view.Stream', {
 	initTemplate: function(){
 		this.tpl = new Ext.XTemplate(
 			'<tpl for=".">',
-				'<div class="stream-item">{text}</div>',
+				'<div class="view-item">{text}</div>',
 			'</tpl>'
 		);
 	},

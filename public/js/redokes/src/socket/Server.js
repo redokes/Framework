@@ -12,5 +12,5 @@ Ext.require('Redokes.node.server.Socket');
 
 Ext.onReady(function() {
 	var httpServer = Ext.create('Redokes.node.server.Http');
-	var socketServer = Ext.create('Redokes.node.server.Socket', httpServer.httpServer);
+	var socketServer = Ext.create('Redokes.node.server.Socket', httpServer);
 });

@@ -9,16 +9,24 @@ Ext.define('Redokes.node.server.Socket', {
 	
 	socketio: require('socket.io'),
 	io:false,
+	httpServerWrapper: null,
 	httpServer: null,
+	namespace: null,
 	
 	/**
 	 * Init socket io by telling it the http server
 	 */
 	constructor: function(httpServer) {
-		this.httpServer = httpServer;
+		this.httpServerWrapper = httpServer;
+		this.httpServer = this.httpServerWrapper.httpServer;
 		this.io = this.socketio.listen(this.httpServer);
 		this.io.set('log level', 1);
 		this.createNamespace('');
+		this.init();
+	},
+	
+	init: function(){
+		
 	},
 	
 	/**
@@ -29,7 +37,7 @@ Ext.define('Redokes.node.server.Socket', {
 		this.log('Check to create namespace ' + name);
 		if (!this.io.sockets.manager.namespaces['/' + name]) {
 			this.log('Create namespace ' + name);
-			Ext.create('Redokes.node.server.Namespace', {
+			this.namespace = Ext.create('Redokes.node.server.Namespace', {
 				name: name,
 				io: this.io,
 				socket: this
