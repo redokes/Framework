@@ -12,26 +12,66 @@ Ext.define('Modules.template.js.Interface', {
 	
 	initComponent: function() {
 		this.items = this.items || [];
+		this.dockedItems = this.dockedItems || [];
 		this.init();
 		this.callParent(arguments);
 	},
 	
 	init: function() {
-		this.initTemplateList();
+		this.initTemplateView();
 		this.initListeners();
 	},
 	
-	initTemplateList: function() {
-		this.templateList = Ext.create('Modules.template.js.DataView', {
+	initTemplateView: function() {
+		this.templateView = Ext.create('Modules.template.js.ViewPanel', {
 			title: 'Templates'
 		});
-		this.items.push(this.templateList);
+		this.items.push(this.templateView);
 	},
 	
 	initListeners: function() {
-		this.templateList.on('itemdblclick', function(view, record, item, index) {
+		this.templateView.dataView.on('itemdblclick', function(view, record, item, index) {
 			this.setActiveTab(this.createTab(record));
 		}, this);
+		
+		this.templateView.on('edit', function(view, records) {
+			var numRecords = records.length;
+			for (var i = 0; i < numRecords; i++) {
+				this.createTab(records[i]);
+			}
+		}, this);
+		
+		this.templateView.on('delete', function(view, records) {
+			var numRecords = records.length;
+			var ids = [];
+			for (var i = 0; i < numRecords; i++) {
+				ids.push(records[i].data.templateId);
+			}
+			Ext.Ajax.request({
+				scope: this,
+				method: 'delete',
+				url: '/template/rest/delete',
+				params: {
+					ids: Ext.encode(ids)
+				},
+				success: function(r) {
+					var response = Ext.decode(r.responseText);
+					this.reloadStore();
+				}
+			});
+		}, this);
+		
+		this.on('add', function() {
+			this.reloadStore();
+		}, this);
+		
+		this.on('edit', function() {
+			this.reloadStore();
+		}, this);
+	},
+	
+	reloadStore: function() {
+		this.templateView.dataView.store.load();
 	}
 	
 });

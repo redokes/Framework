@@ -29,16 +29,22 @@ class Template_Model_Template extends Redokes_Model_Model {
 		return MODULE_PATH . 'template/templates/' . $this->row->hash . '/';
 	}
 	
-	public function getUrl() {
-		return MODULE_PATH . 'template/templates/' . $this->row->hash . '/index.html';
+	public function getPageUrl() {
+		return '/modules/template/templates/' . $this->row->hash . '/index.html';
 	}
-	
 	
 	public function afterInsert() {
 		$dir = $this->getPrivateDir();
 		if (!is_dir($dir)) {
 			mkdir($dir);
+			chmod($dir, 0777);
 		}
+	}
+	
+	public function save($doAudit = false) {
+		parent::save($doAudit);
+		
+		$this->createThumb();
 	}
 	
 	public function processTemplateFile($path, $originalName = false) {
@@ -46,8 +52,6 @@ class Template_Model_Template extends Redokes_Model_Model {
 			$contents = file_get_contents($path);
 			$indexFile = $this->getPrivateDir() . 'index.html';
 			file_put_contents($indexFile, $contents);
-			
-			$this->createThumb();
 		}
 	}
 	
@@ -84,7 +88,23 @@ class Template_Model_Template extends Redokes_Model_Model {
 	
 	public function createThumb() {
 		$thumbFile = $this->getPrivateDir() . 'thumb.png';
-		exec("phantomjs /sites/rasterize.js {$this->getUrl()} $thumbFile");
+		if (is_writable($this->getPrivateDir())) {
+//			error_log('Writing');
+//			error_log("phantomjs /sites/rasterize.js {$this->getAbsoluteUrl()} $thumbFile");
+//			exec("phantomjs /sites/rasterize.js {$this->getAbsoluteUrl()} $thumbFile");
+		}
+		else {
+			error_log('Directory not writable: ' . $this->getPrivateDir());
+		}
+		
+	}
+	
+	public function beforeDelete() {
+		// Clean up directories
+		$dir = $this->getPrivateDir();
+		if (is_dir($dir)) {
+			Redokes_FileSystem::unlinkRecursive($dir);
+		}
 	}
 	
 }
