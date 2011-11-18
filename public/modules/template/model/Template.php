@@ -29,6 +29,10 @@ class Template_Model_Template extends Redokes_Model_Model {
 		return MODULE_PATH . 'template/templates/' . $this->row->hash . '/';
 	}
 	
+	public function getPublicDir() {
+		return '/modules/template/templates/' . $this->row->hash . '/';
+	}
+	
 	public function getPageUrl() {
 		return '/modules/template/templates/' . $this->row->hash . '/index.html';
 	}
@@ -54,6 +58,8 @@ class Template_Model_Template extends Redokes_Model_Model {
 			$indexFile = $this->getPrivateDir() . 'index.html';
 			file_put_contents($originalFile, $contents);
 			file_put_contents($indexFile, $contents);
+			
+			$this->updateReferences();
 		}
 	}
 	
@@ -85,6 +91,54 @@ class Template_Model_Template extends Redokes_Model_Model {
 					}
 				}
 			}
+		}
+	}
+	
+	public function updateReferences() {
+		// Update references
+		$originalIndexFile = $this->getIndexFile(true);
+		$indexFile = $this->getIndexFile();
+		
+		$content = file_get_contents($originalIndexFile);
+		$basePath = $this->getPublicDir();
+		$content = $this->updateHtmlReferences($content, $basePath);
+		file_put_contents($indexFile, $content);
+	}
+	
+	public function updateHtmlReferences($content, $basePath) {
+		$dom = new Redokes_Dom_SimpleHtmlDom($content);
+		$elements = array(
+			array(
+				'tagName' => 'link',
+				'property' => 'href'
+			),
+			array(
+				'tagName' => 'img',
+				'property' => 'src'
+			)
+		);
+		$numElements = count($elements);
+		for ($i = 0; $i < $numElements; $i++) {
+			foreach($dom->find($elements[$i]['tagName']) as $element) {
+				$element->{$elements[$i]['property']} = $this->getRealPath($element->{$elements[$i]['property']}, $basePath);
+			}
+		}
+		echo $dom->save();
+		die();
+		return $content;
+	}
+	
+	public function getRealPath($path, $basePath) {
+		$newPath = $basePath . $path;
+		return $newPath;
+	}
+	
+	public function getIndexFile($original = false) {
+		if ($original) {
+			return $this->getPrivateDir() . '.index.html';
+		}
+		else {
+			return $this->getPrivateDir() . 'index.html';
 		}
 	}
 	
