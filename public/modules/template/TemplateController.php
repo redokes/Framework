@@ -20,6 +20,7 @@ class Template_TemplateController extends Redokes_Controller_Ajax {
 				$publicThumb = '/google.png';
 			}
 			$records[$i]['thumb'] = $publicThumb;
+			$records[$i]['url'] = '/template/view/' . $records[$i]['hash'];
 		}
 		
 		$this->setParam('records', $records);
@@ -49,6 +50,24 @@ class Template_TemplateController extends Redokes_Controller_Ajax {
 		else {
 			$this->setParam('record', $template->row->toArray());
 		}
+	}
+	
+	public function makeEditableAction() {
+		$id = $this->frontController->getParam('id');
+		$templateId = $this->frontController->getParam('templateId');
+		$template = new Template_Model_Template($templateId);
+		$template->makeEditable($id);
+		$this->setParam('domId', $id);
+	}
+	
+	public function updateContentAction() {
+		parse_str(file_get_contents('php://input'), $params);
+		$content = json_decode($params['content'], true);
+		foreach($content as $domId => $data) {
+			$value = $data['value'];
+			
+		}
+		$this->setParam('post', $content);
 	}
 	
 }

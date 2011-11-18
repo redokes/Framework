@@ -1,12 +1,12 @@
 Ext.define('Modules.template.js.Interface', {
 	extend: 'Redokes.tab.Interface',
 	
-	height: 400,
-	width: 600,
+	height: 700,
+	width: 1000,
 	
 	tabTitleTemplate: '{title}',
 	tabIconCls: 'contact-icon-16',
-	tabClass: 'Modules.template.js.form.Template',
+	tabClass: 'Modules.template.js.view.Edit',
 	tabModel: 'Modules.template.js.model.Template',
 	addFormClass: 'Modules.template.js.form.Template',
 	

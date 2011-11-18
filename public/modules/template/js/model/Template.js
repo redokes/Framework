@@ -26,6 +26,12 @@ Ext.define('Modules.template.js.model.Template', {
 	},{
 		name: 'thumb',
 		type: 'string'
+	},{
+		name: 'url',
+		type: 'string'
+	},{
+		name: 'absoluteUrl',
+		type: 'string'
 	}],
 
 	//Proxy

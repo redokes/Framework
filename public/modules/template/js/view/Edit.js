@@ -1,77 +1,33 @@
-Ext.define('Modules.template.js.Interface', {
-	extend: 'Redokes.tab.Interface',
-	
-	height: 400,
-	width: 600,
-	
-	tabTitleTemplate: '{title}',
-	tabIconCls: 'contact-icon-16',
-	tabClass: 'Modules.template.js.form.Template',
-	tabModel: 'Modules.template.js.model.Template',
-	addFormClass: 'Modules.template.js.form.Template',
+Ext.define('Modules.template.js.view.Edit', {
+	extend: 'Ext.tab.Panel',
+	record: null,
 	
 	initComponent: function() {
 		this.items = this.items || [];
-		this.dockedItems = this.dockedItems || [];
 		this.init();
 		this.callParent(arguments);
 	},
 	
 	init: function() {
-		this.initTemplateView();
-		this.initListeners();
+		this.initForm();
+		this.initPreview();
 	},
 	
-	initTemplateView: function() {
-		this.templateView = Ext.create('Modules.template.js.ViewPanel', {
-			title: 'Templates'
+	initForm: function() {
+		this.form = Ext.create('Modules.template.js.form.Template', {
+			record: this.record,
+			title: 'Settings'
 		});
-		this.items.push(this.templateView);
+		this.items.push(this.form);
 	},
 	
-	initListeners: function() {
-		this.templateView.dataView.on('itemdblclick', function(view, record, item, index) {
-			this.setActiveTab(this.createTab(record));
-		}, this);
-		
-		this.templateView.on('edit', function(view, records) {
-			var numRecords = records.length;
-			for (var i = 0; i < numRecords; i++) {
-				this.createTab(records[i]);
-			}
-		}, this);
-		
-		this.templateView.on('delete', function(view, records) {
-			var numRecords = records.length;
-			var ids = [];
-			for (var i = 0; i < numRecords; i++) {
-				ids.push(records[i].data.templateId);
-			}
-			Ext.Ajax.request({
-				scope: this,
-				method: 'delete',
-				url: '/template/rest/delete',
-				params: {
-					ids: Ext.encode(ids)
-				},
-				success: function(r) {
-					var response = Ext.decode(r.responseText);
-					this.reloadStore();
-				}
-			});
-		}, this);
-		
-		this.on('add', function() {
-			this.reloadStore();
-		}, this);
-		
-		this.on('edit', function() {
-			this.reloadStore();
-		}, this);
-	},
-	
-	reloadStore: function() {
-		this.templateView.dataView.store.load();
+	initPreview: function() {
+		this.preview = Ext.create('Modules.template.js.view.Preview', {
+			title: 'Preview',
+			url: this.record.data.url,
+			record: this.record
+		});
+		this.items.push(this.preview);
 	}
 	
 });
