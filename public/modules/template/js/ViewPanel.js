@@ -24,10 +24,12 @@ Ext.define('Modules.template.js.ViewPanel', {
 		this.dockedItems.push(this.topBar);
 		
 		this.topBar.add({
+			text: 'Edit',
 			iconCls: 'edit',
 			scope: this,
 			handler: this.editSelected
 		},'-',{
+			text: 'Delete',
 			iconCls: 'close',
 			scope: this,
 			handler: this.deleteSelected

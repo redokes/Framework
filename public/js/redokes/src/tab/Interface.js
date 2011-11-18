@@ -69,6 +69,7 @@ Ext.define('Redokes.tab.Interface', {
 	
 	constructor: function(){
 		this.openTabs = {};
+		this.addEvents('add', 'update');
 		this.callParent(arguments);
 	},
 	
@@ -136,6 +137,7 @@ Ext.define('Redokes.tab.Interface', {
 			if (result.record) {
 				var tab = this.createTab(Ext.create(this.tabModel, result.record));
 				tab.show();
+				this.fireEvent('add');
 			}
 			this.initAddForm();
 		}, this);
@@ -192,6 +194,10 @@ Ext.define('Redokes.tab.Interface', {
 			
 			//Create the panel but dont add it
 			panel.updateTab = this.createUpdateTab(options.record, options.config);
+			
+			panel.updateTab.on('success', function() {
+				this.fireEvent('update');
+			}, this);
 			
 			Ext.defer(function(){
 				//Stop the loading

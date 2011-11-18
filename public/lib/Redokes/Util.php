@@ -1,6 +1,6 @@
 <?php
 class Redokes_Util {
-	public static function safeTitle($str) {
+	public static function getSlug($str) {
 		$str = preg_replace('/[^0-9a-z\-]+/si', '-', trim($str));
 		$str = preg_replace('/\-+/', '-', $str);
 		$str = preg_replace('/^\-/', '', $str);

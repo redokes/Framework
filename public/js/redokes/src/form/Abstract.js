@@ -122,7 +122,7 @@ Ext.define('Redokes.form.Abstract', {
 		}, this);
 		
 		// Init plugins
-		this.initStatusBar();
+//		this.initStatusBar();
 		
 		//Call the parent function
 		this.callParent(arguments);

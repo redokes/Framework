@@ -104,15 +104,15 @@ Ext.define('Redokes.form.plugin.StatusBar', {
 					}, this);
 				}, this);
 			}
-
+			
+			if(this.dockTo){
+				this.dockTo.addDocked(this.statusBar);
+			}
+			else{
+				this.panel.addDocked(this.statusBar);
+			}
 		}, this);
 		
-		if(this.dockTo){
-			this.dockTo.addDocked(this.statusBar);
-		}
-		else{
-			this.panel.addDocked(this.statusBar);
-		}
 	},
 	
 	setStatus: function(config){

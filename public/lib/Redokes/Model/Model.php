@@ -256,9 +256,9 @@ class Redokes_Model_Model {
 		}
 	}
 	
-	public function generateSafeTitle() {
+	public function generateSlug() {
 		try {
-			$this->row->safeTitle = Redokes_Util::safeTitle($this->row->title);
+			$this->row->slug = Redokes_Util::getSlug($this->row->title);
 		}
 		catch (Exception $e) {
 			
@@ -273,7 +273,7 @@ class Redokes_Model_Model {
 			$this->validate();
 		}
 		if ($this->isValidated()) {
-			$this->generateSafeTitle();
+			$this->generateSlug();
 			
 			if ($this->row->$field) {
 				$this->beforeUpdate();
