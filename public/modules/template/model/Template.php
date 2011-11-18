@@ -50,7 +50,9 @@ class Template_Model_Template extends Redokes_Model_Model {
 	public function processTemplateFile($path, $originalName = false) {
 		if (is_file($path)) {
 			$contents = file_get_contents($path);
+			$originalFile = $this->getPrivateDir() . '.index.html';
 			$indexFile = $this->getPrivateDir() . 'index.html';
+			file_put_contents($originalFile, $contents);
 			file_put_contents($indexFile, $contents);
 		}
 	}

@@ -142,6 +142,9 @@ class Redokes_Model_Model {
 		if ($row) {
 			$this->row = $row;
 		}
+		else {
+			$this->row = $this->table->createRow();
+		}
 		
 	}
 
