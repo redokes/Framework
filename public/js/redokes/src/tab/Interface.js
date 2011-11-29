@@ -137,7 +137,7 @@ Ext.define('Redokes.tab.Interface', {
 			if (result.record) {
 				var tab = this.createTab(Ext.create(this.tabModel, result.record));
 				tab.show();
-				this.fireEvent('add');
+				this.fireEvent('add', form, response);
 			}
 			this.initAddForm();
 		}, this);
@@ -181,8 +181,10 @@ Ext.define('Redokes.tab.Interface', {
 		}
 		
 		//Create a container to hold the contact
-		var tab = Ext.create('Ext.container.Container', {
-			closable:true,
+		var tab = Ext.create('Ext.panel.Panel', {
+			closable: true,
+			border: false,
+			frame: false,
 			iconCls: this.tabIconCls,
 			title: new Ext.XTemplate(this.tabTitleTemplate).apply(record.data),
 			layout:'fit'
@@ -194,9 +196,8 @@ Ext.define('Redokes.tab.Interface', {
 			
 			//Create the panel but dont add it
 			panel.updateTab = this.createUpdateTab(options.record, options.config);
-			
-			panel.updateTab.on('success', function() {
-				this.fireEvent('update');
+			panel.updateTab.on('success', function(form, action) {
+				this.fireEvent('update', form, action);
 			}, this);
 			
 			Ext.defer(function(){

@@ -44,11 +44,15 @@ class Template_TemplateController extends Redokes_Controller_Ajax {
 			$template->processTemplateFile($_FILES['file']['tmp_name'], $_FILES['file']['name']);
 		}
 		
+		$template->createThumb();
+		
 		if ($template->anyErrors()) {
 			$this->addError($template->errors);
 		}
 		else {
-			$this->setParam('record', $template->row->toArray());
+			$record = $template->row->toArray();
+			$record['thumb'] = $template->getPublicDir() . 'thumb.png?ts=' . time();
+			$this->setParam('record', $record);
 		}
 	}
 	

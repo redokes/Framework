@@ -1,8 +1,8 @@
 Ext.define('Modules.template.js.Interface', {
 	extend: 'Redokes.tab.Interface',
 	
-	height: 700,
-	width: 1000,
+	height: 400,
+	width: 800,
 	
 	tabTitleTemplate: '{title}',
 	tabIconCls: 'contact-icon-16',
@@ -66,6 +66,10 @@ Ext.define('Modules.template.js.Interface', {
 		}, this);
 		
 		this.on('edit', function() {
+			this.reloadStore();
+		}, this);
+		
+		this.on('update', function(form, action) {
 			this.reloadStore();
 		}, this);
 	},

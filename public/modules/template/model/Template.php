@@ -45,12 +45,6 @@ class Template_Model_Template extends Redokes_Model_Model {
 		}
 	}
 	
-	public function save($doAudit = false) {
-		parent::save($doAudit);
-		
-		$this->createThumb();
-	}
-	
 	public function processTemplateFile($path, $originalName = false) {
 		if (is_file($path)) {
 			$contents = file_get_contents($path);
@@ -152,9 +146,14 @@ class Template_Model_Template extends Redokes_Model_Model {
 	public function createThumb() {
 		$thumbFile = $this->getPrivateDir() . 'thumb.png';
 		if (is_writable($this->getPrivateDir())) {
+			$rasterizeFile = MODULE_PATH . 'template/js/rasterize.js';
+			$command = "/opt/local/bin/phantomjs \"$rasterizeFile\" \"{$this->getAbsoluteUrl()}\" \"$thumbFile\" 2>&1";
+			
 //			error_log('Writing');
-//			error_log("phantomjs /sites/rasterize.js {$this->getAbsoluteUrl()} $thumbFile");
-//			exec("phantomjs /sites/rasterize.js {$this->getAbsoluteUrl()} $thumbFile");
+			error_log($command);
+			exec($command, $output, $return);
+			error_log(print_r($output, 1));
+			error_log(print_r($return, 1));
 		}
 		else {
 			error_log('Directory not writable: ' . $this->getPrivateDir());

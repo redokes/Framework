@@ -9,8 +9,11 @@ Ext.define('Modules.template.js.view.Edit', {
 	},
 	
 	init: function() {
+		this.addEvents('success');
+		
 		this.initForm();
 		this.initPreview();
+		this.initListeners();
 	},
 	
 	initForm: function() {
@@ -28,6 +31,19 @@ Ext.define('Modules.template.js.view.Edit', {
 			record: this.record
 		});
 		this.items.push(this.preview);
+	},
+	
+	initListeners: function() {
+		this.form.on('success', function(form, action) {
+			
+			var response = action.result;
+			var record = response.record;
+			this.ownerCt.setTitle(record.title);
+			console.log(record.thumb);
+			this.form.thumb.setSrc(record.thumb);
+			
+			this.fireEvent('success', form, action);
+		}, this);
 	}
 	
 });

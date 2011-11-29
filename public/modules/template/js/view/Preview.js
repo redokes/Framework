@@ -19,6 +19,7 @@ Ext.define('Modules.template.js.view.Preview', {
 		this.callParent(arguments);
 		this.initToolbar();
 		this.initListeners();
+		window.preview = this;
 	},
 	
 	initToolbar: function() {
@@ -41,6 +42,10 @@ Ext.define('Modules.template.js.view.Preview', {
 		this.on('load', function() {
 			this.mercuryWindow = this.iframe.dom.contentWindow;
 			this.mercury = this.mercuryWindow.Mercury;
+			if (this.mercury == null) {
+				console.log('mercury is null');
+//				location.reload();
+			}
 			this.mercuryInstance = this.mercuryWindow.mercuryInstance;
 			this.mercuryInstance.saveUrl = this.processingPage + 'update-content';
 			
@@ -51,9 +56,7 @@ Ext.define('Modules.template.js.view.Preview', {
 	registerTemplateIframe: function() {
 		this.templateIframe = Ext.get(this.mercuryWindow.document.getElementsByTagName('iframe')[0]);
 		this.templateWindow = this.mercuryWindow.document.getElementsByTagName('iframe')[0].contentWindow;
-		this.templateIframe.on('load', function() {
-			this.initRealListeners();
-		}, this);
+		this.initRealListeners();
 	},
 	
 	getIframeEl: function(id) {
@@ -65,10 +68,12 @@ Ext.define('Modules.template.js.view.Preview', {
 	},
 	
 	initRealListeners: function() {
+		if (Ext.get(this.templateWindow.document.body) == null) {
+			this.templateIframe.on('load', this.initRealListeners, this);
+			return;
+		}
 		Ext.get(this.templateWindow.document.body).on('click', this.itemClick, this);
 		window.wes = this.templateWindow;
-		console.log(this.templateWindow.Mercury);
-		console.log(this.templateWindow.document.Mercury);
 	},
 	
 	itemClick: function(e, el) {
@@ -84,7 +89,7 @@ Ext.define('Modules.template.js.view.Preview', {
 			if (!Ext.get(el).hasCls('mercury-region')) {
 				this.selectedId = el.id;
 				this.makeEditableButton.setText('Make Editable - ' + this.selectedId);
-				this.getIframeEl(el.id).highlight();
+				this.getIframeEl(el.id).frame();
 			}
 		}
 	},
@@ -101,7 +106,6 @@ Ext.define('Modules.template.js.view.Preview', {
 			success: function(r) {
 				var response = Ext.decode(r.responseText);
 //				this.loadUrl(this.iframe.dom.src);
-//				
 //				return;
 				if (response.domId) {
 					var el = this.getIframeEl(response.domId);
@@ -109,7 +113,8 @@ Ext.define('Modules.template.js.view.Preview', {
 					el.set({
 						'data-type': 'editable'
 					});
-					this.mercuryInstance.trigger('reinitialize');
+//					this.mercuryInstance.trigger('reinitialize');
+					this.mercuryInstance.initializeInterface();
 					
 				}
 			}
