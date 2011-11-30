@@ -39,7 +39,6 @@ Ext.define('Modules.template.js.view.Edit', {
 			var response = action.result;
 			var record = response.record;
 			this.ownerCt.setTitle(record.title);
-			console.log(record.thumb);
 			this.form.thumb.setSrc(record.thumb);
 			
 			this.fireEvent('success', form, action);

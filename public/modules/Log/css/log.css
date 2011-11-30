@@ -1,0 +1,51 @@
+.log-item {
+}
+
+.log-header{
+	position: relative;
+	padding: 5px 5px 5px 30px;
+	background-color: #ddd;
+	border-bottom: 1px solid #B0B0B0;
+	cursor: pointer;
+}
+
+.log-icon{
+	position: absolute;
+	top: 5px;
+	left: 7px;
+	width: 16px;
+	height: 16px;
+	background-image: url(/resources/icons/info-16.png);
+}
+
+.log-item.error .log-icon{
+	background-image: url(/resources/icons/error-16.png);
+}
+
+.log-item.request .log-icon{
+	background-image: url(/resources/icons/server-16.png);
+}
+
+.log-body{
+	padding: 10px;
+	border: 1px solid #B0B0B0;
+	border-top: 0px;
+}
+
+.log-module {
+	font-weight: bold;
+}
+
+.log-title {
+}
+
+.log-date {
+	float: right;
+}
+
+.log-body {
+}
+
+.log-over {
+	
+}

@@ -15,6 +15,9 @@ define('CACHE_PATH', ROOT_PATH . 'cache/');
 //Set the include path
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARY_PATH);
 
+// include krumo here for now
+include LIBRARY_PATH . 'Krumo/class.krumo.php';
+
 function __autoload($name) {
 	$parts = explode('_', $name);
 	$num = count($parts) - 1;
