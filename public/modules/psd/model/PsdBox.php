@@ -5,7 +5,7 @@
  *
  * @author wes
  */
-class Psd_Class_PsdBox {
+class Psd_Model_Box {
 	public $layers = array();
     public $numLayers = 0;
 	public $parentLayer;

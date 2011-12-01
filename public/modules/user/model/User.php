@@ -100,19 +100,6 @@ class User_Model_User extends Redokes_Model_Model {
 		
 		parent::validate();
 		return $this->errors;
-		
-		// don't let a non papercut user edit a papercut user
-//		if ($this->row->userId) {
-//
-//			// check if edited user has papercut access
-//			if (User_Class_User::hasAccess('papercut', 0, $this->row->userId)) {
-//
-//				// check if the user doing the editing has papercut access
-//				if (!User_Class_User::hasAccess('papercut')) {
-//					$this->addError('You do not have access to edit a Papercut user account');
-//				}
-//			}
-//		}
 
 		// make sure email is unique
 		$query = "SELECT COUNT(*) total FROM user WHERE email = '{$this->row->email}' AND userId <> '{$this->row->userId}'";
@@ -293,7 +280,7 @@ class User_Model_User extends Redokes_Model_Model {
 
 	public static function notAuthorized() {
 		return;
-		redirect_to('/simon/index/unauthorized');
+		redirect_to('/index/unauthorized');
 	}
 
 	public static function requireAccess($title, $primaryKey = 0) {
@@ -353,7 +340,7 @@ class User_Model_User extends Redokes_Model_Model {
 	public function sendSignupEmail($hash) {
 		return;
 		// send the email
-		$email = new Papercut_Email();
+		$email = new Redokes_Email();
 		$subject = 'Echo Bear site registration request';
 		$siteUrl = 'http://' . $_SERVER['HTTP_HOST'];
 		$inviteUrl = 'http://' . $_SERVER['HTTP_HOST'] . '/user/index/confirm/' . $hash;

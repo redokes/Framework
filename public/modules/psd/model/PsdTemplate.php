@@ -1,14 +1,6 @@
 <?php
-class Psd_Class_PsdTemplate extends Papercut_Module {
-	public $table = 'psd_templates';
-	public $primaryKey = 'psdId';
-	public $row = array(
-		'psdId' => 0,
-		'hash' => '',
-		'title' => '',
-		'templateStyle' => 0,
-		'fileName' => ''
-	);
+class Psd_Model_Template extends Redokes_Model_Model {
+	public $tableClassName = 'Psd_Model_Db_Template';
 
 	public $requiredStringFields = array(
 		'title' => 'Title'
@@ -67,7 +59,7 @@ class Psd_Class_PsdTemplate extends Papercut_Module {
 	}
 
 	public function processFile() {
-		$importer = new Psd_Class_PsdImporter($this);
+		$importer = new Psd_Model_Importer($this);
 		$importer->toHtml();
 		FileSystem::writeResourceFile($this->getPrivatePath() . 'index.html', $importer->getHtml(), false);
 	}
@@ -91,7 +83,7 @@ class Psd_Class_PsdTemplate extends Papercut_Module {
 		if (isset($_FILES['file']) && $_FILES['file']['size']) {
 			$file = $_FILES['file'];
 			$extension = ext($file['name']);
-			if (in_array($extension, Psd_Class_PsdTemplate::$allowedExtensions)) {
+			if (in_array($extension, Psd_Model_Template::$allowedExtensions)) {
 				$this->hasPostFile = true;
 			}
 			else {
@@ -119,7 +111,7 @@ class Psd_Class_PsdTemplate extends Papercut_Module {
 			$dirsToZip[] = $this->getPrivatePath() . 'includes';
 
 			// need to zip the resource folders
-			$zip = new Papercut_Zip();
+			$zip = new Redokes_Zip();
 			$zipFileName = file_name($this->row['fileName']) . '.zip';
 			$zipFile = $this->getPrivatePath() . $zipFileName;
 			if (is_file($zipFile)) {

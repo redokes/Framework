@@ -4,7 +4,7 @@
  *
  * @author wes
  */
-class Psd_Class_PsdBoxManager {
+class Psd_Model_BoxManager {
     public static $boxCount = 0;
 	
 	public $parentLayer;

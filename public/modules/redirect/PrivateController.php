@@ -1,5 +1,5 @@
 <?php
-class Redirect_PrivateController extends Papercut_AjaxController {
+class Redirect_PrivateController extends Redokes_Controller_Ajax {
 	
 	public function init() {
 		if (!User_Class_User::hasAccess('redirect')) {
@@ -35,7 +35,7 @@ class Redirect_PrivateController extends Papercut_AjaxController {
 	}
 	
 	public function gridAction() {
-		$grid = new Papercut_Query();
+		$grid = new Redokes_Query();
 		$gridResult = $grid->getRecords();
 		
 		foreach ($gridResult as $param => $value){

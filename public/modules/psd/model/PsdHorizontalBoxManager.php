@@ -4,11 +4,11 @@
  *
  * @author wes
  */
-class Psd_Class_PsdHorizontalBoxManager extends Psd_Class_PsdBoxManager {
+class Psd_Model_HorizontalBoxManager extends Psd_Model_BoxManager {
 
 	public function process($layers) {
 		// sort by y value
-		usort($layers, 'Psd_Class_PsdImporter::sortByX');
+		usort($layers, 'Psd_Model_Importer::sortByX');
 		
 		// loop over each layer item
 		$numLayers = count($layers);
@@ -36,7 +36,7 @@ class Psd_Class_PsdHorizontalBoxManager extends Psd_Class_PsdBoxManager {
 			// if we didn't find a box
 			if ($foundBox === false) {
 				// make a new box and add the current layer to it
-				$box = new Psd_Class_PsdBox();
+				$box = new Psd_Model_Box();
 				$box->addLayers($layer);
 				$this->addBoxes($box);
 			}
@@ -89,7 +89,7 @@ class Psd_Class_PsdHorizontalBoxManager extends Psd_Class_PsdBoxManager {
 		// make html for each box
 		$html = '';
 		for ($i = 0; $i < $this->numBoxes; $i++) {
-			$this->boxes[$i]->domId = 'psd-box-'.Psd_Class_PsdBoxManager::$boxCount++;
+			$this->boxes[$i]->domId = 'psd-box-'.Psd_Model_BoxManager::$boxCount++;
 			$html .= '<div id="'.$this->boxes[$i]->domId.'" class="psdBoxWrap horizontalBoxWrap" _x="'.$this->boxes[$i]->x.'" _y="'.$this->boxes[$i]->y.'"></div>';
 		}
 
@@ -130,7 +130,7 @@ class Psd_Class_PsdHorizontalBoxManager extends Psd_Class_PsdBoxManager {
 				$newStyles['margin-left'] = ($this->boxes[$i]->x - $this->boxes[$i-1]->x2) . 'px';
 			}
 
-			Psd_Class_PsdImporter::setStyles($box->getElement(), $newStyles);
+			Psd_Model_Importer::setStyles($box->getElement(), $newStyles);
 		}
 		$this->importer->rebuildDom();
 	}
@@ -147,10 +147,10 @@ class Psd_Class_PsdHorizontalBoxManager extends Psd_Class_PsdBoxManager {
 				// create a layout manager for this box's items
 				$boxManager = false;
 				if ($box->layersOverlap()) {
-					$boxManager = new Psd_Class_PsdAbsoluteBoxManager($box);
+					$boxManager = new Psd_Model_AbsoluteBoxManager($box);
 				}
 				else {
-					$boxManager = new Psd_Class_PsdVerticalBoxManager($box);
+					$boxManager = new Psd_Model_VerticalBoxManager($box);
 				}
 				$boxManager->manage();
 			}
@@ -176,7 +176,7 @@ class Psd_Class_PsdHorizontalBoxManager extends Psd_Class_PsdBoxManager {
 					$layer->getElement()->innertext = '<img src="'.$layer->publicPath.'" />';
 				}
 
-				Psd_Class_PsdImporter::setStyles($layer->getElement(), $newStyles);
+				Psd_Model_Importer::setStyles($layer->getElement(), $newStyles);
 
 				$childrenToBuild[] = $layer;
 			}

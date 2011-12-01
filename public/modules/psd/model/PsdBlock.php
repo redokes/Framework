@@ -5,7 +5,7 @@
  *
  * @author wes
  */
-class Psd_Class_PsdBlock {
+class Psd_Model_Block {
     public $parentLayer;
 	public $layers = array();
     public $numLayers = 0;

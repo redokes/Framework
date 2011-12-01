@@ -1,6 +1,6 @@
 <?php
 
-class Psd_Class_PsdLayer {
+class Psd_Model_Layer {
 	public $label;
 	public $x;
 	public $x2;
@@ -74,7 +74,7 @@ class Psd_Class_PsdLayer {
 			$style = array(
 				'background' => "#{$this->bgColor} url('{$this->publicPath}')"
 			);
-			Psd_Class_PsdImporter::setStyles($this->getElement(), $style);
+			Psd_Model_Importer::setStyles($this->getElement(), $style);
 
 			$this->buildChildrenHtml();
 		}
@@ -98,7 +98,7 @@ class Psd_Class_PsdLayer {
 			}
 
 			// apply the styles to the div
-			Psd_Class_PsdImporter::setStyles($this->getElement(), $newStyles);
+			Psd_Model_Importer::setStyles($this->getElement(), $newStyles);
 
 			// update the parent html
 			$this->parentLayer->getElement()->innertext .= $this->getElement()->outertext;
@@ -115,7 +115,7 @@ class Psd_Class_PsdLayer {
 
 	public function buildChildrenHtml() {
 		if (count($this->layers)) {
-			$boxManager = new Psd_Class_PsdVerticalBoxManager($this);
+			$boxManager = new Psd_Model_VerticalBoxManager($this);
 			if (true || $boxManager->needsBoxLayout()) {
 				$boxManager->manage();
 			}
@@ -146,7 +146,7 @@ class Psd_Class_PsdLayer {
 		}
 
 		// apply the styles to the div
-		Psd_Class_PsdImporter::setStyles($this->getElement(), $newStyles);
+		Psd_Model_Importer::setStyles($this->getElement(), $newStyles);
 
 		$this->buildChildrenHtml();
 	}

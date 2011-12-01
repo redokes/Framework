@@ -1,5 +1,5 @@
 <?php
-class Psd_ViewController extends Papercut_Controller {
+class Psd_ViewController extends Redokes_Controller_Action {
 
 	public function indexAction() {
 		echo "index action of psd";

@@ -1,20 +1,9 @@
 <?php
 
-class Psd_PrivateController extends Papercut_AjaxController {
-
-	public function init() {
-		if (!User_Class_User::hasAccess('psd')) {
-			$this->cancelRequest();
-		}
-	}
+class Psd_PrivateController extends Redokes_Controller_Ajax {
 
 	public function gridAction() {
-		$grid = new Papercut_Query();
-		$gridResult = $grid->getRecords();
-
-		foreach ($gridResult as $param => $value) {
-			$this->setParam($param, $value);
-		}
+		
 	}
 
 	public function testAction() {

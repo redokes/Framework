@@ -236,9 +236,10 @@ class Redokes_Model_Model {
 	}
 
 	public function query($request = array()) {
+		return;
 		$request['table'] = $this->table;
 		$request['primaryKey'] = $this->primaryKey;
-		$query = new Papercut_Query($request);
+		$query = new Redokes_Query($request);
 		return $query->getRecords();
 	}
 

@@ -1,5 +1,5 @@
 <?php
-class Psd_Class_PsdImporter {
+class Psd_Model_Importer {
 	public $file;
 	public $im;
 	public $saveDir;
@@ -77,7 +77,7 @@ class Psd_Class_PsdImporter {
 			$properties['filePublicPath'] = $filePublicPath;
 			
 			$this->im->writeImage($filePrivatePath);
-			$layer = new Psd_Class_PsdLayer($properties);
+			$layer = new Psd_Model_Layer($properties);
 
 			// set the layer index as the count before adding to the layer array
 			$layer->importer = $this;
@@ -144,7 +144,7 @@ class Psd_Class_PsdImporter {
 	private function findBoundaries() {
 		// find left boundary by getting the first item not at 0
 		$sortedLayers = $this->layers;
-		usort($sortedLayers, 'Psd_Class_PsdImporter::sortByX');
+		usort($sortedLayers, 'Psd_Model_Importer::sortByX');
 		$leftBoundary = 0;
 		for ($i = 0; $i < count($sortedLayers); $i++) {
 			if ($sortedLayers[$i]->x) {
@@ -154,7 +154,7 @@ class Psd_Class_PsdImporter {
 		}
 
 		// find right boundary by getting the first item less than full width
-		usort($sortedLayers, 'Psd_Class_PsdImporter::sortByX2');
+		usort($sortedLayers, 'Psd_Model_Importer::sortByX2');
 		$rightBoundary = 0;
 		for ($i = count($sortedLayers)-1; $i >= 0; $i--) {
 			if ($sortedLayers[$i]->x2 < $this->layers[0]->width) {

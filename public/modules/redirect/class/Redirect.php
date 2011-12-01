@@ -1,5 +1,5 @@
 <?php
-class Redirect_Class_Redirect extends Papercut_Module {
+class Redirect_Class_Redirect extends Redokes_Model_Model {
 	public $table = 'redirect';
 	public $accessName = 'Redirect';
 	public $primaryKey = 'redirectId';

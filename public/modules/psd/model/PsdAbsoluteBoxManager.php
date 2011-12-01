@@ -4,11 +4,11 @@
  *
  * @author wes
  */
-class Psd_Class_PsdAbsoluteBoxManager extends Psd_Class_PsdBoxManager {
+class Psd_Model_AbsoluteBoxManager extends Psd_Model_BoxManager {
 
 	public function process($layers) {
 		// sort by original layer index
-		usort($layers, 'Psd_Class_PsdImporter::sortByLayerIndex');
+		usort($layers, 'Psd_Model_Importer::sortByLayerIndex');
 		
 		// loop over each layer item
 		$numLayers = count($layers);
@@ -20,7 +20,7 @@ class Psd_Class_PsdAbsoluteBoxManager extends Psd_Class_PsdBoxManager {
 				$this->boxes[0]->addLayers($layer);
 			}
 			else {
-				$box = new Psd_Class_PsdBox();
+				$box = new Psd_Model_Box();
 				$box->addLayers($layer);
 				$this->addBoxes($box);
 			}
@@ -50,7 +50,7 @@ class Psd_Class_PsdAbsoluteBoxManager extends Psd_Class_PsdBoxManager {
 		// make html for each box
 		$html = '';
 		for ($i = 0; $i < $this->numBoxes; $i++) {
-			$this->boxes[$i]->domId = 'psd-box-'.Psd_Class_PsdBoxManager::$boxCount++;
+			$this->boxes[$i]->domId = 'psd-box-'.Psd_Model_BoxManager::$boxCount++;
 			$html .= '<div id="'.$this->boxes[$i]->domId.'" class="psdBoxWrap absoluteBoxWrap" _x="'.$this->boxes[$i]->x.'" _y="'.$this->boxes[$i]->y.'"></div>';
 		}
 
@@ -85,7 +85,7 @@ class Psd_Class_PsdAbsoluteBoxManager extends Psd_Class_PsdBoxManager {
 				'width' => $box->width . 'px',
 				'position' => 'relative'
 			);
-			Psd_Class_PsdImporter::setStyles($box->getElement(), $newStyles);
+			Psd_Model_Importer::setStyles($box->getElement(), $newStyles);
 		}
 		$this->importer->rebuildDom();
 	}
@@ -119,7 +119,7 @@ class Psd_Class_PsdAbsoluteBoxManager extends Psd_Class_PsdBoxManager {
 					$layer->getElement()->innertext = '<img src="'.$layer->publicPath.'" />';
 				}
 
-				Psd_Class_PsdImporter::setStyles($layer->getElement(), $newStyles);
+				Psd_Model_Importer::setStyles($layer->getElement(), $newStyles);
 
 				$childrenToBuild[] = $layer;
 			}
