@@ -3,10 +3,11 @@ Ext.define('Modules.scrape.js.Form', {
 	
 	//Config
 	processingPage: '/scrape/process/',
-	url: '/scrape/process/',
+	url: '/scrape/process/process',
 	processAction: 'process',
 	loadRowAction: 'load-row',
 	showFailureMessage: false,
+	record: false,
 	
 	initComponent: function() {
 		this.items = this.items || [];
@@ -19,6 +20,7 @@ Ext.define('Modules.scrape.js.Form', {
 		this.initDepth();
 		this.initHidden();
 		this.initButtons();
+		this.initListeners();
 	},
 	
 	initUrl: function(){
@@ -74,5 +76,13 @@ Ext.define('Modules.scrape.js.Form', {
 				this.submit();
 			}
 		}];
+	},
+	
+	initListeners: function() {
+		this.on('afterrender', function() {
+			if (this.record !== null) {
+				this.loadRecord(this.record);
+			}
+		}, this);
 	}
 });

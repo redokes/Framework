@@ -14,7 +14,7 @@ class Template_ViewController extends Redokes_Controller_Action {
 	}
 	
 	public function _catch(){
-		$hash = intval($this->frontController->action);
+		$hash = $this->frontController->action;
 		$template = new Template_Model_Template();
 		$template->loadRow($hash, 'hash');
 		if ($template->row->templateId) {

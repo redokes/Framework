@@ -3,8 +3,8 @@
 class Scrape_IndexController extends Redokes_Controller_Action {
 	
 	public function indexAction() {
-		$log = new Log_Entry('Scrape Test', array('one' => 'two'), 'info', 'Scrape');
-		$log->log();
+//		$log = new Log_Entry('Scrape Test', array('one' => 'two'), 'info', 'Scrape');
+//		$log->log();
 		
 		$this->getView()
 			->setValues(array(

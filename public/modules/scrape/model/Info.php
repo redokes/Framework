@@ -1,24 +1,18 @@
 <?php
 class Scrape_Model_Info extends Redokes_Model_Model {
-	public $table = 'scrape_info';
-	public $primaryKey = 'scrapeId';
-	public $row = array(
-		'scrapeId' => 0,
-		'pageTitle' => '',
-		'url' => '',
-		'complete' => 0,
-		'depth' => 0,
-		'currentStep' => 0
-	);
+	public $tableClassName = 'Scrape_Model_Db_Info';
 	public $urlInfo = array();
+	public $requiredStringFields = array(
+		'url' => 'URL'
+	);
 	
 	public function __construct($id = false) {
 		parent::__construct($id);
-		$this->urlInfo = parse_url($this->row['url']);
+		$this->urlInfo = parse_url($this->row->url);
 	}
 	
-	public function insert($doAudit = true) {
-		$urlInfo = parse_url($this->row['url']);
+	public function beforeInsert() {
+		$urlInfo = parse_url($this->row->url);
 		$path = '/';
 		if (isset($urlInfo['path'])) {
 			$path = $urlInfo['path'];
@@ -28,9 +22,10 @@ class Scrape_Model_Info extends Redokes_Model_Model {
 		
 		$siteUrl = $scheme . '://' . $host;
 		$pageUrl = $siteUrl . $path;
-		$this->row['url'] = $pageUrl;
-		
-		parent::insert($doAudit);
+		$this->row->url = $pageUrl;
+	}
+	
+	public function afterInsert() {
 		$this->makeDirectories();
 	}
 	
@@ -38,25 +33,31 @@ class Scrape_Model_Info extends Redokes_Model_Model {
 		if (!is_dir($this->getPrivateScrapeDir())) {
 			mkdir($this->getPrivateScrapeDir());
 		}
-		$scrapeDir = $this->getPrivateScrapeDir() . 'scrape-' . $this->row['scrapeId'] . '/';
+		$scrapeDir = $this->getPrivateDir();
 		if (!is_dir($scrapeDir)) {
 			mkdir($scrapeDir);
+			chmod($scrapeDir, 0777);
 		}
 	}
 	
+	public function getPublicScrapeDir() {
+		return '/modules/scrape/scrapes/';
+	}
+	
 	public function getPrivateScrapeDir() {
-		return RESOURCE_PATH . 'scrape/';
-	}
-	
-	public function getPageUrl() {
-		return '/resources/scrape/scrape-' . $this->row['scrapeId'] . '/';
-	}
-	
-	public function getPublicDir() {
-		return '/resources/scrape/scrape-' . $this->row['scrapeId'] . '/';
+		return MODULE_PATH . 'scrape/scrapes/';
 	}
 	
 	public function getPrivateDir() {
-		return RESOURCE_PATH . 'scrape/scrape-' . $this->row['scrapeId'] . '/';
+		return MODULE_PATH . 'scrape/scrapes/' . $this->row->hash . '/';
 	}
+	
+	public function getPublicDir() {
+		return '/modules/scrape/scrapes/' . $this->row->hash . '/';
+	}
+	
+	public function getPageUrl() {
+		return '/modules/scrape/scrapes/' . $this->row->hash . '/index.html';
+	}
+	
 }

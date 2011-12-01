@@ -1,17 +1,21 @@
 <?php
-class Simon_Scrape_ProcessController extends Papercut_AjaxController {
+class Scrape_ProcessController extends Redokes_Controller_Ajax {
 	
 	public function processAction() {
-		$scrape = new Scrape_Model_Info(getParam('scrapeId', 0));
-		$scrape->loadPost();
-		$this->addError($scrape->validate(true));
+		// Load record if it exists
+		$scrapeId = $this->frontController->getParam('scrapeId', 0);
+		$scrape = new Scrape_Model_Info($scrapeId);
 		
-		if (!$this->anyErrors()) {
-			$scrape->process();
-			
-			$this->setParam('record', $scrape->row);
-			$message = 'Info has been saved';
-			$this->addMessage($message);
+		// Set new row data and save
+		$scrape->setRow($_POST);
+		$scrape->save();
+		
+		if ($scrape->anyErrors()) {
+			$this->addError($scrape->errors);
+		}
+		else {
+			$record = $scrape->row->toArray();
+			$this->setParam('record', $record);
 		}
 	}
 	
@@ -20,19 +24,35 @@ class Simon_Scrape_ProcessController extends Papercut_AjaxController {
 		$titles = array();
 		for ($i = 0; $i < count($selectedIds); $i++) {
 			$scrape = new Scrape_Model_Info($selectedIds[$i]);
-			$titles[] = $scrape->row['pageTitle'];
+			$titles[] = $scrape->row['title'];
 			$scrape->delete();
 		}
 		$this->addMessage(implode(', ', $titles) . ' <strong>deleted</strong>');
 	}
 	
-	public function gridAction() {
-		$grid = new Papercut_Query();
-		$gridResult = $grid->getRecords();
+	public function getGridRecordsAction() {
+		$scrape = new Scrape_Model_Info();
+		$select = $scrape->table->select()->order('scrapeId');
+		$rows = $scrape->table->fetchAll($select);
+		$records = $rows->toArray();
+		$numRecords = count($records);
 		
-		foreach ($gridResult as $param => $value){
-			$this->setParam($param, $value);
-		}
+		// Loop through each record and set a fake thumb
+//		$privateTemplatesDir = $template->getPrivateTemplatesDir();
+//		$publicTemplatesDir = $template->getPublicTemplatesDir();
+//		for ($i = 0; $i < $numRecords; $i++) {
+//			$localThumb = $privateTemplatesDir . $records[$i]['hash'] . '/thumb.png';
+//			$publicThumb = $publicTemplatesDir . $records[$i]['hash'] . '/thumb.png';
+//			if (!is_file($localThumb)) {
+//				// TODO: use default image
+//				$publicThumb = '/google.png';
+//			}
+//			$records[$i]['thumb'] = $publicThumb;
+//			$records[$i]['url'] = '/template/view/' . $records[$i]['hash'];
+//		}
+		
+		$this->setParam('records', $records);
+		$this->setParam('total', count($records));
 	}
 	
 	public function loadRowAction() {
@@ -41,13 +61,15 @@ class Simon_Scrape_ProcessController extends Papercut_AjaxController {
 	}
 	
 	public function cleanAction() {
+		$db = $this->frontController->getDbAdapter();
 		$query = "TRUNCATE scrape_info";
-		mysql_query($query);
-		$query = "TRUNCATE scrape_pages";
-		mysql_query($query);
-		$query = "TRUNCATE scrape_elements";
-		mysql_query($query);
-		$query = "TRUNCATE scrape_references";
-		mysql_query($query);
+		$db->query($query);
+		$query = "TRUNCATE scrape_page";
+		$db->query($query);
+		$query = "TRUNCATE scrape_element";
+		$db->query($query);
+		$query = "TRUNCATE scrape_reference";
+		$db->query($query);
 	}
+	
 }

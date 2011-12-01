@@ -183,12 +183,16 @@ class Redokes_Model_Model {
 	}
 
 	public function setRow($row) {
+		$primary = $this->table->getPrimary();
+		if (isset($row[$primary])) {
+			unset($row[$primary]);
+		}
 		foreach ($row as $key => $value) {
 			try {
 				$this->row->$key = $value;
 			}
 			catch(Exception $e) {
-				
+
 			}
 		}
 	}
@@ -276,15 +280,15 @@ class Redokes_Model_Model {
 			$this->validate();
 		}
 		if ($this->isValidated()) {
-			$this->generateSlug();
-			
 			if ($this->row->$field) {
 				$this->beforeUpdate();
+				$this->generateSlug();
 				$this->row->save();
 				$this->afterUpdate();
 			}
 			else {
 				$this->beforeInsert();
+				$this->generateSlug();
 				$this->generateHash();
 				$this->row->save();
 				$this->afterInsert();

@@ -1,15 +1,12 @@
-Ext.define('Modules.template.js.model.Template', {
+Ext.define('Modules.scrape.js.model.Info', {
 	extend: 'Ext.data.Model',
 	
 	//Config
-	idProperty: 'templateId',
+	idProperty: 'scrapeId',
     
 	//Fields
 	fields: [{
-		name: 'templateId',
-		type: 'int'
-	},{
-		name: 'groupId',
+		name: 'scrapeId',
 		type: 'int'
 	},{
 		name: 'title',
@@ -21,28 +18,28 @@ Ext.define('Modules.template.js.model.Template', {
 		name: 'hash',
 		type: 'string'
 	},{
-		name: 'sortOrder',
-		type: 'int'
-	},{
-		name: 'thumb',
-		type: 'string'
-	},{
 		name: 'url',
 		type: 'string'
 	},{
-		name: 'absoluteUrl',
-		type: 'string'
+		name: 'depth',
+		type: 'int'
+	},{
+		name: 'complete',
+		type: 'int'
+	},{
+		name: 'currentStep',
+		type: 'int'
 	}],
 
 	//Proxy
 	proxy: {
 		type: 'ajax',
-		url : '/template/template/get-grid-records',
+		url : '/scrape/process/get-grid-records',
 		api: {
-			read: '/template/template/get-grid-records'
+			read: '/scrape/process/get-grid-records'
 		},
 		reader: {
-			idProperty: 'templateId',
+			idProperty: 'scrapeId',
 			type: 'json',
 			root: 'records',
 			totalProperty: 'total'
