@@ -142,6 +142,9 @@ class Redokes_Model_Model {
 		if ($row) {
 			$this->row = $row;
 		}
+		else {
+			$this->row = $this->table->createRow();
+		}
 		
 	}
 
@@ -180,12 +183,16 @@ class Redokes_Model_Model {
 	}
 
 	public function setRow($row) {
+		$primary = $this->table->getPrimary();
+		if (isset($row[$primary])) {
+			unset($row[$primary]);
+		}
 		foreach ($row as $key => $value) {
 			try {
 				$this->row->$key = $value;
 			}
 			catch(Exception $e) {
-				
+
 			}
 		}
 	}
@@ -256,9 +263,9 @@ class Redokes_Model_Model {
 		}
 	}
 	
-	public function generateSafeTitle() {
+	public function generateSlug() {
 		try {
-			$this->row->safeTitle = Redokes_Util::safeTitle($this->row->title);
+			$this->row->slug = Redokes_Util::getSlug($this->row->title);
 		}
 		catch (Exception $e) {
 			
@@ -273,15 +280,15 @@ class Redokes_Model_Model {
 			$this->validate();
 		}
 		if ($this->isValidated()) {
-			$this->generateSafeTitle();
-			
 			if ($this->row->$field) {
 				$this->beforeUpdate();
+				$this->generateSlug();
 				$this->row->save();
 				$this->afterUpdate();
 			}
 			else {
 				$this->beforeInsert();
+				$this->generateSlug();
 				$this->generateHash();
 				$this->row->save();
 				$this->afterInsert();

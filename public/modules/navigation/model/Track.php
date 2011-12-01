@@ -55,8 +55,8 @@ class Navigation_Model_Track extends Redokes_Model_Model {
 				if ($rows[$i]['target']) {
 					$target = 'target="_blank"';
 				}
-				$safeTitle = Redokes_Util::safeTitle($rows[$i]['title']);
-				$str .= "<li name=\"item_{$this->row->trackId}-{$rows[$i]['itemId']}\" class=\"$safeTitle\"><a href=\"{$rows[$i][$urlField]}\" $target class=\"$safeTitle\">{$rows[$i]['title']}</a>";
+				$slug = Redokes_Util::getSlug($rows[$i]['title']);
+				$str .= "<li name=\"item_{$this->row->trackId}-{$rows[$i]['itemId']}\" class=\"$slug\"><a href=\"{$rows[$i][$urlField]}\" $target class=\"$slug\">{$rows[$i]['title']}</a>";
 				$str .= $this->buildHtml($topId, $className, $rows[$i]['itemId'], $urlField);
 				$str .= '</li>';
 				
@@ -76,7 +76,7 @@ class Navigation_Model_Track extends Redokes_Model_Model {
 		$numRows = count($rows);
 		if ($numRows) {
 			for ($i = 0; $i < $numRows; $i++) {
-				$rows[$i]['safeTitle'] = Redokes_Util::safeTitle($rows[$i]['title']);
+				$rows[$i]['slug'] = Redokes_Util::getSlug($rows[$i]['title']);
 				$rows[$i]['items'] = $this->buildJson($rows[$i]['itemId'], $urlField);
 				$arr[] = $rows[$i];
 				

@@ -30,7 +30,6 @@ class Redokes_Controller_Action {
 		$this->action = $action;
 		ob_start();
 		if (method_exists($this, $this->action)) {
-			
 			// Run the action
 			$this->$action();
 			
@@ -53,7 +52,7 @@ class Redokes_Controller_Action {
 			}
 		}
 		else if($this->action){
-			
+			$this->getView()->setHtml('{body}');
 			$this->_catch();
 		}
 		$contents = ob_get_clean();

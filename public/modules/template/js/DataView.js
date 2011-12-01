@@ -25,6 +25,23 @@ Ext.define('Modules.template.js.DataView', {
 		this.initListeners();
 	},
 	
+	initTopBar: function() {
+		this.topBar = Ext.create('Ext.toolbar.Toolbar', {
+			dock: 'top'
+		});
+		this.dockedItems.push(this.topBar);
+		
+		this.topBar.add({
+			iconCls: 'edit',
+			scope: this,
+			handler: this.editSelected
+		},'-',{
+			iconCls: 'close',
+			scope: this,
+			handler: this.deleteSelected
+		})
+	},
+	
 	initStore: function() {
 		this.store = new Ext.data.Store({
 			model: 'Modules.template.js.model.Template',

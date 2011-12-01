@@ -15,7 +15,7 @@ Ext.define('Modules.template.js.model.Template', {
 		name: 'title',
 		type: 'string'
 	},{
-		name: 'safeTitle',
+		name: 'slug',
 		type: 'string'
 	},{
 		name: 'hash',
@@ -25,6 +25,12 @@ Ext.define('Modules.template.js.model.Template', {
 		type: 'int'
 	},{
 		name: 'thumb',
+		type: 'string'
+	},{
+		name: 'url',
+		type: 'string'
+	},{
+		name: 'absoluteUrl',
 		type: 'string'
 	}],
 

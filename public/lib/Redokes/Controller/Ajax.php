@@ -76,7 +76,7 @@ class Redokes_Controller_Ajax extends Redokes_Controller_Action {
 				echo $this->getView()->values['body'];
 			}
 			else {
-				header('Content-type: application/json');
+//				header('Content-type: application/json');
 				echo json_encode($this->_returnCode);
 			}
 		}
