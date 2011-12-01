@@ -39,7 +39,6 @@ class Redokes_View_Html extends Redokes_View_Template {
 				$this->values['head'] .= $js->render();
 			}
 		}
-
 		return parent::render();
 	}
 

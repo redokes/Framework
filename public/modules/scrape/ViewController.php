@@ -23,18 +23,31 @@ class Scrape_ViewController extends Redokes_Controller_Action {
 			}
 		}
 		$scrape = new Scrape_Model_Info();
+		$page = new Scrape_Model_Page();
 		if ($slug) {
-			$scrape->loadRow(array(
-				'slug' => $slug,
-				'hash' => $hash
-			));
+			$select = $page->table->select()
+					->where('scrapeId = ?', $scrape->row->scrapeId)
+					->where('slug = ?', $slug)
+					->limit(1);
+			die($select->assemble());
+			$row = $page->table->fetchRow($select);
+			if ($row) {
+				$page->row = $row;
+				$this->outputPage($page);
+			}
 		}
 		else {
 			$scrape->loadRow($hash, 'hash');
 		}
 		
 		if ($scrape->row->scrapeId) {
-			$this->outputPage($scrape);
+			$select = $page->table->select()
+					->where('scrapeId = ?', $scrape->row->scrapeId)
+					->order('scrapeId')
+					->limit(1);
+			$row = $page->table->fetchRow($select);
+			$page->row = $row;
+			$this->outputPage($page);
 		}
 		else {
 			$this->indexAction();
@@ -43,17 +56,10 @@ class Scrape_ViewController extends Redokes_Controller_Action {
 	
 	/**
 	 *
-	 * @param Template_Model_Template $template 
+	 * @param Scrape_Model_Page $page 
 	 */
-	public function outputPage($scrape) {
+	public function outputPage($page) {
 		// Get first page
-		$page = new Scrape_Model_Page();
-		$select = $page->table->select()
-				->where('scrapeId = ?', $scrape->row->scrapeId)
-				->order('scrapeId')
-				->limit(1);
-		$row = $page->table->fetchRow($select);
-		$page->row = $row;
 		$content = $page->row->content;
 		$this->getView()->setHtml($content);
 	}
