@@ -37,11 +37,8 @@ Ext.define('Modules.scrape.js.ProgressPanel', {
 		if (r != null) {
 			var response = Ext.decode(r.responseText);
 			if (response.row) {
-				console.log('we have row');
-				console.log(response.row);
 				this.record.data = response.row;
-				console.log(this.record);
-				console.log(this.pbars);
+				
 				// update all previous steps to 100%
 				for (var i = 0; i < this.record.data.currentStep; i++) {
 					this.pbars[i].updateProgress(1, this.steps[i] + ' 100%');

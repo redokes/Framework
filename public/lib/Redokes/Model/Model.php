@@ -281,15 +281,15 @@ class Redokes_Model_Model {
 		}
 		if ($this->isValidated()) {
 			if ($this->row->$field) {
-				$this->beforeUpdate();
 				$this->generateSlug();
+				$this->beforeUpdate();
 				$this->row->save();
 				$this->afterUpdate();
 			}
 			else {
-				$this->beforeInsert();
 				$this->generateSlug();
 				$this->generateHash();
+				$this->beforeInsert();
 				$this->row->save();
 				$this->afterInsert();
 			}

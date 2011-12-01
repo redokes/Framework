@@ -23,13 +23,17 @@ class Scrape_ViewController extends Redokes_Controller_Action {
 			}
 		}
 		$scrape = new Scrape_Model_Info();
+		$scrape->loadRow($hash, 'hash');
+		if (!$scrape->row->scrapeId) {
+			$scrape->loadRow($hash);
+		}
+		
 		$page = new Scrape_Model_Page();
 		if ($slug) {
 			$select = $page->table->select()
 					->where('scrapeId = ?', $scrape->row->scrapeId)
 					->where('slug = ?', $slug)
 					->limit(1);
-			die($select->assemble());
 			$row = $page->table->fetchRow($select);
 			if ($row) {
 				$page->row = $row;
@@ -38,19 +42,19 @@ class Scrape_ViewController extends Redokes_Controller_Action {
 		}
 		else {
 			$scrape->loadRow($hash, 'hash');
-		}
-		
-		if ($scrape->row->scrapeId) {
-			$select = $page->table->select()
-					->where('scrapeId = ?', $scrape->row->scrapeId)
-					->order('scrapeId')
-					->limit(1);
-			$row = $page->table->fetchRow($select);
-			$page->row = $row;
-			$this->outputPage($page);
-		}
-		else {
-			$this->indexAction();
+			
+			if ($scrape->row->scrapeId) {
+				$select = $page->table->select()
+						->where('scrapeId = ?', $scrape->row->scrapeId)
+						->order('pageId')
+						->limit(1);
+				$row = $page->table->fetchRow($select);
+				$page->row = $row;
+				$this->outputPage($page);
+			}
+			else {
+				$this->indexAction();
+			}
 		}
 	}
 	
@@ -60,8 +64,7 @@ class Scrape_ViewController extends Redokes_Controller_Action {
 	 */
 	public function outputPage($page) {
 		// Get first page
-		$content = $page->row->content;
-		$this->getView()->setHtml($content);
+		$this->getView()->setHtml($page->row->content);
 	}
 	
 }

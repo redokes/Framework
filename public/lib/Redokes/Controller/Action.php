@@ -38,8 +38,6 @@ class Redokes_Controller_Action {
 				$this->setView();
 			}
 			
-			
-			
 			// Render the view if a view file exists
 			if (file_exists($this->viewPath)) {
 				ob_start();

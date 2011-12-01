@@ -20,7 +20,7 @@ class Scrape_Model_Element extends Redokes_Model_Model {
 //		error_log("\nlocalPath = $localPath\nfileName = $fileName\n");
 		$fileData = false;
 		
-		if (strlen($fileName)) {
+		if (strlen($fileName) && !is_dir($newPath)) {
 			// fetch resource
 			@$fileData = file_get_contents($this->row->absoluteUrl);
 			if ($fileData) {

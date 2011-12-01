@@ -95,7 +95,7 @@ class Scrape_ImportController extends Redokes_Controller_Ajax {
 		if (!$page->row->pageId) {
 			$this->getTitle();
 		}
-
+		
 		// get all pages that haven't have links fetched
 		$select = $page->table->select()
 				->where('scrapeId = ?', $this->scrape->row->scrapeId)
@@ -226,7 +226,7 @@ class Scrape_ImportController extends Redokes_Controller_Ajax {
 			if (count($titles)) {
 				$title = $dom->find('title', 0)->innertext;
 			}
-
+			
 			$this->scrape->row->title = $title;
 			$this->scrape->save();
 
@@ -568,20 +568,20 @@ class Scrape_ImportController extends Redokes_Controller_Ajax {
 			foreach ($resourcesToFind as $tagName => $tagInfo) {
 				$items = $dom->find($tagName);
 				$pathAttribute = $tagInfo['pathAttribute'];
-				for ($i = 0; $i < count($items); $i++) {
-					$anchor = $this->getAnchor($items[$i]->$pathAttribute);
+				for ($j = 0; $j < count($items); $j++) {
+					$anchor = $this->getAnchor($items[$j]->$pathAttribute);
 					if ($anchor) {
-						$urlNoAnchor = $this->urlNoAnchor($items[$i]->$pathAttribute);
+						$urlNoAnchor = $this->urlNoAnchor($items[$j]->$pathAttribute);
 						if (isset($referenceMap[$urlNoAnchor])) {
-							$dom->find($tagName, $i)->$pathAttribute = $referenceMap[$urlNoAnchor] . $anchor;
+							$dom->find($tagName, $j)->$pathAttribute = $referenceMap[$urlNoAnchor] . $anchor;
 						}
 						else {
 							//$this->log("no it is not set");
 						}
 					}
 					else {
-						if (isset($referenceMap[$items[$i]->$pathAttribute])) {
-							$dom->find($tagName, $i)->$pathAttribute = $referenceMap[$items[$i]->$pathAttribute];
+						if (isset($referenceMap[$items[$j]->$pathAttribute])) {
+							$dom->find($tagName, $j)->$pathAttribute = $referenceMap[$items[$j]->$pathAttribute];
 						}
 						else {
 							//$this->log("no map not set");
@@ -589,7 +589,7 @@ class Scrape_ImportController extends Redokes_Controller_Ajax {
 					}
 				}
 			}
-
+			
 			// save new content
 			$page->setRow(array(
 				'content' => $dom->save(),
@@ -636,7 +636,7 @@ class Scrape_ImportController extends Redokes_Controller_Ajax {
 			// no more pages to update so update the css files
 			$element = new Scrape_Model_Element();
 			$select = $element->table->select()
-					->where('tag = \'link\'')
+					->where('tag = ?', 'link')
 					->where('scrapeId = ?', $this->scrape->row->scrapeId)
 					->where('error = 0');
 			$rows = $element->table->fetchAll($select);
