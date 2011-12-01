@@ -63,7 +63,6 @@ class Scrape_ViewController extends Redokes_Controller_Action {
 	 * @param Scrape_Model_Page $page 
 	 */
 	public function outputPage($page) {
-		// Get first page
 		$this->getView()->setHtml($page->row->content);
 	}
 	

@@ -1,44 +1,28 @@
 <?php
 
 class Redokes_Zip extends ZipArchive {
-
-	public function addDir($dir, $zipdir = '', $topAreMade = false) {
-		if (!$topAreMade && strlen($zipdir)) {
-			// make top directories
-			$topDirectories = explode('/', $zipdir);
-			$topDirectory = '';
-			for ($i = 0; $i < count($topDirectories); $i++) {
-				if (strlen($topDirectories[$i])) {
-					$topDirectory .= $topDirectories[$i] . '/';
-					$this->addEmptyDir($topDirectory);
-				}
+	
+	public function addDir($path, $baseDir = '') {
+		$path = rtrim($path, '/');
+		
+		$parts = explode('/', $path);
+		$dirName = array_pop($parts);
+		$dirStructure = implode('/', $parts);
+		$dirToMake = $baseDir . '/' . $dirName;
+		
+		$this->addEmptyDir($dirToMake);
+		$nodes = glob($path . '/*');
+		foreach ($nodes as $node) {
+			if (is_dir($node)) {
+				$this->addDir($node, $dirToMake);
 			}
-		}
-		$dir = rtrim($dir, '/');
-		$zipdir = rtrim($zipdir, '/');
-		if (strlen($zipdir)) {
-			$this->addEmptyDir($zipdir);
-		}
-		if (is_dir($dir)) {
-			if ($dh = opendir($dir)) {
-				while (($file = readdir($dh)) !== false) {
-					if (is_file($dir . '/' . $file)) {
-						$fileLocation = trim($dir . '/' . $file, '/');
-						$zipLocation = trim($zipdir . '/' . $file, '/');
-						$this->addFile($fileLocation, $zipLocation);
-					}
-					else {
-						if (($file !== '.') && ($file !== '..') && $file != '.svn') {
-							$fileLocation = trim($dir . '/' . $file, '/');
-							$zipLocation = trim($zipdir . '/' . $file, '/');
-							$this->addDir($fileLocation, $zipLocation, true);
-						}
-					}
-				}
+			else if (is_file($node)) {
+				$fileName = end(explode('/', $node));
+				$this->addFile($node, $dirToMake . '/' . $fileName);
 			}
 		}
 	}
-
+	
 	public function addFilesOnly($dir, $zipdir = '', $topAreMade = false) {
 		if (!$topAreMade && strlen($zipdir)) {
 			// make top directories

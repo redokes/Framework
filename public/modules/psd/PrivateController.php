@@ -2,8 +2,29 @@
 
 class Psd_PrivateController extends Redokes_Controller_Ajax {
 
-	public function gridAction() {
+	public function getGridRecordsAction() {
+		$psd = new Psd_Model_Template();
+		$select = $psd->table->select()->order('psdId');
+		$rows = $psd->table->fetchAll($select);
+		$records = $rows->toArray();
+		$numRecords = count($records);
 		
+		// Loop through each record and set a fake thumb
+//		$privateTemplatesDir = $template->getPrivateTemplatesDir();
+//		$publicTemplatesDir = $template->getPublicTemplatesDir();
+//		for ($i = 0; $i < $numRecords; $i++) {
+//			$localThumb = $privateTemplatesDir . $records[$i]['hash'] . '/thumb.png';
+//			$publicThumb = $publicTemplatesDir . $records[$i]['hash'] . '/thumb.png';
+//			if (!is_file($localThumb)) {
+//				// TODO: use default image
+//				$publicThumb = '/google.png';
+//			}
+//			$records[$i]['thumb'] = $publicThumb;
+//			$records[$i]['url'] = '/template/view/' . $records[$i]['hash'];
+//		}
+		
+		$this->setParam('records', $records);
+		$this->setParam('total', count($records));
 	}
 
 	public function testAction() {
@@ -21,31 +42,32 @@ class Psd_PrivateController extends Redokes_Controller_Ajax {
 		$fileName = 'c:/GPSurgery_Bariatric.psd'; // good after adjusting psd
 		$fileName = 'c:/Center_Home_Final.psd';
 
-		$importer = new Psd_Class_PsdImporter($fileName);
+		$importer = new Psd_Model_Importer($fileName);
 		$importer->toHtml();
 		//echo $importer->getHtml();
 		die();
 	}
 
 	public function processAction() {
-		$psdTemplate = new Psd_Class_PsdTemplate();
-		$psdTemplate->loadPost();
-		$this->addError($psdTemplate->validate());
-		if (!$this->anyErrors()) {
-			$psdTemplate->process();
-			$this->addMessage('Template has been saved');
+		// Load record if it exists
+		$psdId = $this->frontController->getParam('psdId', 0);
+		$psdTemplate = new Psd_Model_Template($psdId);
+		
+		// Set new row data and save
+		$psdTemplate->setRow($_POST);
+		$psdTemplate->save();
+		
+		if ($psdTemplate->anyErrors()) {
+			$this->addError($psdTemplate->errors);
 		}
-		$this->setParam('record', $psdTemplate->row);
-
-		// send headers as plain text
-		ob_start();
-		$this->sendTextHeaders();
-		echo htmlentities(ob_get_clean());
-		die();
+		else {
+			$record = $psdTemplate->row->toArray();
+			$this->setParam('record', $record);
+		}
 	}
 
 	public function loadRowAction(){
-		$psdTemplate = new Psd_Class_PsdTemplate(getParam('id', 0));
+		$psdTemplate = new Psd_Model_Template(getParam('id', 0));
 		$this->setParam('record', $psdTemplate->row);
 	}
 
@@ -57,12 +79,12 @@ class Psd_PrivateController extends Redokes_Controller_Ajax {
 		}
 		
 		// get the psd template object
-		$psdTemplate = new Psd_Class_PsdTemplate($psdId);
+		$psdTemplate = new Psd_Model_Template($psdId);
 		$psdTemplate->convertToTemplate();
 	}
 
 	public function installAction() {
-		$m = new Psd_Class_Manager();
+		$m = new Psd_Model_Manager();
 		$m->install();
 		echo "psd installed";
 		$db = $this->frontController->getDbAdapter();
@@ -83,7 +105,7 @@ class Psd_PrivateController extends Redokes_Controller_Ajax {
 		$selectedIds = $_POST['selected'];
 		$titles = array();
 		for ($i = 0; $i < count($selectedIds); $i++) {
-			$template = new Psd_Class_PsdTemplate(intval($selectedIds[$i]));
+			$template = new Psd_Model_Template(intval($selectedIds[$i]));
 			$template->delete();
 			if(count($template->errors)){
 				$this->addError($template->errors);

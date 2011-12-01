@@ -283,14 +283,18 @@ class Redokes_Model_Model {
 		if ($this->isValidated()) {
 			if ($this->row->$field) {
 				$this->generateSlug();
-				$this->beforeUpdate();
+				if ($this->beforeUpdate() === false) {
+					return false;
+				}
 				$this->row->save();
 				$this->afterUpdate();
 			}
 			else {
 				$this->generateSlug();
 				$this->generateHash();
-				$this->beforeInsert();
+				if ($this->beforeInsert() === false) {
+					return false;
+				}
 				$this->row->save();
 				$this->afterInsert();
 			}
@@ -315,52 +319,12 @@ class Redokes_Model_Model {
 		return $data;
 	}
 
-	public function insert($doAudit = true) {
-		//Fire the before insert function
-		if ($this->beforeInsert() === false) {
-			return false;
-		}
-
-		//Run the insert Code
-		$db = $this->_getDbAdapter();
-		$db->insert($this->table, $this->getSetData());
-		$this->row->{$this->primaryKey} = $db->lastInsertId();
-
-		if ($doAudit) {
-			$this->audit('Add');
-		}
-
-		//Fire the after insert function
-		$this->afterInsert();
-
-		return true;
-	}
-
 	public function beforeInsert() {
 
 	}
 
 	public function afterInsert() {
 		
-	}
-
-	public function update($doAudit = true) {
-		//Fire the before update function
-		if ($this->beforeUpdate() === false) {
-			return false;
-		}
-
-		//Run the update code
-		$db = $this->_getDbAdapter();
-		$db->update($this->table, $this->getSetData(), "$this->primaryKey = " . $db->quote($this->row->{$this->primaryKey}));
-		if ($doAudit) {
-			$this->audit('Update');
-		}
-
-		//Fire the after update function
-		$this->afterUpdate();
-
-		return true;
 	}
 
 	public function beforeUpdate() {

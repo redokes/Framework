@@ -13,11 +13,15 @@ class Psd_Model_Importer {
 	public $layoutType;
 	public $cssRules = array();
 	public $psdTemplate;
-
+	
+	/**
+	 *
+	 * @param Psd_Model_Template $psdTemplate 
+	 */
 	public function  __construct($psdTemplate) {
 		$this->psdTemplate = $psdTemplate;
-		$this->saveDir = $psdTemplate->getPrivatePath();
-		$this->setFile($psdTemplate->getPrivatePath() . $psdTemplate->row['fileName']);
+		$this->saveDir = $psdTemplate->getPrivateDir();
+		$this->setFile($psdTemplate->getPsdPath());
 		//$this->layoutType = $layoutType;
 	}
 
@@ -37,7 +41,7 @@ class Psd_Model_Importer {
 	}
 
 	public function rebuildDom() {
-		$this->dom = new SimpleHtmlDom($this->dom->save());
+		$this->dom = new Redokes_Dom_SimpleHtmlDom($this->dom->save());
 	}
 
 	public function toHtml() {
@@ -55,7 +59,7 @@ class Psd_Model_Importer {
 	private function extract() {
 		// save the screenshot
 		$this->im->setIteratorIndex(0);
-		$this->im->writeImage($this->saveDir . 'screenshot.png');
+		$this->im->writeImage($this->saveDir . 'thumb.png');
 
 		// loop through each layer
 		for($i = 1; $i < $this->numLayers; $i++){
@@ -66,8 +70,7 @@ class Psd_Model_Importer {
 			$properties = $this->im->getImagePage();
 
 			$label = $this->im->getImageProperty('label');
-			$fileName = safe_title($label) . '.png';
-			$siteName = FileSystem::getSitePrefix();
+			$fileName = Redokes_Util::getSlug($label) . '.png';
 			$filePrivatePath = $this->saveDir . 'img/' . $fileName;
 			$filePublicPath = 'img/' . $fileName;
 
@@ -239,12 +242,12 @@ class Psd_Model_Importer {
 
 	private function buildHtml() {
 		$this->dom->find('body', 0)->innertext = $this->layers[0]->createElement();
-		$this->dom = new SimpleHtmlDom($this->dom->save());
+		$this->dom = new Redokes_Dom_SimpleHtmlDom($this->dom->save());
 		$this->layers[0]->buildHtml();
 	}
 
 	private function buildDom() {
-		$this->dom = new SimpleHtmlDom('<html><head></head><body></body></html>');
+		$this->dom = new Redokes_Dom_SimpleHtmlDom('<html><head></head><body></body></html>');
 		
 		// set defaults on html and body
 		$styles = array(
@@ -300,7 +303,7 @@ class Psd_Model_Importer {
 		// remove all style=""
 		$html = $this->dom->save();
 		$html = str_replace('style=""', '', $html);
-		$this->dom = new SimpleHtmlDom($html);
+		$this->dom = new Redokes_Dom_SimpleHtmlDom($html);
 	}
 
 	public function getHtml() {

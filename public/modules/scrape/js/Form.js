@@ -2,11 +2,7 @@ Ext.define('Modules.scrape.js.Form', {
 	extend: 'Redokes.form.Abstract',
 	
 	//Config
-	processingPage: '/scrape/process/',
 	url: '/scrape/process/process',
-	processAction: 'process',
-	loadRowAction: 'load-row',
-	showFailureMessage: false,
 	record: false,
 	
 	initComponent: function() {

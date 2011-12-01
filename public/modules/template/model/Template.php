@@ -59,6 +59,9 @@ class Template_Model_Template extends Redokes_Model_Model {
 	
 	public function processResourceFile($path, $originalName = false) {
 		if (is_file($path)) {
+			if (!$originalName) {
+				$originalName = end(explode('/', $path));
+			}
 			$pathInfo = pathinfo($originalName);
 			$extension = $pathInfo['extension'];
 			if (in_array($extension, Template_Model_Template::$allowedResourceExtensions)) {
@@ -150,10 +153,10 @@ class Template_Model_Template extends Redokes_Model_Model {
 			$command = "/opt/local/bin/phantomjs \"$rasterizeFile\" \"{$this->getAbsoluteUrl()}\" \"$thumbFile\" 2>&1";
 			
 //			error_log('Writing');
-			error_log($command);
+//			error_log($command);
 			exec($command, $output, $return);
-			error_log(print_r($output, 1));
-			error_log(print_r($return, 1));
+//			error_log(print_r($output, 1));
+//			error_log(print_r($return, 1));
 		}
 		else {
 			error_log('Directory not writable: ' . $this->getPrivateDir());
