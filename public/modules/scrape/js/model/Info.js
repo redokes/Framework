@@ -29,6 +29,12 @@ Ext.define('Modules.scrape.js.model.Info', {
 	},{
 		name: 'currentStep',
 		type: 'int'
+	},{
+		name: 'thumb',
+		type: 'string'
+	},{
+		name: 'publicUrl',
+		type: 'string'
 	}],
 
 	//Proxy

@@ -23,25 +23,25 @@ Ext.define('Modules.template.js.Interface', {
 	},
 	
 	initTemplateView: function() {
-		this.templateView = Ext.create('Modules.template.js.ViewPanel', {
+		this.thumbViewPanel = Ext.create('Modules.template.js.view.ThumbPanel', {
 			title: 'Templates'
 		});
-		this.items.push(this.templateView);
+		this.items.push(this.thumbViewPanel);
 	},
 	
 	initListeners: function() {
-		this.templateView.dataView.on('itemdblclick', function(view, record, item, index) {
+		this.thumbViewPanel.dataView.on('itemdblclick', function(view, record, item, index) {
 			this.setActiveTab(this.createTab(record));
 		}, this);
 		
-		this.templateView.on('edit', function(view, records) {
+		this.thumbViewPanel.on('edit', function(view, records) {
 			var numRecords = records.length;
 			for (var i = 0; i < numRecords; i++) {
 				this.createTab(records[i]);
 			}
 		}, this);
 		
-		this.templateView.on('delete', function(view, records) {
+		this.thumbViewPanel.on('delete', function(view, records) {
 			var numRecords = records.length;
 			var ids = [];
 			for (var i = 0; i < numRecords; i++) {
@@ -62,7 +62,7 @@ Ext.define('Modules.template.js.Interface', {
 		}, this);
 		
 		this.on('add', function() {
-			this.reloadStore();
+//			this.reloadStore();
 		}, this);
 		
 		this.on('edit', function() {
@@ -75,7 +75,7 @@ Ext.define('Modules.template.js.Interface', {
 	},
 	
 	reloadStore: function() {
-		this.templateView.dataView.store.load();
+		this.thumbViewPanel.dataView.store.load();
 	}
 	
 });

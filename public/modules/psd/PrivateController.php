@@ -10,18 +10,20 @@ class Psd_PrivateController extends Redokes_Controller_Ajax {
 		$numRecords = count($records);
 		
 		// Loop through each record and set a fake thumb
-//		$privateTemplatesDir = $template->getPrivateTemplatesDir();
-//		$publicTemplatesDir = $template->getPublicTemplatesDir();
-//		for ($i = 0; $i < $numRecords; $i++) {
-//			$localThumb = $privateTemplatesDir . $records[$i]['hash'] . '/thumb.png';
-//			$publicThumb = $publicTemplatesDir . $records[$i]['hash'] . '/thumb.png';
-//			if (!is_file($localThumb)) {
-//				// TODO: use default image
-//				$publicThumb = '/google.png';
-//			}
-//			$records[$i]['thumb'] = $publicThumb;
-//			$records[$i]['url'] = '/template/view/' . $records[$i]['hash'];
-//		}
+		$privateTemplatesDir = $psd->getPrivatePsdDir();
+		$publicTemplatesDir = $psd->getPublicPsdDir();
+		for ($i = 0; $i < $numRecords; $i++) {
+			$psd->row = $rows[$i];
+			
+			$localThumb = $privateTemplatesDir . $psd->row->hash . '/thumb.png';
+			$publicThumb = $publicTemplatesDir . $psd->row->hash . '/thumb.png';
+			if (!is_file($localThumb)) {
+				// TODO: use default image
+				$publicThumb = '/google.png';
+			}
+			$records[$i]['thumb'] = $publicThumb;
+			$records[$i]['url'] = $psd->getPageUrl();
+		}
 		
 		$this->setParam('records', $records);
 		$this->setParam('total', count($records));

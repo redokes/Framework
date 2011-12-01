@@ -17,6 +17,9 @@ Ext.define('Modules.psd.js.model.Template', {
 	},{
 		name: 'hash',
 		type: 'string'
+	},{
+		name: 'thumb',
+		type: 'string'
 	}],
 
 	//Proxy

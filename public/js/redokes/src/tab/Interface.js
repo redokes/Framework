@@ -199,6 +199,9 @@ Ext.define('Redokes.tab.Interface', {
 			panel.updateTab.on('success', function(form, action) {
 				this.fireEvent('update', form, action);
 			}, this);
+			panel.updateTab.on('failure', function(form, action) {
+				this.fireEvent('failure', form, action);
+			}, this);
 			
 			Ext.defer(function(){
 				//Stop the loading

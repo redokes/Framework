@@ -292,8 +292,8 @@ Ext.define('Redokes.form.Abstract', {
 				url: this.url,
 				params: values,
 				success: function(form, action){
-					this.fireEvent('success', form, action);
 					this.fireEvent('submit', form, action);
+					this.fireEvent('success', form, action);
 				},
 				failure: function(form, action){
 					this.fireEvent('failure', form, action);

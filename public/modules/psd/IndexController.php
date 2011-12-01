@@ -14,6 +14,7 @@ class Psd_IndexController extends Redokes_Controller_Action {
 //			->addJs('/js/ext-4.1-pr1/ext-all-debug.js')
 //			->addJs('/js/ext-4.1-pr1/ext-neptune.js')
 			
+			->addCss('/modules/template/css/template.css')
 			->addJs('/js/redokes/redokes.js');
 	}
 	

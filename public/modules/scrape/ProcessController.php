@@ -38,18 +38,18 @@ class Scrape_ProcessController extends Redokes_Controller_Ajax {
 		$numRecords = count($records);
 		
 		// Loop through each record and set a fake thumb
-//		$privateTemplatesDir = $template->getPrivateTemplatesDir();
-//		$publicTemplatesDir = $template->getPublicTemplatesDir();
-//		for ($i = 0; $i < $numRecords; $i++) {
-//			$localThumb = $privateTemplatesDir . $records[$i]['hash'] . '/thumb.png';
-//			$publicThumb = $publicTemplatesDir . $records[$i]['hash'] . '/thumb.png';
-//			if (!is_file($localThumb)) {
-//				// TODO: use default image
-//				$publicThumb = '/google.png';
-//			}
-//			$records[$i]['thumb'] = $publicThumb;
-//			$records[$i]['url'] = '/template/view/' . $records[$i]['hash'];
-//		}
+		$privateDir = $scrape->getPrivateScrapeDir();
+		$publicDir = $scrape->getPublicScrapeDir();
+		for ($i = 0; $i < $numRecords; $i++) {
+			$localThumb = $privateDir . $records[$i]['hash'] . '/thumb.png';
+			$publicThumb = $publicDir . $records[$i]['hash'] . '/thumb.png';
+			if (!is_file($localThumb)) {
+				// TODO: use default image
+				$publicThumb = '/google.png';
+			}
+			$records[$i]['thumb'] = $publicThumb;
+			$records[$i]['publicUrl'] = '/scrape/view/' . $records[$i]['hash'];
+		}
 		
 		$this->setParam('records', $records);
 		$this->setParam('total', count($records));
@@ -70,6 +70,16 @@ class Scrape_ProcessController extends Redokes_Controller_Ajax {
 		$db->query($query);
 		$query = "TRUNCATE scrape_reference";
 		$db->query($query);
+		
+		'truncate template;
+		truncate template_group;
+		truncate template_item;
+		truncate scrape_info;
+		truncate scrape_page;
+		truncate scrape_reference;
+		truncate scrape_element;
+		truncate psd_template;';
+		
 	}
 	
 }

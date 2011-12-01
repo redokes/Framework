@@ -530,5 +530,10 @@ class Redokes_Model_Model {
 	public function salt($str) {
 		return sha1($this->getSalt() . $str . $this->getSalt());
 	}
-
+	
+	public function createThumb() {
+		$thumbFile = $this->getPrivateDir() . 'thumb.png';
+		Redokes_Phantom::createThumb($this->getAbsoluteUrl(), $thumbFile);
+	}
+	
 }

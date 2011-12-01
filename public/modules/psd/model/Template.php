@@ -147,8 +147,10 @@ class Psd_Model_Template extends Redokes_Model_Model {
 //			$templateGroup->createFromLocalFile($zipFile, $this->row->title . ' [PSD Import]');
 
 			// Make the template from the html file
+			$newTemplateTitle = $this->row->title . ' (PSD Import)';
 			$template = new Template_Model_Template();
-			$template->row->title = $this->row->title;
+			$template->loadRow($newTemplateTitle, 'title');
+			$template->row->title = $newTemplateTitle;
 			if ($template->save()) {
 				$template->processResourceFile($zipFile);
 				$template->processTemplateFile($this->getIndexFile());

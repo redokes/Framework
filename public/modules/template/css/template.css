@@ -19,6 +19,9 @@ div.template-thumb {
 	text-align: center;
 	padding-top: 4px;
 	font-weight: bold;
+	white-space: nowrap;
+	width: 100px;
+	overflow: hidden;
 }
 
 .template-thumb-wrap img {

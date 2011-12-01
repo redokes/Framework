@@ -1,9 +1,10 @@
-Ext.define('Modules.template.js.DataView', {
+Ext.define('Modules.template.js.view.ThumbView', {
 	extend:'Ext.view.View',
 	requires: [
 		'Modules.template.js.model.Template'
 	],
 	
+	modelCls: 'Modules.template.js.model.Template',
 	store: false,
 	tpl: false,
 	itemSelector: 'div.template-thumb',
@@ -44,7 +45,7 @@ Ext.define('Modules.template.js.DataView', {
 	
 	initStore: function() {
 		this.store = new Ext.data.Store({
-			model: 'Modules.template.js.model.Template',
+			model: this.modelCls,
 			remoteSort: true,
 			pageSize: 20,
 			autoLoad: true

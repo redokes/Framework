@@ -1,8 +1,9 @@
-Ext.define('Modules.template.js.ViewPanel', {
+Ext.define('Modules.scrape.js.view.ThumbPanel', {
 	extend:'Ext.panel.Panel',
 	requires: [
-		'Modules.template.js.DataView'
+		'Modules.scrape.js.view.ThumbView'
 	],
+	autoScroll: true,
 	
 	initComponent: function() {
 		this.items = this.items || [];
@@ -37,7 +38,7 @@ Ext.define('Modules.template.js.ViewPanel', {
 	},
 	
 	initDataView: function() {
-		this.dataView = Ext.create('Modules.template.js.DataView', {
+		this.dataView = Ext.create('Modules.scrape.js.view.ThumbView', {
 			
 		});
 		this.items.push(this.dataView);

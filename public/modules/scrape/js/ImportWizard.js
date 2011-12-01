@@ -34,7 +34,8 @@ Ext.define('Modules.scrape.js.ImportWizard', {
 	},
 	
 	initListeners: function() {
-		this.editor.on('success', function() {
+		this.editor.on('success', function(form, action) {
+			this.fireEvent('success', form, action);
 			this.progressPanel.show();
 			this.progressPanel.start();
 		}, this);

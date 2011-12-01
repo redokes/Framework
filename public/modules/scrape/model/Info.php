@@ -29,6 +29,20 @@ class Scrape_Model_Info extends Redokes_Model_Model {
 		$this->makeDirectories();
 	}
 	
+	public function afterUpdate() {
+		if ($this->row->complete) {
+			$this->createThumb();
+		}
+	}
+	
+	public function beforeDelete() {
+		// Clean up directories
+		$dir = $this->getPrivateDir();
+		if (is_dir($dir)) {
+			Redokes_FileSystem::unlinkRecursive($dir);
+		}
+	}
+	
 	private function makeDirectories() {
 		if (!is_dir($this->getPrivateScrapeDir())) {
 			mkdir($this->getPrivateScrapeDir());
@@ -57,7 +71,7 @@ class Scrape_Model_Info extends Redokes_Model_Model {
 	}
 	
 	public function getPageUrl() {
-		return '/modules/scrape/scrapes/' . $this->row->hash . '/index.html';
+		return '/scrape/view/' . $this->row->hash . '/';
 	}
 	
 }
