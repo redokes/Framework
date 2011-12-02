@@ -1,16 +1,15 @@
 Ext.define('Redokes.socket.Client', {
 	extend: 'Ext.util.Observable',
-	config:{
+	config: {
 		url: '',
-		port:8080,
-		namespace:''
+		port: 8080,
+		namespace: ''
 	},
-	handlers: [],
-	socket:false,
+	socket: false,
 	
 	constructor: function(config) {
         this.initConfig(config);
-		this.addEvents('connect', 'disconnect', 'otherConnect', 'otherDisconnect');
+		this.addEvents('connect', 'disconnect', 'otherConnect', 'otherDisconnect', 'userConnect', 'userDisconnect');
 		this.initSocket();
     },
 	
@@ -38,6 +37,12 @@ Ext.define('Redokes.socket.Client', {
 		}, this));
 		this.socket.on('otherDisconnect', Ext.bind(function() {
 			this.fireEvent('otherDisconnect', this, arguments);
+		}, this));
+		this.socket.on('userConnect', Ext.bind(function() {
+			this.fireEvent('userConnect', this, arguments);
+		}, this));
+		this.socket.on('userDisconnect', Ext.bind(function() {
+			this.fireEvent('userDisconnect', this, arguments);
 		}, this));
 		
 	},
