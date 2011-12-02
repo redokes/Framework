@@ -67,7 +67,7 @@ Ext.define('Redokes.game.Game', {
 				url: 'http://localhost:8080'
 			});
 			this.socketManager.on('initclient', this.onInitSocketClient, this);
-			this.socketManager.createNamespace('');
+			this.socketManager.connectToNamespace('');
 			window.sm = this.socketManager;
 			this.hasSocket = true;
 		}
@@ -78,7 +78,7 @@ Ext.define('Redokes.game.Game', {
 			game: this
 		});
 		this.mapManager.on('mapload', function() {
-			console.log('Map Loaded');
+			this.log('Map Loaded');
 			this.fireEvent('mapload');
 		}, this);
 		

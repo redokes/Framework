@@ -34,7 +34,7 @@ Ext.define('Redokes.sprite.Sprite', {
 	visible:true,
 	
 	constructor: function(params) {
-		this.showLog();
+//		this.showLog();
 		this.log('constructor');
 		Ext.apply(this, params);
 		this.sprites = [];

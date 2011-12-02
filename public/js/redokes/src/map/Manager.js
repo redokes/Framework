@@ -10,7 +10,7 @@ Ext.define('Redokes.map.Manager', {
 	game: false,
 	
 	constructor: function(params) {
-		this.showLog();
+//		this.showLog();
 		this.log('Constructor');
 		this.loadedMaps = {};
 		Ext.apply(this, params);
@@ -40,11 +40,6 @@ Ext.define('Redokes.map.Manager', {
 			return;
 		}
 		
-		// Remove the player from the map socket
-		if (this.currentMap && this.game.hasSocket) {
-			this.currentMap.socket.send('player.leavemap');
-		}
-		
 		// Check if this map has already had its resources loaded
 		if (this.loadedMaps[mapName] || this.forceLoad) {
 			this.loadedMaps[mapName].loadMapCoords = loadMapCoords;
@@ -62,7 +57,16 @@ Ext.define('Redokes.map.Manager', {
 			map.on('mapload', function(params) {
 				// Set the map as loaded
 				this.loadedMaps[mapName] = params.map;
+				
+				// Remove the player from the map socket
+				if (this.currentMap && this.game.hasSocket) {
+					this.currentMap.socket.send('player.leavemap');
+				}
+				
 				this.currentMap = this.loadedMaps[mapName];
+				
+				this.currentMap.initMapSocket();
+				
 				this.fireEvent('mapload', this, this.loadedMaps[mapName]);
 			}, this, {
 				map: map

@@ -284,7 +284,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			// Make sure check coordinates are within the map boundaries
 			if (checkCoords[0] >= 0 && checkCoords[1] >= 0 && checkCoords[0] < this.game.mapManager.currentMap.width && checkCoords[1] < this.game.mapManager.currentMap.height) {
 				// Valid trigger. Need to check for an action to perform
-				console.log('Check tile');
+				this.log('Check tile');
 			}
 		}
 	},
@@ -295,7 +295,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		this.tileY = coords[1];
 		var tile = this.game.mapManager.currentMap.tileData[this.layer][this.tileY][this.tileX];
 		if (tile.actions) {
-			console.log(tile.actions);
+			this.log(tile.actions);
 			for (var i in tile.actions) {
 				this[tile.actions[i].action](tile.actions[i].params, tile);
 			}
@@ -371,7 +371,6 @@ Ext.define('Redokes.sprite.PlayerUser', {
 				name: name
 			});
 		}
-		this.save();
 	},
 	
 	imageLoaded: function() {

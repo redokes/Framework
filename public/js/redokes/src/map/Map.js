@@ -31,7 +31,7 @@ Ext.define('Redokes.map.Map', {
 	loadMapCoords: false,
 	
 	constructor: function(params) {
-		this.showLog();
+//		this.showLog();
 		this.log('Map constructor');
 		
 		this.loadedSprites = {};
@@ -95,12 +95,6 @@ Ext.define('Redokes.map.Map', {
 			});
 			this.game.player.socketSendPlayerData();
 //			console.log('set player data ' + this.game.player.layer);
-
-			// Set up the map socket
-			if (this.game.hasSocket) {
-				this.initMapSocket();
-			}
-			
 		}, this);
 		
 	},
@@ -245,16 +239,15 @@ Ext.define('Redokes.map.Map', {
 	},
 	
 	initMapSocket: function() {
-		this.log('Init map socket');
-		if (this.socket) {
+		if (this.socket && this.game.mapManager.currentMap == this) {
 			this.socket.send('player.joinmap');
+			this.game.player.socketMovePlayer(this.game.player.currentAnimation.title);
 		}
 		else {
 			this.log('No map socket so no join map');
 			this.game.socketManager.on('initclient', this.onInitMapSocketClient, this, {single:true});
-			this.game.socketManager.createNamespace(this.title);
+			this.game.socketManager.connectToNamespace(this.title);
 		}
-		
 	},
 	
 	onInitMapSocketClient: function(client) {
@@ -289,7 +282,10 @@ Ext.define('Redokes.map.Map', {
 				}, this);
 
 				client.socket.on('player.move', Ext.bind(function(request) {
+					this.log('player.move');
+					this.log(request.storeData);
 					if (!this.players[request.storeData.id]) {
+						this.log('not there so make it');
 						this.initRemotePlayer(request.storeData);
 					}
 					this.players[request.storeData.id].updateRemotePlayer(request.data);
@@ -310,7 +306,7 @@ Ext.define('Redokes.map.Map', {
 				}, this));
 				
 				client.socket.on('player.leavemap', Ext.bind(function(request) {
-//					console.log('player leave map');
+					this.log('player leave map');
 					this.removeRemotePlayer(request.storeData);
 				}, this));
 				
