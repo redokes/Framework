@@ -10,7 +10,8 @@ Ext.define('Redokes.socket.Socket', {
 	},
 	
 	constructor: function(config) {
-        this.initConfig(config);
+        this.addEvents('beforemessage');
+		this.initConfig(config);
 		this.initListeners();
 		this.emitConnection();
     },
@@ -43,7 +44,7 @@ Ext.define('Redokes.socket.Socket', {
 	 */
 	onConnectToNamespace: function(params, callback) {
 		this.log('Connect to namespace ' + params.name);
-		this.socket.createNamespace(params.name);
+		this.namespace.socket.createNamespace(params.name);
 		callback({
 			name: params.name
 		});
@@ -97,7 +98,7 @@ Ext.define('Redokes.socket.Socket', {
 		var mySocketId = this.socket.id;
 		for (var i = 0; i < numSockets; i++) {
 			if (sockets[i] != mySocketId) {
-				socketArray.push(this.getSocketData(sockets[i]));
+				socketArray.push(this.namespace.getSocketData(sockets[i]));
 			}
 		}
 
@@ -116,7 +117,7 @@ Ext.define('Redokes.socket.Socket', {
 	 */
 	onMessage: function(request) {
 		// Get the store data of the socket
-		request.storeData = this.getSocketData(this.socket.id);
+		request.storeData = this.namespace.getSocketData(this.socket.id);
 
 		// Fire the before message event
 		if (this.fireEvent('beforemessage', this, request, this.socket) === false) {

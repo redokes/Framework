@@ -73,11 +73,13 @@ Ext.define('Redokes.sprite.Player', {
 		//TODO: this is where it is erroring
 //		return;
 		this.log('Send player data');
-		this.game.socket.socket.emit('setData', this.playerData, Ext.bind(function(params) {
-//			console.log('call back from set data');
-//			console.log(arguments);
-			
-		}));
+		if (this.game.hasSocket) {
+			this.game.socket.socket.emit('setData', this.playerData, Ext.bind(function(params) {
+	//			console.log('call back from set data');
+	//			console.log(arguments);
+
+			}));
+		}
 	},
 	
 	initAnimations: function() {

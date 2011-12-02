@@ -56,8 +56,8 @@ Ext.define('Redokes.game.Panel', {
 		
 		this.loginWindow.on('hide', function() {
 			this.game.player.ignoreInput = false;
-			if (!this.game.map.currentMap) {
-				this.game.map.loadMap('Jidoor');
+			if (!this.game.mapManager.currentMap) {
+				this.game.mapManager.loadMap('Jidoor');
 			}
 		}, this);
 		
@@ -86,12 +86,12 @@ Ext.define('Redokes.game.Panel', {
 	
 	initChatWindow: function() {
 		this.chatPanel = Ext.create('Redokes.game.chat.Chat', {
-			game:this.game,
-			region:'south',
-			height:140,
-			collapsible:true,
-			collapsed:true,
-			title:'Press enter to chat. Press escape to close'
+			game: this.game,
+			region: 'south',
+			height: 140,
+			collapsible: true,
+			collapsed: true,
+			title: 'Press enter to chat. Press escape to close'
 		});
 		this.chatPanel.on('expand', function() {
 			this.game.player.ignoreInput = true;
@@ -107,7 +107,7 @@ Ext.define('Redokes.game.Panel', {
 	},
 	
 	initChatRoom: function() {
-		this.chatPanel.addRoom(this.game.map.currentMap.title);
+		this.chatPanel.addRoom(this.game.mapManager.currentMap.title);
 	},
 	
 	initListeners: function() {
@@ -128,7 +128,7 @@ Ext.define('Redokes.game.Panel', {
 		this.mapSelector.on('change', function(field, value) {
 			this.focus();
 			this.game.focus();
-			this.game.map.loadMap(value);
+			this.game.mapManager.loadMap(value);
 		}, this);
 		this.characterSelector.on('change', function(field, value) {
 			this.focus();
@@ -140,7 +140,7 @@ Ext.define('Redokes.game.Panel', {
 		Ext.get(document).on('keydown', function(e) {
 			switch(e.keyCode) {
 				case e.ENTER:
-					if (this.chatPanel.collapsed && this.game.map.currentMap && !this.game.player.ignoreInput) {
+					if (this.chatPanel.collapsed && this.game.mapManager.currentMap && !this.game.player.ignoreInput) {
 						this.chatPanel.expand();
 					}
 				break;

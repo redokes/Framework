@@ -1,5 +1,8 @@
 Ext.define('Redokes.node.server.Namespace', {
 	extend: 'Ext.util.Observable',
+	requires: [
+		'Redokes.socket.Socket'
+	],
 	mixins: {
 		log: 'Redokes.debug.Log'
 	},
@@ -47,7 +50,7 @@ Ext.define('Redokes.node.server.Namespace', {
 			
 			Ext.create('Redokes.socket.Socket', {
 				socket: socket,
-				namespace: namespace
+				namespace: this
 			});
 			
 		}.bind(this));

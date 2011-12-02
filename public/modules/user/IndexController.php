@@ -6,8 +6,7 @@ class User_IndexController extends Redokes_Controller_Action {
 			->setValues(array(
 				'title' => 'User'
 			))
-			->addCss('/js/ext-4.0.2a/resources/css/ext-all.css')
-			->addJs('/js/ext-4.0.2a/ext-all.js')
+			->addExtJs()
 			->addJs('/js/redokes/redokes.js');
 		
 		if (User_Model_User::isLoggedIn()) {

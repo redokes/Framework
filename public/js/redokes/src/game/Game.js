@@ -78,19 +78,20 @@ Ext.define('Redokes.game.Game', {
 			game: this
 		});
 		this.mapManager.on('mapload', function() {
+			console.log('Map Loaded');
 			this.fireEvent('mapload');
 		}, this);
 		
 		this.mapManager.on('mapload', this.initGameLoop, this, {single:true});
 		
-//		this.mapManager.loadMap('Wes');
+		this.mapManager.loadMap('Wes');
 	},
 	
 	gameLoop: function() {
 		this.context.clearRect(0, 0, this.width, this.height);
 		this.player.checkKeys();
 		this.player.movePlayer();
-		this.map.draw();
+		this.mapManager.currentMap.draw();
 		this.frameCount++;
 	},
 	
@@ -109,13 +110,13 @@ Ext.define('Redokes.game.Game', {
 	},
 	
 	initGameLoop: function() {
-		this.gameInterval = setInterval(Ext.Function.bind(this.gameLoop, this), 1000/this.fps);
+		this.gameInterval = setInterval(Ext.bind(this.gameLoop, this), 1000/this.fps);
 	},
 
 	initMusic: function() {
-		if (this.map.currentMap.music) {
-			if (!this.music.dom.src.match(this.map.currentMap.music)) {
-				this.music.dom.src = this.map.currentMap.music;
+		if (this.mapManager.currentMap.music) {
+			if (!this.music.dom.src.match(this.mapManager.currentMap.music)) {
+				this.music.dom.src = this.mapManager.currentMap.music;
 				this.music.dom.play();
 			}
 //			this.setMusicVolume(.5);
@@ -137,7 +138,7 @@ Ext.define('Redokes.game.Game', {
 	},
 	
 	initPlayer: function() {
-		d('Init Player');
+		this.log('Init Player');
 		// Make the user controlled player
 		this.player = Ext.create('Redokes.sprite.PlayerUser', {
 			game:this,

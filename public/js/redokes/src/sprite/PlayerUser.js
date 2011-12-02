@@ -134,8 +134,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	canMoveRight: function() {
-		if (this.tileX < this.game.map.currentMap.tileData[this.layer][this.tileY].length-1) {
-			var tile = this.game.map.currentMap.tileData[this.layer][this.tileY][this.tileX+1];
+		if (this.tileX < this.game.mapManager.currentMap.tileData[this.layer][this.tileY].length-1) {
+			var tile = this.game.mapManager.currentMap.tileData[this.layer][this.tileY][this.tileX+1];
 			if (!tile.isWall) {
 				return true;
 			}
@@ -145,7 +145,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	
 	canMoveLeft: function() {
 		if (this.tileX) {
-			var tile = this.game.map.currentMap.tileData[this.layer][this.tileY][this.tileX-1];
+			var tile = this.game.mapManager.currentMap.tileData[this.layer][this.tileY][this.tileX-1];
 			if (!tile.isWall) {
 				return true;
 			}
@@ -155,7 +155,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 
 	canMoveUp: function() {
 		if (this.tileY) {
-			var tile = this.game.map.currentMap.tileData[this.layer][this.tileY-1][this.tileX];
+			var tile = this.game.mapManager.currentMap.tileData[this.layer][this.tileY-1][this.tileX];
 			if (!tile.isWall) {
 				return true;
 			}
@@ -164,8 +164,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 
 	canMoveDown: function() {
-		if (this.tileY < this.game.map.currentMap.tileData[this.layer].length-1) {
-			var tile = this.game.map.currentMap.tileData[this.layer][this.tileY+1][this.tileX];
+		if (this.tileY < this.game.mapManager.currentMap.tileData[this.layer].length-1) {
+			var tile = this.game.mapManager.currentMap.tileData[this.layer][this.tileY+1][this.tileX];
 			if (!tile.isWall) {
 				return true;
 			}
@@ -189,8 +189,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 	
 	socketMovePlayer: function(animation) {
-		if (this.game.map.currentMap.socket) {
-			this.game.map.currentMap.socket.send('player.move', {
+		if (this.game.mapManager.currentMap.socket) {
+			this.game.mapManager.currentMap.socket.send('player.move', {
 				animation:animation,
 				startX:this.x,
 				startY:this.y,
@@ -278,7 +278,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			}
 			
 			// Make sure check coordinates are within the map boundaries
-			if (checkCoords[0] >= 0 && checkCoords[1] >= 0 && checkCoords[0] < this.game.map.currentMap.width && checkCoords[1] < this.game.map.currentMap.height) {
+			if (checkCoords[0] >= 0 && checkCoords[1] >= 0 && checkCoords[0] < this.game.mapManager.currentMap.width && checkCoords[1] < this.game.mapManager.currentMap.height) {
 				// Valid trigger. Need to check for an action to perform
 				
 			}
@@ -289,8 +289,9 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		var coords = this.getTileCoords();
 		this.tileX = coords[0];
 		this.tileY = coords[1];
-		var tile = this.game.map.currentMap.tileData[this.layer][this.tileY][this.tileX];
+		var tile = this.game.mapManager.currentMap.tileData[this.layer][this.tileY][this.tileX];
 		if (tile.actions) {
+			console.log(tile.actions);
 			for (var i in tile.actions) {
 				this[tile.actions[i].action](tile.actions[i].params, tile);
 			}
@@ -338,7 +339,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 		if (loadMapCoords) {
 			loadMapCoords = loadMapCoords.params;
 		}
-		this.game.map.loadMap(params.title, loadMapCoords);
+		this.game.mapManager.loadMap(params.title, loadMapCoords);
 	},
 	
 	loadMapCoords: function(params) {

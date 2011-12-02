@@ -103,7 +103,7 @@ class Wes_MapProcessController extends Redokes_Controller_Ajax {
 					'spawnY' => 0,
 					'spawnLayer' => 0,
 					'music' => false,
-					'extend' => 'Redokes.map.MapData'
+					'extend' => 'Redokes.map.Map'
 				);
 
 				$mapDataTemplate = new Redokes_View_Template();
