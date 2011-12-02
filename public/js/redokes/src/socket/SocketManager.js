@@ -33,11 +33,7 @@ Ext.define('Redokes.socket.SocketManager', {
 				// Tell the global namespace to create this sub namespace
 				this.namespaces[''].socket.emit('connectToNamespace', {
 					name: name
-				}, Ext.bind(function(params) {
-					
-					// Init the client object to make the namespace connection
-					this.initClient(params.name);
-				}, this));
+				}, this.onConnectToNamespace.bind(this));
 			}
 			else {
 				// This is the global namespace
@@ -45,6 +41,11 @@ Ext.define('Redokes.socket.SocketManager', {
 				this.initClient(name);
 			}
 		}
+	},
+	
+	onConnectToNamespace: function(params) {
+		// Init the client object to make the namespace connection
+		this.initClient(params.name);
 	},
 	
 	/**
@@ -65,18 +66,22 @@ Ext.define('Redokes.socket.SocketManager', {
 		 * Create the client object for the namespace connection and keep track
 		 * of it in the namespaces propery
 		 */
-		this.namespaces[name] = Ext.create('Redokes.socket.Client', {
+		var client = Ext.create('Redokes.socket.Client', {
 			url: this.url,
 			namespace: name
 		});
+		this.setClient(name, client)
 		
 		this.log('Made it here');
 		
 		// Fire an event for setting up the client object
-		this.fireEvent('initclient', this.namespaces[name]);
+		this.fireEvent('initclient', this.getClient(name));
 		this.log('fired');
 	},
 	
+	/**
+	 * Returns the client for the specified namespace if it exists
+	 */
 	getClient: function(name) {
 		if (this.namespaces[name] != null) {
 			return this.namespaces[name];
@@ -84,12 +89,17 @@ Ext.define('Redokes.socket.SocketManager', {
 		return false;
 	},
 	
+	setClient: function(name, client) {
+		this.namespaces[name] = client;
+	},
+	
 	/**
 	 * Disconnects the namespace connection if it exists
 	 */
 	removeNamespace: function(name) {
-		if (this.namespaces[name]) {
-			this.namespaces[name].disconnect();
+		var client = this.getClient(name);
+		if (client) {
+			client.disconnect();
 //			delete this.namespaces[name];
 		}
 	}
