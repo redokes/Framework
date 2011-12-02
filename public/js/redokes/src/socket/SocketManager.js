@@ -7,8 +7,7 @@ Ext.define('Redokes.socket.SocketManager', {
 	config:{
 		url: '',
 		timeout: 3000,
-		game:false,
-		namespaces:{}
+		namespaces: {}
 	},
 	
 	constructor: function(config) {

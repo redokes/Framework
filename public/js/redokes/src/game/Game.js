@@ -64,8 +64,7 @@ Ext.define('Redokes.game.Game', {
 		this.log('Init Socket Manager');
 		if (window.io != null) {
 			this.socketManager = Ext.create('Redokes.socket.SocketManager', {
-				game:this,
-				url:'http://localhost:8080'
+				url: 'http://localhost:8080'
 			});
 			this.socketManager.on('initclient', this.onInitSocketClient, this);
 			this.socketManager.createNamespace('');
