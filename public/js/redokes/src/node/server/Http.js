@@ -21,9 +21,8 @@ Ext.define('Redokes.node.server.Http', {
 	},
 	
 	initHttpServer: function() {
-		this.httpServer = this.http.createServer(function(request, response){
+		this.httpServer = this.http.createServer(function(request, response) {
 			var requestObject = require('url').parse(request.url, true);
-			//console.log(requestObject);
 			var path = requestObject.pathname.replace(/^\//, "").replace(/\/$/, "");
 			var parts = path.split('/');
 			
@@ -36,10 +35,10 @@ Ext.define('Redokes.node.server.Http', {
 			//Handle the post params
 			if (request.method == 'POST') {
 				var body = '';
-				request.on('data', function (data) {
+				request.on('data', function(data) {
 					body += data;
 				}.bind(this));
-				request.on('end', function () {
+				request.on('end', function() {
 					var post = this.qs.parse(body.replace( /\+/g, ' ' ));
 					this.onRequest(request, response, path, post);
 				}.bind(this));

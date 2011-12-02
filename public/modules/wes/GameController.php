@@ -16,9 +16,11 @@ class Wes_GameController extends Redokes_Controller_Action {
 			->setValues(array(
 				'title' => 'Wes Game'
 			))
-			->addCss('/js/ext-4.0.2a/resources/css/ext-all.css')
+			
+			->addExtJs()
+			
 			->addCss('/js/redokes/src/game/css/game.css')
-			->addJs('/js/ext-4.0.2a/ext-all.js')
+			
 			->addJs('/modules/wes/js/wesokes.js')
 			->addJs('http://localhost:8080/socket.io/socket.io.js');
 	}

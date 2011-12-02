@@ -52,9 +52,11 @@ Ext.define('Redokes.node.server.Namespace', {
 
 			/**
 			 * Let all other users know this user has connected to the namespace
+			 * Emit the userConnect event
 			 * Send the socket's data store as a parameter
 			 */
 			socket.broadcast.emit('otherConnect', this.getSocketData(socket.id));
+			socket.broadcast.emit('userConnect', this.getSocketData(socket.id));
 
 		}.bind(this));
 	},
@@ -68,7 +70,7 @@ Ext.define('Redokes.node.server.Namespace', {
 			this.log('Create namespace ' + params.name);
 			this.socket.createNamespace(params.name);
 			callback({
-				name:params.name
+				name: params.name
 			});
 		}.bind(this));
 
@@ -83,8 +85,6 @@ Ext.define('Redokes.node.server.Namespace', {
 			}
 			socket.broadcast.emit('setData', this.getSocketData(socket.id));
 		}.bind(this));
-		
-		
 
 		/**
 		 * Sends an object containing an array of socket ids
@@ -102,9 +102,10 @@ Ext.define('Redokes.node.server.Namespace', {
 					socketIds.push(sockets[i]);
 				}
 			}
-
+			
+			// Call the callback function and send the array of socket ids
 			callback({
-				socketIds:socketIds
+				socketIds: socketIds
 			});
 		}.bind(this));
 
@@ -124,9 +125,10 @@ Ext.define('Redokes.node.server.Namespace', {
 					socketArray.push(this.getSocketData(sockets[i]));
 				}
 			}
-
+			
+			// Call the callback function and send the array of user data
 			callback({
-				sockets:socketArray
+				sockets: socketArray
 			});
 		}.bind(this));
 
@@ -143,42 +145,53 @@ Ext.define('Redokes.node.server.Namespace', {
 
 		/**
 		 * When a user disconnects, broadcast the disconnection to other users
-		 * Fire the otherDisconnect event to all other users in this namespace
+		 * Fire the userDisconnect event to all other users in this namespace
 		 */
 		socket.on('disconnect', function(request) {
 			this.log('Disconnect from ' + socket.namespace.name);
 			socket.broadcast.emit('otherDisconnect', socket.id);
+			socket.broadcast.emit('userDisconnect', socket.id);
 		}.bind(this));
 	},
 	
-	emitRequest: function(request, socket){
-		//Get the store data of the socket
+	emitRequest: function(request, socket) {
+		
+		// Get the store data of the socket
 		request.storeData = this.getSocketData(socket.id);
 
-		//Fire the before message event
-		if(this.fireEvent('beforemessage', this, request, socket) === false){
+		// Fire the before message event
+		if (this.fireEvent('beforemessage', this, request, socket) === false) {
 			return;
 		}
 
-		//Emit the message
-		/**
-		 * Check if this is a message for one person or if it needs to be broadcasted
-		 */
+		// Emit the message
+		// Check if this message is for one user (not broadcast)
 		if (request.data && request.data.socketId) {
+			
+			// Check if using the emit event implementation or module approach
 			if (request.module == null) {
+				
+				// Using the emit implementation
 				this.io.sockets.sockets[request.data.socketId].emit(request.action, request);
 			}
 			else {
-				if(this.io.sockets.sockets[request.data.socketId] != null){
+				
+				// Make sure this user still exists in the socket array
+				if (this.io.sockets.sockets[request.data.socketId] != null) {
+					
+					// Use the module-based implementation
 					this.io.sockets.sockets[request.data.socketId].emit('message', request);
 				}
 			}
 		}
 		else {
+			// This is a broadcast message
+			// Check if using the emit event implementation or module approach
 			if (request.module == null) {
 				socket.broadcast.emit(request.action, request);
 			}
 			else {
+				// Use the module-based implementation
 				socket.broadcast.emit('message', request);
 			}
 		}
@@ -197,6 +210,10 @@ Ext.define('Redokes.node.server.Namespace', {
 		return socketData;
 	},
 	
+	/**
+	 * Returns a socket object for the specified socket id
+	 * @param {Socket}
+	 */
 	getSocket: function(id){
 		return this.io.sockets.sockets[id];
 	}

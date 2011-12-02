@@ -8,7 +8,7 @@ Ext.define('Redokes.node.server.Socket', {
 	},
 	
 	socketio: require('socket.io'),
-	io:false,
+	io: false,
 	httpServerWrapper: null,
 	httpServer: null,
 	namespace: null,
@@ -25,7 +25,7 @@ Ext.define('Redokes.node.server.Socket', {
 		this.init();
 	},
 	
-	init: function(){
+	init: function() {
 		
 	},
 	

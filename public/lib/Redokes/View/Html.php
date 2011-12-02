@@ -73,4 +73,24 @@ class Redokes_View_Html extends Redokes_View_Template {
 		}
 		return $this;
 	}
+	
+	public function addExtJs($version = 'stable') {
+		switch($version) {
+			case 'stable':
+				$this->addCss('/js/ext-4.0.7-gpl/resources/css/ext-all.css')
+					->addJs('/js/ext-4.0.7-gpl/ext-all.js');
+				break;
+			case '4.1':
+				$this->addCss('/js/ext-4.1-pr1/resources/css/ext-neptune.css')
+					->addJs('/js/ext-4.1-pr1/ext-all.js')
+					->addJs('/js/ext-4.1-pr1/ext-neptune.js');
+				break;
+			default:
+				$this->addCss('/js/ext-4.0.7-gpl/resources/css/ext-all.css')
+					->addJs('/js/ext-4.0.7-gpl/ext-all.js');
+				break;
+		}
+		
+		return $this;
+	}
 }
