@@ -13,10 +13,12 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	destinationY:0,
 	
 	ignoreInput:false,
+	isPlayer: false,
 
 	initControls: function() {
 		Ext.get(document).on('keydown', this.onKeyDown, this);
 		Ext.get(document).on('keyup', this.onKeyUp, this);
+		this.isPlayer = true;
 	},
 
 	onKeyDown: function(e) {
@@ -29,11 +31,13 @@ Ext.define('Redokes.sprite.PlayerUser', {
 				this.checkTile();
 			break;
 			case e.UP:
+				e.preventDefault();
 				this.setPlayerData({
 					life:this.playerData.life+1
 				});
 			break;
 			case e.DOWN:
+				e.preventDefault();
 				this.setPlayerData({
 					life:this.playerData.life-1
 				});
@@ -174,8 +178,8 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	},
 	
 	updateRemotePlayer: function(data) {
-//		console.log('update remote player');
-//		console.log(data);
+//		this.log('update remote player');
+//		this.log(data);
 		this.x = data.startX;
 		this.y = data.startY;
 		this.dx = data.dx;
@@ -280,7 +284,7 @@ Ext.define('Redokes.sprite.PlayerUser', {
 			// Make sure check coordinates are within the map boundaries
 			if (checkCoords[0] >= 0 && checkCoords[1] >= 0 && checkCoords[0] < this.game.mapManager.currentMap.width && checkCoords[1] < this.game.mapManager.currentMap.height) {
 				// Valid trigger. Need to check for an action to perform
-				
+				console.log('Check tile');
 			}
 		}
 	},
@@ -349,5 +353,71 @@ Ext.define('Redokes.sprite.PlayerUser', {
 	setToTile: function() {
 		this.callParent(arguments);
 		this.socketMovePlayer(this.currentAnimation.title);
+	},
+	
+	save: function() {
+//		this.log('save');
+//		this.log(Ext.encode(this.playerData));
+		localStorage['player ' + this.playerData.name] = Ext.encode(this.playerData);
+	},
+	
+	load: function(name) {
+		this.log('load - ' + name);
+		if (localStorage['player ' + name]) {
+			this.setPlayerData(Ext.decode(localStorage['player ' + name]));
+		}
+		else {
+			this.setPlayerData({
+				name: name
+			});
+		}
+		this.save();
+	},
+	
+	imageLoaded: function() {
+		this.callParent(arguments);
+		this.setPlayerData({
+			img: this.getImageSrc()
+		});
+	},
+	
+	setPlayerData: function(data) {
+		this.log('setPlayerData for ' + this.playerData.name);
+//		console.log(data);
+		if (data.img && this.playerData.img != data.img) {
+			this.log('image was different');
+//			console.log(data.img);
+//			console.log(this.playerData.img);
+			this.loadImage(data.img);
+		}
+		else {
+			delete data.img;
+		}
+		
+		// Make sure there is anything in the object
+		if (Ext.Object.getKeys(data).length) {
+			Ext.apply(this.playerData, data);
+
+			// Update percentage calculations
+			this.playerData.lifePercent = this.playerData.life / this.playerData.maxLife * 100;
+			this.playerData.manaPercent = this.playerData.mana / this.playerData.maxMana * 100;
+
+			if (this.isPlayer) {
+				this.save();
+				this.socketSendPlayerData();
+			}
+		}
+	},
+	
+	socketSendPlayerData: function() {
+		this.log('socketSendPlayerData');
+		
+		//TODO: this is where it is erroring
+		if (this.game.hasSocket) {
+			this.game.socket.socket.emit('setData', this.playerData, Ext.bind(function(params) {
+				this.log('call back from set data');
+				this.log(arguments);
+			}));
+		}
 	}
 });

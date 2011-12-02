@@ -10,6 +10,7 @@ Ext.define('Redokes.socket.Socket', {
 	},
 	
 	constructor: function(config) {
+		this.showLog();
         this.addEvents('beforemessage');
 		this.initConfig(config);
 		this.initListeners();
@@ -55,7 +56,7 @@ Ext.define('Redokes.socket.Socket', {
 	 */
 	onSetData: function(params, callback) {
 		this.log('Set data');
-//			this.log(params);
+		this.log(params);
 		for (var i in params) {
 			this.socket.set(i, params[i]);
 		}

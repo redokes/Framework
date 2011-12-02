@@ -296,9 +296,10 @@ Ext.define('Redokes.map.Map', {
 				}, this));
 				
 				client.socket.on('setData', Ext.bind(function(data) {
-					if (this.players[data.id] && this.players[data.id].img != data.img) {
-						this.players[data.id].loadImage(data.img);
-					}
+//					if (this.players[data.id] && this.players[data.id].img.dom.src != data.img) {
+//						this.players[data.id].loadImage(data.img);
+//					}
+					this.players[data.id].setPlayerData(data);
 				}, this));
 				
 				client.socket.on('player.joinmap', Ext.bind(function(request) {
@@ -352,6 +353,7 @@ Ext.define('Redokes.map.Map', {
 				context:this.game.context
 			});
 			this.players[data.id] = remotePlayer;
+			this.players[data.id].setPlayerData(data);
 		}
 		else {
 			this.log('Not making remote player');

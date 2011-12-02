@@ -3,6 +3,9 @@ Ext.define('Redokes.sprite.Sprite', {
 	requires:[
 		'Redokes.sprite.Animation'
 	],
+	mixins: {
+		log: 'Redokes.debug.Log'
+	},
 	
 	game:false,
 	context:false,
@@ -31,7 +34,8 @@ Ext.define('Redokes.sprite.Sprite', {
 	visible:true,
 	
 	constructor: function(params) {
-		d('Sprite constructor');
+		this.showLog();
+		this.log('constructor');
 		Ext.apply(this, params);
 		this.sprites = [];
 		this.currentAnimation = Ext.create('Redokes.sprite.Animation');
@@ -59,7 +63,7 @@ Ext.define('Redokes.sprite.Sprite', {
 	},
 	
 	loadImage: function(src) {
-		d('Sprite load ' + src);
+		this.log('loadImage(' + src + ')');
 		this.isLoaded = false;
 		this.img = Ext.get(new Image());
 		this.img.on('load', this.imageLoaded, this);
@@ -76,7 +80,7 @@ Ext.define('Redokes.sprite.Sprite', {
 	},
 	
 	imageLoaded: function() {
-		d('Sprite loaded ' + this.img.dom.src);
+		this.log('imageLoaded - ' + this.img.dom.src);
 		this.isLoaded = true;
 	},
 	
@@ -111,7 +115,7 @@ Ext.define('Redokes.sprite.Sprite', {
 				}
 			}
 			catch(e) {
-				console.log(e);
+				this.log(e);
 			}
 			
 			// draw any child sprites

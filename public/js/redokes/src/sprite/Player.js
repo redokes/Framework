@@ -1,11 +1,7 @@
 Ext.define('Redokes.sprite.Player', {
 	extend:'Redokes.sprite.Sprite',
-	mixins: {
-		log: 'Redokes.debug.Log'
-	},
 	
 	playerData:{},
-	doSocketCalls:false,
 	
 	getDefaultData: function() {
 		var defaultData = {
@@ -27,59 +23,10 @@ Ext.define('Redokes.sprite.Player', {
 	},
 	
 	constructor: function() {
+		this.playerData = {};
 		this.setPlayerData(this.getDefaultData());
 		this.callParent(arguments);
 		this.addSprite(Ext.create('Redokes.sprite.PlayerStatus'));
-	},
-	
-	save: function() {
-//		console.log('save');
-//		console.log(Ext.encode(this.playerData));
-		localStorage['player ' + this.playerData.name] = Ext.encode(this.playerData);
-	},
-	
-	load: function(name) {
-		if (localStorage['player ' + name]) {
-			this.setPlayerData(Ext.decode(localStorage['player ' + name]));
-			this.socketSendPlayerData();
-		}
-		else {
-			this.playerData.name = name;
-		}
-		this.save();
-	},
-	
-	imageLoaded: function() {
-		this.callParent(arguments);
-		this.setPlayerData({
-			img:this.getImageSrc()
-		})
-		if (this.doSocketCalls) {
-			this.save();
-			this.socketSendPlayerData();
-		}
-	},
-	
-	setPlayerData: function(data) {
-		if (data.img && this.playerData.img != data.img) {
-			this.loadImage(data.img);
-		}
-		Ext.apply(this.playerData, data);
-	},
-	
-	socketSendPlayerData: function() {
-//		console.log('socket send player data');
-		
-		//TODO: this is where it is erroring
-//		return;
-		this.log('Send player data');
-		if (this.game.hasSocket) {
-			this.game.socket.socket.emit('setData', this.playerData, Ext.bind(function(params) {
-	//			console.log('call back from set data');
-	//			console.log(arguments);
-
-			}));
-		}
 	},
 	
 	initAnimations: function() {
@@ -135,6 +82,5 @@ Ext.define('Redokes.sprite.Player', {
 		this.playerData.mana = value;
 		this.playerData.manaPercent = this.playerData.mana / this.playerData.maxMana * 100;
 	}
-	
 
 });
