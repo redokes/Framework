@@ -1,7 +1,8 @@
 Ext.define('Modules.navigation.js.Interface', {
 	extend:'Ext.panel.Panel',
 	layout:'border',
-	height:400,
+	
+	title: 'Navigation',
 	
 	initComponent: function() {
 		this.items = this.items || [];

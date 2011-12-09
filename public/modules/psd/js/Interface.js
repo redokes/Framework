@@ -6,8 +6,7 @@ Ext.define('Modules.psd.js.Interface', {
 		'Modules.psd.js.model.Template'
 	],
 	
-	height: 400,
-	width: 800,
+	title: 'PSD Importer',
 	
 	tabTitleTemplate: '{title}',
 	tabIconCls: 'contact-icon-16',

@@ -1,8 +1,7 @@
 Ext.define('Modules.scrape.js.Interface', {
 	extend: 'Redokes.tab.Interface',
 	
-	height: 400,
-	width: 800,
+	title: 'Site Scraper',
 	
 	tabTitleTemplate: '{scrapeId}',
 	tabIconCls: 'contact-icon-16',

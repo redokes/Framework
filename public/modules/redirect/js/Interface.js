@@ -1,6 +1,8 @@
 Ext.define('Modules.redirect.js.Interface', {
 	extend:'Ext.panel.Panel',
 	
+	title: 'Redirects',
+	
 	initComponent: function() {
 		this.items = this.items || [];
 		this.init();

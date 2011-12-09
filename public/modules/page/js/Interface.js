@@ -1,8 +1,7 @@
 Ext.define('Modules.page.js.Interface', {
 	extend: 'Redokes.tab.Interface',
 	
-	height: 700,
-	width: 1000,
+	title: 'Pages',
 	
 	tabTitleTemplate: '{title}',
 	tabIconCls: 'contact-icon-16',

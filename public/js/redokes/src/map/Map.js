@@ -245,8 +245,10 @@ Ext.define('Redokes.map.Map', {
 		}
 		else {
 			this.log('No map socket so no join map');
-			this.game.socketManager.on('initclient', this.onInitMapSocketClient, this, {single:true});
-			this.game.socketManager.connectToNamespace(this.title);
+			if (this.game.hasSocket) {
+				this.game.socketManager.on('initclient', this.onInitMapSocketClient, this, {single:true});
+				this.game.socketManager.connectToNamespace(this.title);
+			}
 		}
 	},
 	
