@@ -5,7 +5,12 @@
 .module-item {
 	position: relative;
 	cursor: pointer;
-	margin: 0 0 10px 10px;
+	padding: 5px 5px 5px 5px;
+}
+
+.module-icon-wrap {
+	width: 32px;
+	margin: 0 auto;
 }
 
 .module-icon {
@@ -15,7 +20,7 @@
 
 .module-title-wrap {
 	position: absolute;
-	left: 40px;
+	left: 50px;
 	top: 50%;
 	margin-top: -12px;
 	background: #777;
@@ -36,10 +41,6 @@
 	
 }
 
-.module-selected {
-	font-weight: bold;
-}
-
-.module-icon {
-	padding: 0 5px 0 0;
+.module-item.module-selected {
+	background-image: -webkit-radial-gradient(center, circle farthest-corner, #fff 0%, transparent 70%);
 }

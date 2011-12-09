@@ -1,6 +1,8 @@
 Ext.define('Modules.template.js.form.Template', {
 	extend: 'Redokes.form.Abstract',
 	
+	title: 'New Template',
+	
 	templateId: 0,
 	record: null,
 	bodyPadding: '10px',

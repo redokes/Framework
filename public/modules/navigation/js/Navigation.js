@@ -5,9 +5,12 @@ Ext.define('Modules.navigation.js.Navigation', {
 		name: 'navigation',
 		title: 'Navigation',
 		viewClass: 'Modules.navigation.js.Interface',
-		iconSmall: '/modules/navigation/resources/img/navigation-16.png',
-		iconMedium: '/modules/navigation/resources/img/navigation-32.png',
-		iconLarge: '/modules/navigation/resources/img/navigation-128.png'
+		
+		icon: {
+			small: '/modules/navigation/resources/img/navigation-16.png',
+			medium: '/modules/navigation/resources/img/navigation-32.png',
+			large: '/modules/navigation/resources/img/navigation-128.png'
+		}
 	}
 	
 });

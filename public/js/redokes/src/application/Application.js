@@ -78,12 +78,12 @@ Ext.define('Redokes.application.Application', {
 			'<div class="module-items-wrap">',
 				'<tpl for=".">',
 					'<div class="module-item">',
-						'<span class="module-icon-wrap">',
-							'<span class="module-icon-active"></span><img class="module-icon" src="{instance.iconLarge}" />',
-						'</span>',
-						'<span class="module-title-wrap">',
+						'<div class="module-icon-wrap">',
+							'<span class="module-icon-active"></span><img class="module-icon" src="{instance.icon.large}" />',
+						'</div>',
+						'<div class="module-title-wrap">',
 							'{instance.title}',
-						'</span>',
+						'</div>',
 					'</div>',
 				'</tpl>',
 			'</div>'
@@ -132,7 +132,8 @@ Ext.define('Redokes.application.Application', {
 				this.moduleStore.add({
 					instance: module,
 					cls: cls,
-					name: module.name
+					name: module.name,
+					title: module.title
 				});
 				return module;
 //				this.fireEvent('registermodule', this, module.name, module);
@@ -143,6 +144,10 @@ Ext.define('Redokes.application.Application', {
 		}
 		
 		return false;
+	},
+	
+	launchModule: function(module) {
+		this.center.getLayout().setActiveItem(module.view);
 	},
 	
 	getModule: function(cls) {

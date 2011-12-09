@@ -1,7 +1,5 @@
-Ext.define('Modules.template.js.Interface', {
+Ext.define('Modules.template.js.view.OldInterface', {
 	extend: 'Redokes.tab.Interface',
-	
-	title: 'Templates',
 	
 	tabTitleTemplate: '{title}',
 	tabIconCls: 'contact-icon-16',

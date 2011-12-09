@@ -7,14 +7,18 @@ Ext.define('Redokes.module.Module', {
 		viewClass: null,
 		application: null,
 		css: false,
-		iconSmall: false,
-		iconMedium: false,
-		iconLarge: false,
 		
-		// remove these later when we have a real default
-		iconSmall: '/modules/template/resources/img/template-16.png',
-		iconMedium: '/modules/template/resources/img/template-32.png',
-		iconLarge: '/modules/template/resources/img/template-128.png'
+		icon: {
+			small: false,
+			medium: false,
+			large: false
+		},
+		
+		icon: {
+			small: '/modules/template/resources/img/template-16.png',
+			medium: '/modules/template/resources/img/template-32.png',
+			large: '/modules/template/resources/img/template-128.png'
+		}
 	},
 	
 	view: null,
@@ -33,11 +37,14 @@ Ext.define('Redokes.module.Module', {
 	launchModule: function() {
 		// Make sure this view has been made
 		if (this.view == null) {
-			this.view = Ext.create(this.viewClass);
+			this.view = Ext.create(this.viewClass, {
+				module: this
+			});
 			this.getApplication().addCss(this.getCss());
 			this.getApplication().center.add(this.view);
 		}
-		this.getApplication().center.getLayout().setActiveItem(this.view);
+		
+		this.getApplication().launchModule(this);
 	},
 	
 	onLauncherClick: function() {
