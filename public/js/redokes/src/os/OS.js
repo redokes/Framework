@@ -1,5 +1,5 @@
 Ext.define('Redokes.os.OS', {
-	extend: 'Ext.util.Observble',
+	extend: 'Ext.util.Observable',
     singleton: true,
 	
 	config: {

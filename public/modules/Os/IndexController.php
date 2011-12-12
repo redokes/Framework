@@ -1,6 +1,6 @@
 <?php
 
-class Launcher_IndexController extends Redokes_Controller_Action {
+class Os_IndexController extends Redokes_Controller_Action {
 	
 	public function indexAction() {
 		$this->getView()->setValues(array(
