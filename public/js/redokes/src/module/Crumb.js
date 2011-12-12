@@ -1,6 +1,7 @@
 Ext.define('Redokes.module.Crumb', {
 	extend: 'Ext.button.Button',
 	
+	breadcrumb: null,
 	view: null,
 	
 	initComponent: function() {
@@ -10,7 +11,15 @@ Ext.define('Redokes.module.Crumb', {
 	},
 	
 	init: function() {
-		
+		this.initListeners();
+	},
+	
+	initListeners: function() {
+		this.on('click', this.onClick, this);
+	},
+	
+	onClick: function() {
+		this.breadcrumb.setCrumb(this);
 	}
 	
 });

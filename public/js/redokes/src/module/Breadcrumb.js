@@ -15,31 +15,49 @@ Ext.define('Redokes.module.Breadcrumb', {
 	},
 	
 	initHomeButton: function() {
-		this.addCrumb('Home', this.moduleInterface.view);
+		this.addCrumb(this.moduleInterface.view, 'Home');
 	},
 	
-	addCrumb: function(text, view) {
+	clearAfter: function(button) {
+		// Clear out anything after this in the breadcrumb
+		var numItems = this.items.length;
+		for (var i = numItems-1; i >= 0; i--) {
+			if (this.items.items[i] != button) {
+				// Get rid of it
+				this.items.items[i].destroy();
+			}
+			else {
+				console.log('else');
+//				this.moduleInterface.setView(button.view);
+				break;
+			}
+		}
+	},
+	
+	setCrumb: function(crumb) {
+		this.clearAfter(crumb);
+		this.moduleInterface.setView(crumb.view);
+	},
+	
+	addCrumb: function(view, text) {
+		text = text || view.title;
+		
 		// Make sure crumb isn't in list already
 		// If in list, set active
+		var numItems = this.items.length;
+		var items = this.items.items;
+		for (var i = 0; i < numItems; i++) {
+			if (items[i].view == view) {
+				return items[i];
+			}
+		}
 		
 		var crumb = Ext.create('Redokes.module.Crumb', {
 			scope: this,
 			text: text,
 			view: view,
-			handler: function(button) {
-				// Clear out anything after this in the breadcrumb
-				var numItems = this.items.length;
-				for (var i = numItems-1; i >= 0; i--) {
-					if (this.items.items[i] != button) {
-						// Get rid of it
-						this.items.items[i].destroy();
-					}
-					else {
-						this.moduleInterface.getLayout().setActiveItem(button.view);
-						break;
-					}
-				}
-			}
+			breadcrumb: this,
+			handler: this.setCrumb
 		});
 		
 		var divider = Ext.create('Ext.button.Button', {
@@ -60,8 +78,10 @@ Ext.define('Redokes.module.Breadcrumb', {
 		}
 		
 		if (this.items.length > 1) {
-			this.moduleInterface.getLayout().setActiveItem(view);
+			this.moduleInterface.setView(view);
 		}
+		
+		return crumb;
 	}
 	
 });

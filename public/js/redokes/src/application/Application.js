@@ -154,6 +154,10 @@ Ext.define('Redokes.application.Application', {
 		return this.moduleStore.findRecord('cls', cls);
 	},
 	
+	getCenter: function() {
+		return this.center;
+	},
+	
 	/**
      * Adds a javascript file to the dom
 	 * @param {String} src path to the file
@@ -240,6 +244,8 @@ Ext.define('Redokes.application.Application', {
 			'Modules.scrape.js.Scrape',
 			'Modules.wes.js.Wes'
 		];
-		this.registerModule(clsNames);
+		Ext.require(clsNames, function() {
+			this.registerModule(clsNames);
+		}, this);
 	}
 });
