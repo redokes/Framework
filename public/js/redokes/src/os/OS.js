@@ -10,6 +10,7 @@ Ext.define('Redokes.os.OS', {
 	
 	constructor: function(config) {
 		this.initConfig(config);
+		this.addEvents('ready');
 		this.init();
 		return this.callParent(arguments);
 	},
@@ -53,7 +54,7 @@ Ext.define('Redokes.os.OS', {
 		}
 		try {
 			var module = Ext.create(cls, {
-				application: this
+				os: this
 			});
 			if (module.name != null) {
 				this.moduleStore.add({
@@ -62,6 +63,7 @@ Ext.define('Redokes.os.OS', {
 					name: module.name,
 					title: module.title
 				});
+				console.log('Registered ' + module.name);
 				return module;
 //				this.fireEvent('registermodule', this, module.name, module);
 			}
@@ -74,7 +76,8 @@ Ext.define('Redokes.os.OS', {
 	},
 	
 	launchModule: function(module) {
-		this.application.launchModule(module);
+		console.log('Launch module ' + module.name);
+//		this.application.launchModule(module);
 	},
 	
 	getModule: function(cls) {
@@ -82,80 +85,19 @@ Ext.define('Redokes.os.OS', {
 	},
 	
 	/**
-     * Adds a javascript file to the dom
-	 * @param {String} src path to the file
-     */
-	addJs: function(src) {
-		var needToAdd = true;
-		Ext.select('script').each(function(el) {
-			if (el.dom.src.replace(src, '') != el.dom.src) {
-				needToAdd = false;
-			}
-		});
-		if (needToAdd) {
-			var newEl = Ext.core.DomHelper.append(Ext.getDoc().down('head'), {
-				tag:'script',
-				type:'text/javascript',
-				src:src
-			});
-			return newEl;
-		}
-		else {
-			return false;
-		}
-	},
-	
-	/**
-     * Adds a css file to the dom
-	 * @param {String} href path to the file
-     */
-	addCss: function(href) {
-		if (href == null) {
-			return false;
-		}
-		var needToAdd = true;
-		Ext.select('link').each(function(el) {
-			if (el.dom.href.replace(href, '') != el.dom.href) {
-				needToAdd = false;
-			}
-		});
-		if (needToAdd) {
-			var newEl = Ext.core.DomHelper.append(Ext.getDoc().down('head'), {
-				tag:'link',
-				type:'text/css',
-				rel: 'stylesheet',
-				href:href
-			});
-			return newEl;
-		}
-		else {
-			return false;
-		}
-	},
-	
-	/**
 	 * This will really be generated on the backend
 	 */
 	loadModules: function() {
-		this.onModuleLoad();
-		return;
-		var clsNames = [
-			'Modules.template.js.Template',
-			'Modules.scrape.js.Scrape',
-			'Modules.navigation.js.Navigation',
-			'Modules.page.js.Page',
-			'Modules.psd.js.Psd',
-			'Modules.redirect.js.Redirect',
-			'Modules.scrape.js.Scrape',
-			'Modules.wes.js.Wes'
+		this.clsNames = [
+			'Redokes.module.Test1',
+			'Redokes.module.Test2'
 		];
-		Ext.require(clsNames, function() {
-			this.registerModule(clsNames);
-		}, this);
+		Ext.require(this.clsNames, this.onModuleLoad, this);
 	},
 	
 	onModuleLoad: function() {
 		console.log('Modules loaded');
-		
+		this.registerModule(this.clsNames);
+		this.fireEvent('ready', this);
 	}
 });
