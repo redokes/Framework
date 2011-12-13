@@ -61,6 +61,7 @@ Ext.define('Redokes.os.OS', {
 	
 	boot: function() {
 		this.onBeforeBoot();
+		this.initServiceManager();
 		this.initModuleManager();
 		this.onBoot();
 	},
@@ -71,9 +72,16 @@ Ext.define('Redokes.os.OS', {
 		return this.callParent(arguments);
 	},
 	
+	initServiceManager: function(){
+		this.serviceManager = Ext.create('Redokes.service.Manager', {
+		});
+		this.fireEvent('init-service-manager', this, this.serviceManager);
+	},
+	
 	initModuleManager: function(){
 		this.moduleManager = Ext.create('Redokes.module.Manager', {
 		});
+		this.fireEvent('init-module-manager', this, this.moduleManager);
 	},
 	
 	
@@ -99,31 +107,9 @@ Ext.define('Redokes.os.OS', {
 	///////////////////////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////////////////////
-	
-	
-	launch: function(module) {
-		this.onBeforeLaunch(module);
-		this.onLaunch(module);
+	launchModule: function(module) {
 	},
-
 	
-	/**
-	 * This will really be generated on the backend
-	 */
-	loadModules: function() {
-		return;
-		var clsNames = [
-			'Modules.template.js.Template',
-			'Modules.scrape.js.Scrape',
-			'Modules.navigation.js.Navigation',
-			'Modules.page.js.Page',
-			'Modules.psd.js.Psd',
-			'Modules.redirect.js.Redirect',
-			'Modules.scrape.js.Scrape',
-			'Modules.wes.js.Wes'
-		];
-		Ext.require(clsNames, function() {
-			this.registerModule(clsNames);
-		}, this);
+	startService: function(service){
 	}
 });

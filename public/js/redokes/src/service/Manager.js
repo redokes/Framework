@@ -1,11 +1,11 @@
-Ext.define('Redokes.module.Manager', {
+Ext.define('Redokes.service.Manager', {
 	extend: 'Ext.util.Observable',
 	
 	///////////////////////////////////////////////////////////////////////////
 	// Requires
 	///////////////////////////////////////////////////////////////////////////
 	requires:[
-		'Redokes.module.model.Module'
+		'Redokes.service.model.Service'
 	],
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -28,47 +28,26 @@ Ext.define('Redokes.module.Manager', {
 	
 	initStore: function() {
 		this.store = Ext.create('Ext.data.Store', {
-			model: 'Redokes.module.model.Module'
+			fields: [
+				'instance',
+				'cls',
+				'title',
+				'name'
+			],
+			proxy: {
+				type: 'memory'
+			}
 		});
 	},
 	
 	///////////////////////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////////////////////
-	register: function(cls) {
-		if (typeof cls != 'string') {
-			var numCls = cls.length;
-			for (var i = 0; i < numCls; i++) {
-				this.register(cls[i]);
-			}
-			return;
+	register: function(service){
+		if(Ext.isArray(service)){
+			Ext.each(service, this.register, this);
 		}
 		
-		var record = this.get(cls);
-		if (record != null) {
-			return false;
-		}
-		try {
-			var module = Ext.create(cls, {
-				application: this
-			});
-			if (module.name != null) {
-				this.store.add({
-					instance: module,
-					cls: cls,
-					name: module.name,
-					title: module.title
-				});
-				return module;
-			}
-		}
-		catch(e) {
-			console.warn(cls + ' does not exist');
-		}
-		return false;
-	},
-	
-	get: function(cls) {
-		return this.store.findRecord('cls', cls);
+		console.log('Service Manager - register');
 	}
 });
