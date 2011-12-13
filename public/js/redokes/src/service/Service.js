@@ -6,6 +6,8 @@ Ext.define('Redokes.service.Service', {
 	///////////////////////////////////////////////////////////////////////////
 	config: {
 		name: null,
+		title: '',
+		os: null,
 		manager: null,
 		autoStart: true
 	},
@@ -37,9 +39,11 @@ Ext.define('Redokes.service.Service', {
 	///////////////////////////////////////////////////////////////////////////
 	start: function(){
 		console.log('Service - start ' + this.self.getName());
+		this.fireEvent('start', this);
 	},
 	
 	stop: function(){
 		console.log('Service - start ' + this.self.getName());
+		this.fireEvent('stop', this);
 	}
 });

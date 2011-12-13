@@ -90,7 +90,7 @@ Ext.define('Redokes.os.OS', {
 	
 	//Debug
 	fireEvent: function(){
-		console.log('OS - ' + arguments[0]);
+		console.log(this.self.getName() + ' - ' + arguments[0]);
 		return this.callParent(arguments);
 	},
 	
@@ -129,9 +129,6 @@ Ext.define('Redokes.os.OS', {
 	///////////////////////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////////////////////
-	launchModule: function(module) {
-	},
-	
-	startService: function(service) {
+	launch: function(module) {
 	}
 });
