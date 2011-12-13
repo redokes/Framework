@@ -11,7 +11,9 @@ Ext.define('Redokes.module.Manager', {
 	///////////////////////////////////////////////////////////////////////////
 	// Config
 	///////////////////////////////////////////////////////////////////////////
-	config:{},
+	config:{
+		os: null
+	},
 	
 	///////////////////////////////////////////////////////////////////////////
 	// Inits
@@ -44,20 +46,21 @@ Ext.define('Redokes.module.Manager', {
 			return;
 		}
 		
-		var record = this.get(cls);
+		var record = this.get(cls, 'cls');
 		if (record != null) {
 			return false;
 		}
 		try {
 			var module = Ext.create(cls, {
-				manager: this
+				manager: this,
+				os: this.getOs()
 			});
 			if (module.name != null) {
 				this.store.add({
 					instance: module,
 					cls: cls,
-					name: module.name,
-					title: module.title
+					name: module.getName(),
+					title: module.getTitle()
 				});
 				return module;
 			}
@@ -68,7 +71,10 @@ Ext.define('Redokes.module.Manager', {
 		return false;
 	},
 	
-	get: function(cls) {
-		return this.store.findRecord('cls', cls);
+	get: function(value, field) {
+		if(field == null){
+			field = 'name'
+		}
+		return this.store.findRecord(field, value);
 	}
 });

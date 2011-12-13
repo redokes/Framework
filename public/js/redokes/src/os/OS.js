@@ -96,12 +96,14 @@ Ext.define('Redokes.os.OS', {
 	
 	initServiceManager: function(){
 		this.serviceManager = Ext.create('Redokes.service.Manager', {
+			os: this
 		});
 		this.fireEvent('init-service-manager', this, this.serviceManager);
 	},
 	
 	initModuleManager: function(){
 		this.moduleManager = Ext.create('Redokes.module.Manager', {
+			os: this
 		});
 		this.fireEvent('init-module-manager', this, this.moduleManager);
 	},
