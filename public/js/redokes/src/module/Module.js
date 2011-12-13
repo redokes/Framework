@@ -6,7 +6,18 @@ Ext.define('Redokes.module.Module', {
 		title: '',
 		manager: null,
 		services: [],
-		os: null
+		os: null,
+		
+		menu: [{
+			parent: false,
+			display: '',
+			icon: {
+				small: '',
+				medium: '',
+				large: ''
+			},
+			params: {}
+		}]
 	},
 	
 	constructor: function(config) {

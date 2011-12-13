@@ -15,7 +15,8 @@ Ext.define('Redokes.os.OS', {
 	///////////////////////////////////////////////////////////////////////////
 	config: {
 		moduleManager: null,
-		serviceManager: null
+		serviceManager: null,
+		shell: null
 	},
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -70,15 +71,39 @@ Ext.define('Redokes.os.OS', {
 	
 	boot: function() {
 		this.onBeforeBoot();
+		this.initShell();
 		this.initServiceManager();
 		this.initModuleManager();
+		this.processRegistry();
 		this.onBoot();
+	},
+	
+	processRegistry: function() {
+		// Look up auto start modules and services
+		var modules = [
+			'Redokes.module.Test',
+//			'Redokes.module.Test2',
+		];
+		Ext.require(modules, function() {
+			var numModules = modules.length;
+			for (var i = 0; i < numModules; i++) {
+				this.moduleManager.register(modules[i]);
+			}
+		}, this);
 	},
 	
 	//Debug
 	fireEvent: function(){
 		console.log(this.self.getName() + ' - ' + arguments[0]);
 		return this.callParent(arguments);
+	},
+	
+	initShell: function() {
+		Ext.require('Redokes.shell.Viewport', function() {
+			this.shell = Ext.create('Redokes.shell.Viewport', {
+				os: this
+			});
+		}, this);
 	},
 	
 	initServiceManager: function(){
