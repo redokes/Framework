@@ -46,6 +46,20 @@ Ext.define('Redokes.os.OS', {
 	*/
    
    /**
+	* @event init-service-manager
+	* Fires when the service manager has been created.
+	* @param {OS} os
+	* @param {Redokes.service.Manager} manager
+	*/
+   
+   /**
+	* @event init-module-manager
+	* Fires when the module manager has been created.
+	* @param {OS} os
+	* @param {Redokes.service.Manager} manager
+	*/
+   
+   /**
 	* @event before-launch
 	* Fires before the OS launches a module
 	* @param {OS} os
@@ -119,5 +133,7 @@ Ext.define('Redokes.os.OS', {
 	// Methods
 	///////////////////////////////////////////////////////////////////////////
 	launch: function(module) {
+		this.onBeforeLaunch(module);
+		this.onLaunch(module);
 	}
 });
