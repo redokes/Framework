@@ -50,7 +50,7 @@ Ext.define('Redokes.module.Manager', {
 		}
 		try {
 			var module = Ext.create(cls, {
-				application: this
+				manager: this
 			});
 			if (module.name != null) {
 				this.store.add({

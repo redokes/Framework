@@ -1,10 +1,10 @@
-Ext.define('Redokes.module.Test1', {
-	extend: 'Redokes.module.Viewable',
+Ext.define('Redokes.test1.module.Test1', {
+	extend: 'Redokes.module.Module',
 	
 	config: {
 		name: 'test1',
 		title: 'Test 1',
-		os: null
+		services: []
 	},
 	
 	initListeners: function() {
@@ -19,6 +19,7 @@ Ext.define('Redokes.module.Test1', {
 	},
 	
 	test1: function() {
+		return;
 		console.log('this is test 1 method about to fire the event');
 		this.fireOsEvent('test1event', this);
 	}

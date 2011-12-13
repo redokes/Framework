@@ -3,6 +3,14 @@ Ext.define('Redokes.os.OS', {
     singleton: true,
 	
 	///////////////////////////////////////////////////////////////////////////
+	// Requires
+	///////////////////////////////////////////////////////////////////////////
+	requires:[
+		'Redokes.module.Manager',
+		'Redokes.service.Manager'
+	],
+	
+	///////////////////////////////////////////////////////////////////////////
 	// Config
 	///////////////////////////////////////////////////////////////////////////
 	config: {
@@ -63,7 +71,21 @@ Ext.define('Redokes.os.OS', {
 		this.onBeforeBoot();
 		this.initServiceManager();
 		this.initModuleManager();
+		this.processRegistry();
 		this.onBoot();
+	},
+	
+	processRegistry: function() {
+		// Look up auto start modules and services
+		var modules = [
+			'Redokes.test1.module.Test1'
+		];
+		Ext.require(modules, function() {
+			var numModules = modules.length;
+			for (var i = 0; i < numModules; i++) {
+				this.moduleManager.register(modules[i]);
+			}
+		}, this);
 	},
 	
 	//Debug
@@ -88,19 +110,19 @@ Ext.define('Redokes.os.OS', {
 	///////////////////////////////////////////////////////////////////////////
 	// On Events
 	///////////////////////////////////////////////////////////////////////////
-	onBeforeBoot: function(){
+	onBeforeBoot: function() {
 		this.fireEvent('before-boot', this, this.config);
 	},
 	
-	onBoot: function(){
+	onBoot: function() {
 		this.fireEvent('boot', this, this.config);
 	},
 	
-	onBeforeLaunch: function(module){
+	onBeforeLaunch: function(module) {
 		this.fireEvent('before-launch', this, module);
 	},
 	
-	onLaunch: function(module){
+	onLaunch: function(module) {
 		this.fireEvent('launch', this, module);
 	},
 	
@@ -110,6 +132,6 @@ Ext.define('Redokes.os.OS', {
 	launchModule: function(module) {
 	},
 	
-	startService: function(service){
+	startService: function(service) {
 	}
 });

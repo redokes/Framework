@@ -4,9 +4,10 @@ Ext.define('Redokes.module.Module', {
 	config: {
 		name: null,
 		title: '',
+		manager: null,
+		services: [],
 		os: null
 	},
-	
 	
 	constructor: function(config) {
 		this.initConfig(config);
@@ -17,7 +18,7 @@ Ext.define('Redokes.module.Module', {
 		}
 		
 		this.init();
-		this.initListeners();
+		this.initServices();
 		
 		// Call the parent
 		return this.callParent(arguments);
@@ -27,29 +28,8 @@ Ext.define('Redokes.module.Module', {
 		
 	},
 	
-	initListeners: function() {
-		
-	},
-	
-	onBeforeLaunch: function() {
-		
-	},
-	
-	launchModule: function() {
-		this.onBeforeLaunch();
-		this.getOs().launchModule(this);
-	},
-	
-	addOsEvent: function() {
-		this.os.addEvents(arguments);
-	},
-	
-	onOsEvent: function(eventName, fn, scope) {
-		this.os.on(eventName, fn, scope);
-	},
-	
-	fireOsEvent: function() {
-		this.os.fireEvent.apply(this.os, arguments);
+	initServices: function() {
+		this.getOs().getServiceManager().register(this.getServices());
 	}
 	
 });
