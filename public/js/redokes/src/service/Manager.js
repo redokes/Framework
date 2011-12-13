@@ -42,7 +42,7 @@ Ext.define('Redokes.service.Manager', {
 		}
 		
 		//Check if this record already exists
-		var record = this.get(cls);
+		var record = this.get(service, 'cls');
 		if (record != null) {
 			console.warn(this.self.getName() + ' - ' + record.get('instance').self.getName() + ' is already registered');
 			return false;
