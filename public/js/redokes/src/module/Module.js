@@ -17,8 +17,8 @@ Ext.define('Redokes.module.Module', {
 			console.warn('[' + this.self.getName() + ']' + ' - Please set a name for this module');
 		}
 		
-		this.init();
 		this.initServices();
+		this.init();
 		
 		// Call the parent
 		return this.callParent(arguments);

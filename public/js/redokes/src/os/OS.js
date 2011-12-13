@@ -14,7 +14,8 @@ Ext.define('Redokes.os.OS', {
 	// Config
 	///////////////////////////////////////////////////////////////////////////
 	config: {
-		
+		moduleManager: null,
+		serviceManager: null
 	},
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -78,7 +79,8 @@ Ext.define('Redokes.os.OS', {
 	processRegistry: function() {
 		// Look up auto start modules and services
 		var modules = [
-			'Redokes.test1.module.Test1'
+			'Redokes.test1.module.Test1',
+			'Redokes.test1.module.Test2'
 		];
 		Ext.require(modules, function() {
 			var numModules = modules.length;

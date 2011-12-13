@@ -11,7 +11,9 @@ Ext.define('Redokes.service.Manager', {
 	///////////////////////////////////////////////////////////////////////////
 	// Config
 	///////////////////////////////////////////////////////////////////////////
-	config:{},
+	config: {
+		os: null
+	},
 	
 	///////////////////////////////////////////////////////////////////////////
 	// Inits
@@ -35,14 +37,14 @@ Ext.define('Redokes.service.Manager', {
 	///////////////////////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////////////////////
-	register: function(service){
-		if(Ext.isArray(service)){
-			Ext.each(service, this.register, this);
+	register: function(clsName){
+		if(Ext.isArray(clsName)){
+			Ext.each(clsName, this.register, this);
 			return;
 		}
 		
 		//Check if this record already exists
-		var record = this.get(service, 'cls');
+		var record = this.get(clsName, 'cls');
 		if (record != null) {
 			console.warn(this.self.getName() + ' - ' + record.get('instance').self.getName() + ' is already registered');
 			return false;
@@ -50,21 +52,28 @@ Ext.define('Redokes.service.Manager', {
 		
 		//Try to load the service
 		try {
-			var instance = Ext.create(service, {
-				manager: this
+			var instance = Ext.create(clsName, {
+				manager: this,
+				os: this.getOs()
 			});
+			
+			instance.on('start', this.onStart, this);
+			instance.on('stop', this.onStop, this);
+			
+			instance.checkAutoStart();
+			
 			if (instance.getName() != null) {
 				this.store.add({
 					instance: instance,
-					cls: service,
-					name: service.getName(),
-					title: service.getTitle()
+					cls: clsName,
+					name: instance.getName(),
+					title: instance.getTitle()
 				});
 				return instance;
 			}
 		}
 		catch(e) {
-			console.warn(service + ' does not exist');
+			console.warn(clsName + ' does not exist');
 		}
 		return false;
 	},
@@ -74,5 +83,48 @@ Ext.define('Redokes.service.Manager', {
 			field = 'name';
 		}
 		return this.store.findRecord(field, value);
+	},
+	
+	/**
+     * A special listener/function that allows you to listen for when a service
+	 * has started. Much like Ext.onReady
+     * @param {String} name Name of the service to listen for
+     * @param {Function} callback Function to run when the service has started
+	 * @param {Object} scope Scope to run the callback function in
+	 * @param {Object} options Any additional options to pass to the callback function
+     */
+	onServiceStart: function(name, callback, scope, options){
+		if(scope == null){
+			scope = this;
+		}
+		if(options == null){
+			options = {};
+		}
+		
+		if(this.get(name)){
+			Ext.bind(callback, scope)(this.get(name).get('instance'), options);
+		}
+		else{
+			this.on('start', function(manager, service, options){
+				if(name == options.name){
+					Ext.bind(options.callback, options.scope)(service, options.options);
+				}
+			}, this, {name: name, callback: callback, scope: scope, options: options});
+		}
+	},
+	
+	/**
+     * Fired when a service starts and fires its start event
+	 */
+	onStart: function(service) {
+		this.fireEvent('start', this, service);
+	},
+	
+	/**
+     * Fired when a service stop and fires its stop event
+	 */
+	onStop: function(service) {
+		this.fireEvent('stop', this, service);
 	}
+	
 });
