@@ -1,9 +1,10 @@
 Ext.define('Redokes.module.Test', {
-	extend: 'Redokes.module.Module',
+	extend: 'Redokes.module.Viewable',
 	
 	config: {
 		name: 'test',
 		title: 'Test Module',
+		viewCls: 'Modules.template.js.form.Template',
 		menu: [{
 			parent: false,
 			display: 'Test Top Level',
@@ -40,5 +41,14 @@ Ext.define('Redokes.module.Test', {
 				five: 'six'
 			}
 		}]
+	},
+	
+	handleLaunchParams: function() {
+		var params = this.getLaunchParams();
+		var str = '';
+		for (var i in params) {
+			str += i + ' = ' + params[i] + ';';
+		}
+		this.getView().titleField.setValue(str);
 	}
 });

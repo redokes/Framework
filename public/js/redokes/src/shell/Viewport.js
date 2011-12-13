@@ -25,7 +25,8 @@ Ext.define('Redokes.shell.Viewport', {
 	initCenter: function() {
 		this.center = Ext.create('Ext.panel.Panel', {
 			title: 'Center',
-			region: 'center'
+			region: 'center',
+			layout: 'card'
 		});
 	},
 	
@@ -33,15 +34,32 @@ Ext.define('Redokes.shell.Viewport', {
 		this.west = Ext.create('Ext.panel.Panel', {
 			title: 'West',
 			region: 'west',
-			width: 200
+			width: 200,
+			layout: 'fit'
 		});
 	},
 	
 	initLauncher: function() {
 		this.launcher = Ext.create('Redokes.shell.Tree', {
-			shell: this,
-			store: false
+			shell: this
+			
 		});
 		this.west.add(this.launcher);
+	},
+	
+	getCenter: function() {
+		return this.center;
+	},
+	
+	setActiveView: function(view) {
+		this.getCenter().getLayout().setActiveItem(view);
+	},
+	
+	launchModule: function(manager, module) {
+		if (module.isViewable != null && module.isViewable) {
+			this.getCenter().add(module.view);
+			this.setActiveView(module.view);
+		}
 	}
+	
 });

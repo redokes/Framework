@@ -96,7 +96,7 @@ Ext.define('Redokes.os.OS', {
 		// Look up auto start modules and services
 		var modules = [
 			'Redokes.module.Test',
-//			'Redokes.module.Test2',
+			'Redokes.module.Test2',
 		];
 		Ext.require(modules, function() {
 			var numModules = modules.length;
@@ -144,21 +144,6 @@ Ext.define('Redokes.os.OS', {
 	
 	onBoot: function() {
 		this.fireEvent('boot', this, this.config);
-	},
-	
-	onBeforeLaunch: function(module) {
-		this.fireEvent('before-launch', this, module);
-	},
-	
-	onLaunch: function(module) {
-		this.fireEvent('launch', this, module);
-	},
-	
-	///////////////////////////////////////////////////////////////////////////
-	// Methods
-	///////////////////////////////////////////////////////////////////////////
-	launch: function(module) {
-		this.onBeforeLaunch(module);
-		this.onLaunch(module);
 	}
+	
 });
