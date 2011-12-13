@@ -72,22 +72,7 @@ Ext.define('Redokes.os.OS', {
 		this.onBeforeBoot();
 		this.initServiceManager();
 		this.initModuleManager();
-		this.processRegistry();
 		this.onBoot();
-	},
-	
-	processRegistry: function() {
-		// Look up auto start modules and services
-		var modules = [
-			'Redokes.test1.module.Test1',
-			'Redokes.test1.module.Test2'
-		];
-		Ext.require(modules, function() {
-			var numModules = modules.length;
-			for (var i = 0; i < numModules; i++) {
-				this.moduleManager.register(modules[i]);
-			}
-		}, this);
 	},
 	
 	//Debug
