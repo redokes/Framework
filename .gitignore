@@ -7,3 +7,5 @@
 /public/cache/*
 /public/js/game*
 /public/js/lapidos*
+/public/js/ext*
+/public/js/sencha*
