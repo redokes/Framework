@@ -5,3 +5,5 @@
 /nbproject/private/
 /nbproject/*
 /public/cache/*
+/public/js/game*
+/public/js/lapidos*

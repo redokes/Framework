@@ -1,6 +1,0 @@
-[submodule "public/js/extjs-4.0.7"]
-	path = public/js/extjs-4.0.7
-	url = https://github.com/probonogeek/extjs.git
-[submodule "/sites/redokes-framework/public/lib/min"]
-	path = /sites/redokes-framework/public/lib/min
-	url = https://github.com/mrclay/minify.git
