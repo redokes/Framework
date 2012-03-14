@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c21630e2-34b3-4264-bad7-a4400d5e29d6" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.gitmodules" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Adobe/Auth.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Adobe/Auth.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Adobe/DbInspector.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Adobe/DbInspector.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Adobe/Introspector.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Adobe/Introspector.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Auth/Abstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Auth/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Parse/Amf3/Deserializer.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Parse/Amf3/Deserializer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Parse/Resource/MysqlResult.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Parse/Resource/MysqlResult.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Parse/Resource/Stream.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Parse/Resource/Stream.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Response/Http.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Response/Http.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Server.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Server.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Amf/Value/Messaging/ArrayCollection.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Amf/Value/Messaging/ArrayCollection.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Application.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Application.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Application/Bootstrap/BootstrapAbstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Application/Bootstrap/BootstrapAbstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Application/Exception.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Application/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Application/Module/Bootstrap.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Application/Module/Bootstrap.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/Db.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/Db.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/Mail.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/Mail.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/Modules.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/Modules.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/Navigation.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/Navigation.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/View.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Application/Resource/View.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Auth/Adapter/DbTable.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Auth/Adapter/DbTable.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/File.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/File.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/Sqlite.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/Sqlite.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/TwoLevels.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/TwoLevels.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/ZendServer.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/ZendServer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/ZendServer/Disk.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/ZendServer/Disk.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/ZendServer/ShMem.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cache/Backend/ZendServer/ShMem.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cache/Frontend/Class.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cache/Frontend/Class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cache/Frontend/File.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cache/Frontend/File.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Captcha/Exception.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Captcha/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Captcha/Image.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Captcha/Image.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Captcha/ReCaptcha.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Captcha/ReCaptcha.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cloud/AbstractFactory.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cloud/AbstractFactory.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cloud/DocumentService/Adapter/WindowsAzure.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cloud/DocumentService/Adapter/WindowsAzure.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cloud/DocumentService/Adapter/WindowsAzure/Query.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cloud/DocumentService/Adapter/WindowsAzure/Query.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cloud/QueueService/Adapter/WindowsAzure.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cloud/QueueService/Adapter/WindowsAzure.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cloud/QueueService/Adapter/ZendQueue.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cloud/QueueService/Adapter/ZendQueue.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Cloud/QueueService/Message.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Cloud/QueueService/Message.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/CodeGenerator/Php/Class.php" afterPath="$PROJECT_DIR$/public/lib/Zend/CodeGenerator/Php/Class.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/CodeGenerator/Php/Docblock/Tag.php" afterPath="$PROJECT_DIR$/public/lib/Zend/CodeGenerator/Php/Docblock/Tag.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/CodeGenerator/Php/Docblock/Tag/Param.php" afterPath="$PROJECT_DIR$/public/lib/Zend/CodeGenerator/Php/Docblock/Tag/Param.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/CodeGenerator/Php/File.php" afterPath="$PROJECT_DIR$/public/lib/Zend/CodeGenerator/Php/File.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Config/Ini.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Config/Ini.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Config/Json.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Config/Json.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Config/Writer.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Config/Writer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Config/Writer/Json.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Config/Writer/Json.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Config/Writer/Yaml.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Config/Writer/Yaml.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Config/Xml.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Config/Xml.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Config/Yaml.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Config/Yaml.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Action.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Action.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Action/Helper/AjaxContext.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Action/Helper/AjaxContext.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Action/Helper/Redirector.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Action/Helper/Redirector.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Action/Helper/ViewRenderer.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Action/Helper/ViewRenderer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Plugin/Broker.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Plugin/Broker.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Plugin/ErrorHandler.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Plugin/ErrorHandler.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Plugin/PutHandler.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Plugin/PutHandler.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Request/Abstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Request/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Request/Apache404.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Request/Apache404.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Request/Http.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Request/Http.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Response/Abstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Response/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Abstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Rewrite.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Rewrite.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Abstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Chain.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Chain.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Hostname.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Hostname.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Module.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Module.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Regex.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Regex.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Static.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Controller/Router/Route/Static.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Crypt.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Crypt.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Date.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Date.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Db.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Db.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Db/Adapter/Abstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Db/Adapter/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Db/Adapter/Pdo/Mysql.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Db/Adapter/Pdo/Mysql.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Db/Statement/Oracle.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Db/Statement/Oracle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Db/Table/Abstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Db/Table/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/BuildLayer.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/BuildLayer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/Form/Element/Editor.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/Form/Element/Editor.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/Form/Element/NumberSpinner.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/Form/Element/NumberSpinner.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/Form/Element/ValidationTextBox.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/Form/Element/ValidationTextBox.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/ComboBox.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/ComboBox.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/CustomDijit.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/CustomDijit.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/Dojo/Container.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/Dojo/Container.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/Editor.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/Editor.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/Form.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/Form.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/SimpleTextarea.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/SimpleTextarea.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/Slider.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Dojo/View/Helper/Slider.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/EntryAbstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/EntryAbstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/EntryInterface.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/EntryInterface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/Extension/DublinCore/Entry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/Extension/DublinCore/Entry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/Extension/DublinCore/Feed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/Extension/DublinCore/Feed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/Extension/EntryAbstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/Extension/EntryAbstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/Extension/FeedAbstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/Extension/FeedAbstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/FeedAbstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/FeedAbstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/FeedInterface.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Reader/FeedInterface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Writer/Entry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Writer/Entry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Feed/Writer/Extension/RendererAbstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Feed/Writer/Extension/RendererAbstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Filter/HtmlEntities.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Filter/HtmlEntities.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Filter/Input.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Filter/Input.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Filter/StripTags.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Filter/StripTags.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Decorator/FormElements.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Decorator/FormElements.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Decorator/FormErrors.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Decorator/FormErrors.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Decorator/HtmlTag.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Decorator/HtmlTag.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Decorator/Label.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Decorator/Label.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/DisplayGroup.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/DisplayGroup.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Element.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Element.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Element/Captcha.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Element/Captcha.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Element/File.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Element/File.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Element/Image.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Element/Image.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Element/Radio.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Element/Radio.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Form/Element/Submit.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Form/Element/Submit.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/App/Feed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/App/Feed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/App/FeedEntryParent.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/App/FeedEntryParent.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/AuthSub.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/AuthSub.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Books.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Books.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Books/VolumeQuery.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Books/VolumeQuery.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Docs.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Docs.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Docs/DocumentListEntry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Docs/DocumentListEntry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Docs/DocumentListFeed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Docs/DocumentListFeed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Docs/Query.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Docs/Query.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/DublinCore.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/DublinCore.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Entry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Entry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Distance.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Distance.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Exposure.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Exposure.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/FStop.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/FStop.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Flash.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Flash.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/FocalLength.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/FocalLength.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/ImageUniqueId.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/ImageUniqueId.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Iso.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Iso.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Make.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Make.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Model.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Model.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Tags.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Tags.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Time.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Extension/Time.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Feed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Exif/Feed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Entry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Entry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Extension/GeoRssWhere.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Extension/GeoRssWhere.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Extension/GmlPoint.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Extension/GmlPoint.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Extension/GmlPos.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Extension/GmlPos.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Feed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Geo/Feed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/Extension/Ccr.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/Extension/Ccr.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/ProfileEntry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/ProfileEntry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/ProfileFeed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/ProfileFeed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/ProfileListEntry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/ProfileListEntry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/ProfileListFeed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/ProfileListFeed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/Query.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Health/Query.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Entry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Entry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaCategory.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaCategory.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaContent.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaContent.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaCopyright.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaCopyright.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaCredit.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaCredit.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaDescription.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaDescription.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaGroup.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaGroup.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaHash.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaHash.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaKeywords.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaKeywords.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaPlayer.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaPlayer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaRating.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaRating.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaRestriction.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaRestriction.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaText.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaText.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaThumbnail.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaThumbnail.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaTitle.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Extension/MediaTitle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Feed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Media/Feed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/AlbumEntry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/AlbumEntry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/AlbumFeed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/AlbumFeed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/AlbumQuery.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/AlbumQuery.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/CommentEntry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/CommentEntry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Access.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Access.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/AlbumId.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/AlbumId.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/BytesUsed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/BytesUsed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Checksum.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Checksum.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Client.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Client.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/CommentCount.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/CommentCount.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/CommentingEnabled.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/CommentingEnabled.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Height.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Height.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Id.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Id.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Location.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Location.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/MaxPhotosPerAlbum.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/MaxPhotosPerAlbum.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Name.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Name.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Nickname.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Nickname.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/NumPhotos.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/NumPhotos.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/NumPhotosRemaining.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/NumPhotosRemaining.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/PhotoId.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/PhotoId.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Position.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Position.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/QuotaCurrent.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/QuotaCurrent.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/QuotaLimit.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/QuotaLimit.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Rotation.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Rotation.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Size.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Size.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Thumbnail.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Thumbnail.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Timestamp.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Timestamp.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/User.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/User.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Version.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Version.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Weight.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Weight.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Width.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/Extension/Width.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/PhotoEntry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/PhotoEntry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/PhotoFeed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/PhotoFeed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/PhotoQuery.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/PhotoQuery.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/TagEntry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/TagEntry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/UserEntry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/UserEntry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/UserFeed.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/UserFeed.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/UserQuery.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/Photos/UserQuery.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/Control.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/Control.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/CountHint.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/CountHint.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/Link.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/Link.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/MediaContent.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/MediaContent.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/MediaGroup.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/MediaGroup.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/MediaRating.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/MediaRating.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/Private.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/Private.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/Token.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/Extension/Token.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/MediaEntry.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Gdata/YouTube/MediaEntry.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Http/Client.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Http/Client.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Http/Client/Adapter/Curl.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Http/Client/Adapter/Curl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Http/Client/Adapter/Stream.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Http/Client/Adapter/Stream.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Http/Client/Adapter/Test.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Http/Client/Adapter/Test.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Http/Response/Stream.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Http/Response/Stream.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Http/UserAgent/AbstractDevice.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Http/UserAgent/AbstractDevice.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Http/UserAgent/Mobile.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Http/UserAgent/Mobile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/InfoCard/Xml/EncryptedData/XmlEnc.php" afterPath="$PROJECT_DIR$/public/lib/Zend/InfoCard/Xml/EncryptedData/XmlEnc.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Json.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Json.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Json/Encoder.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Json/Encoder.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Json/Server.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Json/Server.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Json/Server/Response.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Json/Server/Response.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Ldap/Converter.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Ldap/Converter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Ldap/Node.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Ldap/Node.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Loader/Autoloader.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Loader/Autoloader.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Loader/Autoloader/Resource.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Loader/Autoloader/Resource.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Locale/Data.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Locale/Data.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Log/Formatter/Xml.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Log/Formatter/Xml.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Log/Writer/Syslog.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Log/Writer/Syslog.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Mail/Message.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Mail/Message.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Mail/Transport/File.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Mail/Transport/File.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Markup/Parser/Textile.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Markup/Parser/Textile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Mime/Decode.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Mime/Decode.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Navigation.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Navigation.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Navigation/Container.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Navigation/Container.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Navigation/Page.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Navigation/Page.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Navigation/Page/Mvc.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Navigation/Page/Mvc.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Navigation/Page/Uri.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Navigation/Page/Uri.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Oauth/Client.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Oauth/Client.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Oauth/Config.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Oauth/Config.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Oauth/Config/ConfigInterface.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Oauth/Config/ConfigInterface.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/OpenId.php" afterPath="$PROJECT_DIR$/public/lib/Zend/OpenId.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Paginator/Adapter/DbSelect.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Paginator/Adapter/DbSelect.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/ProgressBar.php" afterPath="$PROJECT_DIR$/public/lib/Zend/ProgressBar.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/ProgressBar/Adapter.php" afterPath="$PROJECT_DIR$/public/lib/Zend/ProgressBar/Adapter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/ProgressBar/Adapter/JsPush.php" afterPath="$PROJECT_DIR$/public/lib/Zend/ProgressBar/Adapter/JsPush.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Queue.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Queue.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Reflection/Docblock/Tag/Param.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Reflection/Docblock/Tag/Param.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Reflection/Docblock/Tag/Return.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Reflection/Docblock/Tag/Return.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Rest/Client.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Rest/Client.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Rest/Client/Result.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Rest/Client/Result.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Rest/Controller.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Rest/Controller.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Rest/Route.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Rest/Route.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Search/Lucene/Document/Html.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Search/Lucene/Document/Html.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Search/Lucene/Field.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Search/Lucene/Field.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Search/Lucene/Storage/Directory/Filesystem.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Search/Lucene/Storage/Directory/Filesystem.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/Abstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/Ec2.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/Ec2.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/Exception.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/S3.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/S3.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/S3/Exception.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/S3/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/S3/Stream.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/S3/Stream.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/Sqs.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/Amazon/Sqs.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/LiveDocx.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/LiveDocx.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/ReCaptcha.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/ReCaptcha.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/Twitter.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/Twitter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Service/Twitter/Exception.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Service/Twitter/Exception.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Session.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Session.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Soap/Server.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Soap/Server.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tag/Taggable.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tag/Taggable.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Test/DbAdapter.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Test/DbAdapter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Test/DbStatement.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Test/DbStatement.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Test/PHPUnit/ControllerTestCase.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Test/PHPUnit/ControllerTestCase.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Test/PHPUnit/DatabaseTestCase.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Test/PHPUnit/DatabaseTestCase.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Text/Table.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Text/Table.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Framework/System/Provider/Phpinfo.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Framework/System/Provider/Phpinfo.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/AbstractClassFile.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/AbstractClassFile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/ControllerFile.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/ControllerFile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/ModelFile.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/ModelFile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/TestApplicationActionMethod.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/TestApplicationActionMethod.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/TestApplicationControllerFile.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Context/Zf/TestApplicationControllerFile.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/Action.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/Action.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/Controller.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/Controller.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/Layout.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/Layout.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/Model.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/Model.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/View.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Tool/Project/Provider/View.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Translate/Adapter.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Translate/Adapter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Translate/Adapter/Gettext.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Translate/Adapter/Gettext.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Uri/Http.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Uri/Http.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Validate/EmailAddress.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Validate/EmailAddress.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Validate/Hostname.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Validate/Hostname.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/Version.php" afterPath="$PROJECT_DIR$/public/lib/Zend/Version.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Abstract.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Abstract.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/BaseUrl.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/BaseUrl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Cycle.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Cycle.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Doctype.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Doctype.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Form.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Form.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/FormElement.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/FormElement.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/FormRadio.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/FormRadio.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/FormSelect.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/FormSelect.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/HtmlElement.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/HtmlElement.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Navigation.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Navigation.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Navigation/Menu.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/Navigation/Menu.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/View/Helper/ServerUrl.php" afterPath="$PROJECT_DIR$/public/lib/Zend/View/Helper/ServerUrl.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/XmlRpc/Client.php" afterPath="$PROJECT_DIR$/public/lib/Zend/XmlRpc/Client.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/XmlRpc/Generator/XmlWriter.php" afterPath="$PROJECT_DIR$/public/lib/Zend/XmlRpc/Generator/XmlWriter.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/XmlRpc/Value/BigInteger.php" afterPath="$PROJECT_DIR$/public/lib/Zend/XmlRpc/Value/BigInteger.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/lib/Zend/XmlRpc/Value/DateTime.php" afterPath="$PROJECT_DIR$/public/lib/Zend/XmlRpc/Value/DateTime.php" />
+    </list>
+    <ignored path="redokes-framework.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="redokes-framework" />
+  </component>
+  <component name="Git.Settings">
+    <option name="CHECKOUT_INCLUDE_TAGS" value="false" />
+    <option name="UPDATE_CHANGES_POLICY" value="STASH" />
+    <option name="LINE_SEPARATORS_CONVERSION" value="ASK" />
+  </component>
+  <component name="GotoClassSymbolConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="ApacheConfig" />
+      <filtered-out-file-type name="Apple JS" />
+      <filtered-out-file-type name="Asp" />
+      <filtered-out-file-type name="CSS" />
+      <filtered-out-file-type name="CoffeeScript" />
+      <filtered-out-file-type name="DTD" />
+      <filtered-out-file-type name="Derby" />
+      <filtered-out-file-type name="ECMA Script Level 4" />
+      <filtered-out-file-type name="GWT JavaScript" />
+      <filtered-out-file-type name="GenericSQL" />
+      <filtered-out-file-type name="H2" />
+      <filtered-out-file-type name="HAML" />
+      <filtered-out-file-type name="HSQLDB" />
+      <filtered-out-file-type name="HTML" />
+      <filtered-out-file-type name="JSON" />
+      <filtered-out-file-type name="JSP" />
+      <filtered-out-file-type name="JSPX" />
+      <filtered-out-file-type name="LESS" />
+      <filtered-out-file-type name="MySQL" />
+      <filtered-out-file-type name="Oracle" />
+      <filtered-out-file-type name="PostgreSQL" />
+      <filtered-out-file-type name="PostgresPLSQL" />
+      <filtered-out-file-type name="RELAX-NG" />
+      <filtered-out-file-type name="RegExp" />
+      <filtered-out-file-type name="SASS" />
+      <filtered-out-file-type name="SCSS" />
+      <filtered-out-file-type name="SQL" />
+      <filtered-out-file-type name="SQL92" />
+      <filtered-out-file-type name="SQLite" />
+      <filtered-out-file-type name="Smarty" />
+      <filtered-out-file-type name="SmartyConfig" />
+      <filtered-out-file-type name="TEXT" />
+      <filtered-out-file-type name="TSQL" />
+      <filtered-out-file-type name="Twig" />
+      <filtered-out-file-type name="XHTML" />
+      <filtered-out-file-type name="XML" />
+      <filtered-out-file-type name="yaml" />
+    </file-type-list>
+  </component>
+  <component name="GotoFileConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="ARCHIVE" />
+      <filtered-out-file-type name="ASP" />
+      <filtered-out-file-type name="ActionScript" />
+      <filtered-out-file-type name="AspectJ" />
+      <filtered-out-file-type name="C#" />
+      <filtered-out-file-type name="C++" />
+      <filtered-out-file-type name="CoffeeScript" />
+      <filtered-out-file-type name="DATASOURCE_STORAGE" />
+      <filtered-out-file-type name="DTD" />
+      <filtered-out-file-type name="Database Table" />
+      <filtered-out-file-type name="Enforced Plain Text" />
+      <filtered-out-file-type name="Erlang files" />
+      <filtered-out-file-type name="HAML" />
+      <filtered-out-file-type name="HTML" />
+      <filtered-out-file-type name="IDL" />
+      <filtered-out-file-type name="Images" />
+      <filtered-out-file-type name="JSON" />
+      <filtered-out-file-type name="JSP" />
+      <filtered-out-file-type name="JSPX" />
+      <filtered-out-file-type name="JavaFX" />
+      <filtered-out-file-type name="LESS" />
+      <filtered-out-file-type name="Native" />
+      <filtered-out-file-type name="PATCH" />
+      <filtered-out-file-type name="PLAIN_TEXT" />
+      <filtered-out-file-type name="Perl" />
+      <filtered-out-file-type name="RNG Compact" />
+      <filtered-out-file-type name="RegExp" />
+      <filtered-out-file-type name="SASS" />
+      <filtered-out-file-type name="SCSS" />
+      <filtered-out-file-type name="SQL" />
+      <filtered-out-file-type name="Smarty" />
+      <filtered-out-file-type name="SmartyConfig" />
+      <filtered-out-file-type name="Twig" />
+      <filtered-out-file-type name="UML" />
+      <filtered-out-file-type name="UNKNOWN" />
+      <filtered-out-file-type name="XHTML" />
+      <filtered-out-file-type name="XML" />
+      <filtered-out-file-type name="YAML" />
+      <filtered-out-file-type name="htaccess" />
+    </file-type-list>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="468" />
+    <option name="y" value="96" />
+    <option name="width" value="1199" />
+    <option name="height" value="847" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents ProjectPane="true" />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="redokes-framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="redokes-framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="redokes-framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="redokes-framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="redokes-framework" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="web-ide.project.structure" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+  </component>
+  <component name="PublishConfig" serverName="redokes" serverId="ad39a912-a1c1-42e1-b21d-0b984b09e1a3">
+    <servers>
+      <server id="ad39a912-a1c1-42e1-b21d-0b984b09e1a3">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </server>
+      <server id="c05036ca-c0f7-483a-8fd2-88aa9e39f8b6">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </server>
+    </servers>
+  </component>
+  <component name="RunManager">
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <configuration useDefault="false">$USER_HOME$/.subversion_IDEA</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c21630e2-34b3-4264-bad7-a4400d5e29d6" name="Default" comment="" />
+      <created>1329519864491</created>
+      <updated>1329519864491</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="468" y="96" width="1199" height="847" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25456125" sideWeight="0.6703297" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+</project>
+

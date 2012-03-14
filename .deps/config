@@ -1,0 +1,24 @@
+[Zend]
+        url = "ssh://{user}@repo.lamppostgroup.com/repo/zend-framework"
+        path = "public/lib/Zend"
+        branch = "1.11.11"
+[LP]
+        url = "ssh://{user}@repo.lamppostgroup.com/repo/tms/library/lp"
+        path = "public/lib/LP"
+        branch = "develop"
+[ExtJS]
+        url = "ssh://{user}@repo.lamppostgroup.com/repo/extjs"
+        path = "public/js/extjs"
+        branch = "4.1.0-b2"
+[Lapidos]
+        url = "ssh://{user}@repo.lamppostgroup.com/repo/lapidos"
+        path = "public/js/lapidos"
+        branch = "develop"
+[SenchaTouch]
+        url = "ssh://{user}@repo.lamppostgroup.com/repo/sencha-touch"
+        path = "public/js/sencha-touch"
+        branch = "2.0.0-gpl"
+[Game]
+        url = "git@github.com:somewes/game.git"
+        path = "public/js/game"
+        branch = "develop"

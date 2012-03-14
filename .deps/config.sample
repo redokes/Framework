@@ -1,0 +1,4 @@
+[ProjectName]
+	url = "ssh://{user}@repo.lamppostgroup.com/repo/zend-framework"
+	path = "path/to/checkout"
+	branch = "develop"
